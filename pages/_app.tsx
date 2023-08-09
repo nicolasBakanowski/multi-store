@@ -1,35 +1,20 @@
-import "@/styles/globals.css";
+// pages/_app.tsx
+import "@/styles/globals.css"; // Importa tus estilos globales existentes si es necesario
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import { useRouter } from "next/router";
 import store from "../redux/store";
-import PrivateRoute from "./PrivateRoute";
-import FolderPage from "./folder/[folderName]"; // Importa la página FolderPage
-import SidebarMenu from "../components/sideBarMenu";
-import NewDocument from "./file/new";
-
+import GlobalStyles from "@/styles/GlobalStyles"; // Ajusta la ruta según la ubicación de GlobalStyles.ts
+import Navbar from "@/components/navbar";
 const App = ({ Component, pageProps }: AppProps) => {
-  const router = useRouter();
-  const isNewDocumentPage = router.pathname.includes("/file");
-
-  let content = null;
-
-  if (isNewDocumentPage) {
-    content = <NewDocument />;
-  } else {
-    content = <FolderPage />;
-  }
-
   return (
     <Provider store={store}>
-      <PrivateRoute component={Component} pageProps={pageProps}>
-        <div className="flex">
-          <div className="w-48">
-            <SidebarMenu />
-          </div>
-          <div className="flex-grow pl-4">{content}</div>
+      <Navbar />
+      <div className="flex">
+        <GlobalStyles />
+        <div className="flex-grow pl-4">
+          <Component {...pageProps} />
         </div>
-      </PrivateRoute>
+      </div>
     </Provider>
   );
 };
