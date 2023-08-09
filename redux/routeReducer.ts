@@ -1,13 +1,9 @@
 import { combineReducers } from "redux";
-import authReducer from "./slices/authSlice";
-import userReducer from "./slices/userSlice";
-import folderReducer from "./slices/folderSlice";
+import cartReducer from "./slices/cartSlice";
 // Importa y agrega otros reducers según sea necesario
 
 const rootReducer = combineReducers({
-  auth: authReducer,
-  user: userReducer,
-  folders: folderReducer,
+  cart: cartReducer,
   // Agrega otros reducers aquí
 });
 
