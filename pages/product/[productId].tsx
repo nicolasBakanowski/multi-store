@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../redux/slices/cartSlice";
 import { Product } from "@/interfaces/Products";
+import Link from "next/link";
 
 const ProductDetailsPage = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,9 @@ const ProductDetailsPage = () => {
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut...",
     price: 19.99,
-    image: "/images/product1.jpg",
+    stock: 1,
+    imageUrl: "/images/product1.jpg",
+    categoryId: 1,
   };
 
   return (
@@ -23,7 +26,7 @@ const ProductDetailsPage = () => {
       <main className="container mx-auto mt-10 p-4">
         <div className="flex flex-col items-center">
           <img
-            src={product.image}
+            src={product.imageUrl}
             alt={product.name}
             className="w-1/2 md:w-1/3 lg:w-1/4 object-cover mb-4"
           />

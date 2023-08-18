@@ -1,30 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store"; // Asegúrate de importar correctamente el RootState.
 import ProductCard from "../../components/ProductCard";
+import { fetchProductsByCategory } from "@/redux/actions/productAction";
+import { Product } from "@/interfaces/Products";
+
 const CategoryPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const currentCategory = useSelector(
+    (state: RootState) => state.category.currentCategory
+  );
+  const products = useSelector((state: RootState) => state.product.products);
   const handleGoBack = () => {
     router.back();
   };
-
-  // Simulamos productos de ejemplo
-  const products = [
-    {
-      id: 1,
-      name: "Product 1",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      price: 9.99,
-      image: "/images/product1.jpg",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      description: "Pellentesque nec metus et ex tristique efficitur.",
-      price: 14.99,
-      image: "/images/product2.jpg",
-    },
-    // Agrega más productos aquí
-  ];
+  useEffect(() => {
+    if (currentCategory) {
+      dispatch(fetchProductsByCategory(currentCategory.id) as any);
+    }
+  }, [currentCategory, dispatch]);
+  console.log("estos deberian ser los productos en el ", products);
 
   return (
     <div>
@@ -53,7 +50,7 @@ const CategoryPage = () => {
         </div>
         <h1 className="text-3xl font-semibold mb-4">Category Name</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {products.map((product) => (
+          {products.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
