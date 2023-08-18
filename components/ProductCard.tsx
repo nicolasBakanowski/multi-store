@@ -1,11 +1,20 @@
 import React from "react";
-import { ProductCardProps } from "../interfaces/Products";
+import { ProductCardProps, Product } from "../interfaces/Products";
+import { setCurrentProduct } from "@/redux/slices/productSlice";
+import { useDispatch } from "react-redux";
+
+import Link from "next/link";
+
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const dispatch = useDispatch();
+  const handleProductClick = (product: Product) => {
+    dispatch(setCurrentProduct(product));
+  };
   return (
     <div className="border p-2 rounded-md flex">
       <div className="w-1/4">
         <img
-          src={product.image}
+          src={product.imageUrl}
           alt={product.name}
           className="w-16 h-16 object-cover"
         />
@@ -18,7 +27,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </p>
       </div>
       <div className="w-1/4 flex items-center justify-end">
-        <a
+        <Link
+          onClick={() => handleProductClick(product)}
           href={`/product/${product.id}`} // Ajusta la ruta según tu estructura de URL
           className="text-blue-500 hover:text-blue-700"
         >
@@ -37,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               d="M9 5l7 7-7 7"
             />
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );
