@@ -3,8 +3,19 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  image: string;
+  stock: number;
+  imageUrl: string;
+  categoryId: number;
 }
+interface ProductState {
+  products: Product[];
+  currentProduct: Product | null;
+}
+
+export const initialState: ProductState = {
+  products: [],
+  currentProduct: null,
+};
 
 export interface ProductCardProps {
   product: Product;
