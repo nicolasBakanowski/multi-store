@@ -12,47 +12,44 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="border p-2 rounded-md flex flex-col md:flex-row">
-      <div className="md:w-1/4 mb-2 md:mb-0">
-        <div className="w-20 h-20 md:w-24 md:h-24">
+    <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+      <Link href={`/product/${product.id}`}>
+        <div onClick={() => handleProductClick(product)}>
           <Image
             src={product.imageUrl}
             alt={product.name}
-            width={500}
-            height={500}
+            width={144}
+            height={160}
+            className="h-80 w-72 object-cover rounded-t-xl"
           />
+          <div className="px-4 py-3 w-72">
+            <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+            <p className="text-lg font-bold text-black truncate block capitalize">
+              {product.name}
+            </p>
+            <div className="flex items-center">
+              <p className="text-lg font-semibold text-black cursor-auto my-3">
+                ${product.price.toFixed(2)}
+              </p>
+              <del>
+                <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
+              </del>
+              <div className="ml-auto">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  className="bi bi-bag-plus"
+                  viewBox="0 0 16 16"
+                >
+                  {/* ...Icon path data... */}
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="md:w-1/2 md:flex md:flex-col justify-center">
-        <h2 className="text-md font-semibold">{product.name}</h2>
-        <p className="text-gray-600">{product.description}</p>
-        <p className="text-md font-semibold mt-2">
-          ${product.price.toFixed(2)}
-        </p>
-      </div>
-      <div className="w-full md:w-1/4 flex items-center justify-end">
-        <Link
-          onClick={() => handleProductClick(product)}
-          href={`/product/${product.id}`}
-          className="text-blue-500 hover:text-blue-700"
-        >
-          Ver Detalles
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-4 w-4 ml-1 inline-block"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </Link>
-      </div>
+      </Link>
     </div>
   );
 };
