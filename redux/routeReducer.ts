@@ -7,6 +7,7 @@ import productReducer from "./slices/cartSlice";
 // Importa y agrega otros reducers según sea necesario
 
 const rootReducer = combineReducers({
+  cart: cartReducer,
   category: categoryReducer,
   product: productReducer, // Agrega el reducer de categorías aquí
   // Agrega otros reducers aquí
