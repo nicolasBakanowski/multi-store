@@ -1,7 +1,8 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../redux/slices/cartSlice";
 import { Product } from "@/interfaces/Products";
+import { RootState } from "@/redux/store";
 import Link from "next/link";
 
 const ProductDetailsPage = () => {
@@ -10,16 +11,12 @@ const ProductDetailsPage = () => {
   const handleAddToCart = (product: Product) => {
     dispatch(addItem(product));
   };
-  const product = {
-    id: 1,
-    name: "Product Name",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut...",
-    price: 19.99,
-    stock: 1,
-    imageUrl: "/images/product1.jpg",
-    categoryId: 1,
-  };
+  const product = useSelector(
+    (state: RootState) => state.product.currentProduct
+  );
+  if (!product) {
+    return <div>no hay producto...</div>;
+  }
 
   return (
     <div>
