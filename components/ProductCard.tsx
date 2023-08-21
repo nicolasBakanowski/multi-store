@@ -4,6 +4,8 @@ import { setCurrentProduct } from "@/redux/slices/productSlice";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
+import addToCartIcon from "../public/addcart.svg";
+import details from "../public/details.svg";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const dispatch = useDispatch();
@@ -12,7 +14,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+    <div className="w-72 bg-black shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
       <Link href={`/product/${product.id}`}>
         <div onClick={() => handleProductClick(product)}>
           <Image
@@ -23,12 +25,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className="h-80 w-72 object-cover rounded-t-xl"
           />
           <div className="px-4 py-3 w-72">
-            <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
-            <p className="text-lg font-bold text-black truncate block capitalize">
+            <span className="text-white mr-3 uppercase text-xs">Brand</span>
+            <p className="text-lg font-bold text-white truncate block capitalize">
               {product.name}
             </p>
             <div className="flex items-center">
-              <p className="text-lg font-semibold text-black cursor-auto my-3">
+              <p className="text-lg font-semibold text-white cursor-auto my-3">
                 ${product.price.toFixed(2)}
               </p>
               <del>
