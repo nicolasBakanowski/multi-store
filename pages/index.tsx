@@ -5,7 +5,7 @@ import { RootState } from "../redux/store"; // Asegúrate de importar correctame
 import Link from "next/link";
 import { setCurrentCategory } from "@/redux/slices/categorySlice";
 import { Category } from "@/interfaces/Category";
-
+import Image from "next/image";
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
   const categories = useSelector(
@@ -23,15 +23,28 @@ const HomePage: React.FC = () => {
         <h1 className="text-3xl font-semibold mb-4">
           Selecciona una categoria
         </h1>
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category) => (
             <Link
               key={category.id}
               onClick={() => handleCategoryClick(category)}
-              href={`/category/${category.id}`} // Ajusta la ruta según tu estructura de URL
-              className="border rounded-md p-3 text-center hover:bg-black block"
+              href={`/category/${category.id}`}
+              className="bg-white shadow-md rounded-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:-translate-y-1 cursor-pointer"
+              style={{ backgroundColor: "#7c0303" }}
             >
-              {category.name}
+              <div className="relative">
+                <Image
+                  src={"http://localhost:30001/uploads/productorpueba.jpg"}
+                  alt={category.name}
+                  width={144}
+                  height={160}
+                  className="w-full h-40 object-cover"
+                />
+              </div>
+              <div className="p-4  bg-black">
+                <h2 className="text-lg font-semibold mb-2">{category.name}</h2>
+                <p className="text-gray-300">{"hola"}</p>
+              </div>
             </Link>
           ))}
         </div>
