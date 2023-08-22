@@ -9,9 +9,9 @@ export const generateWhatsAppMessage = (cart: Product[]): void => {
   const totalPrice = cart.reduce((total, product) => total + product.price, 0);
   const message = encodeURIComponent(
     `¡Hola! Estoy interesado en sus productos:
-        ${productsMessage}
+      ${productsMessage}
         Precio total: $${totalPrice.toFixed(2)}`
   );
-  const storePhoneNumber = "+5493584874137";
+  const storePhoneNumber = "+5493584379276";
   window.open(`https://wa.me/${storePhoneNumber}?text=${message}`);
 };
