@@ -14,9 +14,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="w-72 bg-black shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+    <div className="w-72 bg-black shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl ">
       <Link href={`/product/${product.id}`}>
-        <div onClick={() => handleProductClick(product)}>
+        <button onClick={() => handleProductClick(product)}>
           <Image
             src={product.imageUrl}
             alt={product.name}
@@ -44,13 +44,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   fill="currentColor"
                   className="bi bi-bag-plus"
                   viewBox="0 0 16 16"
-                >
-                  {/* ...Icon path data... */}
-                </svg>
+                ></svg>
               </div>
             </div>
           </div>
-        </div>
+        </button>
       </Link>
     </div>
   );

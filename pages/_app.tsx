@@ -1,9 +1,9 @@
 // pages/_app.tsx
-import "@/styles/globals.css"; // Importa tus estilos globales existentes si es necesario
+import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import store from "../redux/store";
-import GlobalStyles from "@/styles/GlobalStyles"; // Ajusta la ruta según la ubicación de GlobalStyles.ts
+import GlobalStyles from "@/styles/GlobalStyles";
 import Navbar from "@/components/navbar";
 const App = ({ Component, pageProps }: AppProps) => {
   return (
