@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import axios from "../axios.config";
-import { LoginData } from "../../interfaces/User";
+import { LoginData, UserRegisterData } from "../../interfaces/User";
 import { setUserInfoAndToken, setError, clearError } from "../slices/userSlice";
 
 export const loginAction =
@@ -13,6 +13,17 @@ export const loginAction =
       return true;
     } catch (error) {
       dispatch(setError("Login failed. Please check your credentials."));
-      return false; // Set error message
+      return false;
+    }
+  };
+
+export const registerAction =
+  (userData: UserRegisterData) => async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post("/user/register", userData);
+      return true;
+    } catch (error) {
+      dispatch(setError("fallo en el registro"));
+      return false;
     }
   };

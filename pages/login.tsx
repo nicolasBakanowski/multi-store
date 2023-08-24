@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction } from "../redux/actions/userAction";
+import { loginAction } from "@/redux/actions/userAction";
+import { RootState } from "@/redux/store";
+import Notification from "@/components/Notification";
+import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { RootState } from "../redux/store"; // Import the RootState
 
-import Notification from "../components/Notification";
-
-const Login = () => {
+const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -34,89 +35,53 @@ const Login = () => {
       router.push("/"); // Redirect to the home page after successful login
     }
   };
-  return (
-    <section className="min-h-screen flex items-center justify-center">
-      <div className="bg-black flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
-        <div className="md:w-1/2 px-8 md:px-16">
-          <h2 className="font-bold text-2xl text-white">Login</h2>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-md shadow-md">
+        <h2 className="text-2xl font-semibold mb-4">Iniciar Sesión</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            className="p-2 mt-2 rounded-xl border focus:outline-none"
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder="Correo Electrónico"
+            required
+          />
+          <div className="relative">
             <input
-              className="p-2 mt-8 rounded-xl border text-black"
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="Email"
+              className="p-2 rounded-xl border w-full focus:outline-none"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={password}
+              onChange={handlePasswordChange}
+              placeholder="Contraseña"
               required
             />
-            <div className="relative">
-              <input
-                className="p-2 rounded-xl border w-full text-black"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={password}
-                onChange={handlePasswordChange}
-                placeholder="Password"
-                required
-              />
-              <svg
-                onClick={handleTogglePassword}
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="gray"
-                className="bi bi-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
-                viewBox="0 0 16 16"
-              >
-                {/* ... SVG path data */}
-              </svg>
-            </div>
             <button
-              type="submit"
-              className="bg-black rounded-xl border-white border py-2 text-white hover:scale-105 duration-300"
-            >
-              Login
-            </button>
-          </form>
-
-          <div className="mt-6 grid grid-cols-3 items-center text-gray-400">
-            <hr className="border-gray-400" />
-            <p className="text-center text-sm">OR</p>
-            <hr className="border-gray-400" />
+              onClick={handleTogglePassword}
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 focus:outline-none"
+            ></button>
           </div>
-
-          <button className="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 text-[#002D74]">
-            <svg
-              className="mr-3"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              width="25px"
-            >
-              {/* ... SVG path data */}
-            </svg>
-            Login with Google
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none"
+          >
+            Iniciar Sesión
           </button>
-
-          <div className="mt-3 text-xs flex justify-between items-center text-white">
-            <p>¿No tienes cuenta?</p>
-            <button className="py-2 px-5 bg-white border text-black rounded-xl hover:scale-110 duration-300">
-              Register
-            </button>
-          </div>
-        </div>
-
-        <div className="md:block hidden w-1/2">
-          <img
-            className="rounded-2xl"
-            src="https://images.unsplash.com/photo-1616606103915-dea7be788566?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80"
-            alt="Login"
-          />
+        </form>
+        <div className="mt-4 text-sm text-gray-600">
+          ¿No tienes cuenta?{" "}
+          <Link href="/register" passHref>
+            <div className="text-blue-500 hover:underline">Regístrate aquí</div>
+          </Link>
         </div>
       </div>
-      <Notification /> {/* Add the notification component */}
-    </section>
+      <Notification />
+    </div>
   );
 };
 
-export default Login;
+export default LoginPage;

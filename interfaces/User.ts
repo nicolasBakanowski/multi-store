@@ -15,3 +15,9 @@ export const initialState: UserState = {
   role: null,
   token: null,
 };
+export interface UserRegisterData {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+}

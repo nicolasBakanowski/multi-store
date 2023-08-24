@@ -9,7 +9,7 @@ const ProductDetailsPage = () => {
   const dispatch = useDispatch();
 
   const handleAddToCart = (product: Product) => {
-    dispatch(addItem(product));
+    //dispatch(addItem(product));
   };
   const product = useSelector(
     (state: RootState) => state.product.currentProduct

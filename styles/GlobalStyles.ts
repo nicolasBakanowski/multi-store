@@ -22,8 +22,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background-color: #7c0303;
-    color: #FFFFFF;
+    background-color: #f7fafc; /* Fondo gris claro */
+    color: #333; /* Texto gris oscuro */
     font-family: 'Roboto', Arial, sans-serif;
   }
 

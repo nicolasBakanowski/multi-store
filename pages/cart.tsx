@@ -1,43 +1,107 @@
-// pages/cart.tsx
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { Product } from "@/interfaces/Products";
 import { generateWhatsAppMessage } from "@/utils/whatsapp";
+import Image from "next/image";
+import {
+  CartItem,
+  removeItem,
+  discountProduct,
+} from "@/redux/slices/cartSlice";
+
 const CartPage: React.FC = () => {
+  const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart);
 
+  const [productToRemove, setProductToRemove] = useState<CartItem | null>(null);
+
   const handleAddContact = () => {
-    generateWhatsAppMessage(cart);
+    const message = generateWhatsAppMessage(cart);
+    console.log(message);
+  };
+
+  const handleRemoveFromCart = (product: CartItem) => {
+    if (product.quantity > 1) {
+      dispatch(discountProduct(product.id));
+    } else {
+      dispatch(removeItem(product.id));
+    }
+    setProductToRemove(null);
+  };
+
+  const handleConfirmRemove = () => {
+    if (productToRemove) {
+      handleRemoveFromCart(productToRemove);
+    }
   };
 
   return (
-    <div className="container mx-auto mt-10 p-4">
-      <h1 className="text-2xl font-semibold mb-4">Carrito de Compras</h1>
-      <button
-        onClick={handleAddContact}
-        className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600"
-      >
-        Agregar a WhatsApp
-      </button>
-      {cart.length === 0 ? (
-        <p>Tu carrito está vacío.</p>
-      ) : (
-        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {cart.map((product: Product) => (
-            <li key={product.id} className="border p-4 rounded-md shadow-md">
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-full object-cover mb-2"
-              />
-              <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
-              <p className="text-gray-600 mb-2">${product.price.toFixed(2)}</p>
-              <p>{product.description}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div>
+      <div className="container mx-auto mt-10 p-4">
+        <h1 className="text-2xl font-semibold mb-4">Carrito de Compras</h1>
+        <button
+          onClick={handleAddContact}
+          className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600"
+        >
+          Enviar a WhatsApp
+        </button>
+        {cart.length === 0 ? (
+          <p>Tu carrito está vacío.</p>
+        ) : (
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {cart.map((product: CartItem) => (
+              <li key={product.id} className="border p-4 rounded-md shadow-md">
+                <Image
+                  src={product.imageUrl}
+                  alt={product.name}
+                  width={140}
+                  height={120}
+                  className="w-full h-44 object-cover mb-2"
+                />
+                <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
+                <p className="text-gray-600 mb-2">
+                  ${(product.price * product.quantity).toFixed(2)}
+                </p>
+                <p className="text-gray-700">{product.description}</p>
+                <p className="text-gray-600 mb-2">
+                  Cantidad en carrito: {product.quantity}
+                </p>
+                <button
+                  onClick={() => setProductToRemove(product)}
+                  className="bg-red-500 text-white px-3 py-1 rounded-md mt-2 hover:bg-red-600 focus:outline-none"
+                >
+                  Quitar del Carro
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {/* Modal de Confirmación */}
+        {productToRemove && (
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="bg-white p-4 rounded-md">
+              <p>
+                ¿Estás seguro de que deseas quitar 1 unidad de{" "}
+                {productToRemove.name} del carrito?
+              </p>
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={() => setProductToRemove(null)}
+                  className="bg-gray-300 text-black px-3 py-1 rounded-md mr-2 hover:bg-gray-400 focus:outline-none"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleConfirmRemove}
+                  className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 focus:outline-none"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

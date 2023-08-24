@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ProductCardProps, Product } from "../interfaces/Products";
 import { setCurrentProduct } from "@/redux/slices/productSlice";
 import { useDispatch } from "react-redux";
@@ -6,50 +6,92 @@ import Image from "next/image";
 import Link from "next/link";
 import addToCartIcon from "../public/addcart.svg";
 import details from "../public/details.svg";
+import { addItem, CartItem } from "@/redux/slices/cartSlice";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
+
   const handleProductClick = (product: Product) => {
     dispatch(setCurrentProduct(product));
   };
 
+  const handleAddToCart = () => {
+    const cartItem: CartItem = { ...product, quantity };
+
+    dispatch(addItem(cartItem));
+  };
+
+  const handleIncrementQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
   return (
-    <div className="w-72 bg-black shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl ">
+    <div className="w-full bg-gray-900 flex-grow shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl flex">
       <Link href={`/product/${product.id}`}>
-        <button onClick={() => handleProductClick(product)}>
+        <button onClick={() => handleProductClick(product)} className="flex">
           <Image
             src={product.imageUrl}
             alt={product.name}
-            width={144}
-            height={160}
-            className="h-80 w-72 object-cover rounded-t-xl"
+            width={190} // Ejemplo de ancho proporcional
+            height={140} // Calculado como 160 * (3/4) para mantener la proporción 4:3
+            className="h-45 w-45 object-cover rounded-l-xl"
           />
-          <div className="px-4 py-3 w-72">
-            <span className="text-white mr-3 uppercase text-xs">Brand</span>
-            <p className="text-lg font-bold text-white truncate block capitalize">
-              {product.name}
-            </p>
-            <div className="flex items-center">
-              <p className="text-lg font-semibold text-white cursor-auto my-3">
-                ${product.price.toFixed(2)}
-              </p>
-              <del>
-                <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
-              </del>
-              <div className="ml-auto">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  className="bi bi-bag-plus"
-                  viewBox="0 0 16 16"
-                ></svg>
-              </div>
-            </div>
-          </div>
         </button>
       </Link>
+      <div className="px-4 py-3 w-2/3">
+        <h3 className="text-white text-lg font-semibold mb-1">
+          {product.name}
+        </h3>
+        <p className="text-gray-300 text-sm mb-2">
+          ${product.price.toFixed(2)}
+        </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-1">
+            <button
+              onClick={handleDecrementQuantity}
+              className="bg-gray-300 text-black py-1 px-2 rounded"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              min={1}
+              value={quantity}
+              onChange={() => {}}
+              className="w-12 text-black p-2 text-center"
+            />
+            <button
+              onClick={handleIncrementQuantity}
+              className="bg-gray-300 text-black py-1 px-2 rounded"
+            >
+              +
+            </button>
+          </div>
+          <button
+            onClick={handleAddToCart}
+            className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 focus:outline-none"
+          >
+            <Image src={addToCartIcon} alt="Add to Cart" className="h-5 w-5" />
+          </button>
+        </div>
+        <Link href={`/product/${product.id}`}>
+          <div className="text-blue-500 mt-2 hover:underline focus:outline-none">
+            Ver detalles
+            <Image
+              src={details}
+              alt="Details"
+              className="h-4 w-4 ml-1 inline-block"
+            />
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };
