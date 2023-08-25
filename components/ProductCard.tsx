@@ -39,8 +39,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Image
             src={product.imageUrl}
             alt={product.name}
-            width={190} // Ejemplo de ancho proporcional
-            height={140} // Calculado como 160 * (3/4) para mantener la proporción 4:3
+            width={190}
+            height={140}
             className="h-45 w-45 object-cover rounded-l-xl"
           />
         </button>
