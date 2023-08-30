@@ -1,14 +1,32 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCategory } from "@/redux/actions/categoryAction";
+import { RootState } from "@/redux/store";
 
 const AddCategoryForm = () => {
+  const dispatch = useDispatch();
+  const userToken = useSelector((state: RootState) => state.user.token);
   const [categoryName, setCategoryName] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Categoría agregada:", categoryName);
-  };
+    e.preventDefault(); // Evita la recarga de la página
 
+    const formData = new FormData();
+    formData.append("name", categoryName);
+    if (selectedImage) {
+      formData.append("categoryImage", selectedImage);
+    }
+    try {
+      if (userToken) {
+        dispatch(addCategory(formData, userToken) as any);
+      } else {
+        console.error("No se pudo agregar la categoría: token no disponible");
+      }
+    } catch (error) {
+      console.error("Error al agregar la categoría:", error);
+    }
+  };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);

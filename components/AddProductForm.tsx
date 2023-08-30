@@ -2,23 +2,26 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { fetchCategories } from "@/redux/actions/categoryAction";
+import { addProduct } from "@/redux/actions/productAction";
 
 const AddProductForm: React.FC = () => {
   const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [productStock, setProductStock] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>(""); // Añade esta línea
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
+    0
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const categories = useSelector(
     (state: RootState) => state.category.categories
   );
+  const userToken = useSelector((state: RootState) => state.user.token);
 
   useEffect(() => {
     if (!categories) {
-      setIsLoading(true);
       dispatch(fetchCategories());
     }
   }, [dispatch, categories]);
@@ -30,29 +33,50 @@ const AddProductForm: React.FC = () => {
   };
 
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.target.value);
+    setSelectedCategory(parseInt(e.target.value, 10)); // Parse the selected value to an integer (ID)
   };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Rest of your submission logic
+    if (!userToken) {
+      console.error("No se pudo agregar el producto: token no disponible");
+      return;
+    }
+    if (selectedCategory === 0) {
+      console.warn("Por favor, seleccione una categoría válida.");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("name", productName);
+    formData.append("description", productDescription);
+    formData.append("stock", productStock);
+    formData.append("price", productPrice);
 
-    console.log(
-      "Product added:",
-      productName,
-      productPrice,
-      selectedImage,
-      selectedCategory
+    formData.append(
+      "categoryId",
+      selectedCategory !== undefined ? selectedCategory.toString() : ""
     );
+
+    if (selectedImage) {
+      formData.append("productImage", selectedImage);
+    }
+
+    try {
+      await dispatch(addProduct(formData, userToken));
+      // Clear the form fields after successful submission
+      setProductName("");
+      setProductDescription("");
+      setProductStock("");
+      setProductPrice("");
+      setSelectedImage(null);
+      setSelectedCategory(undefined);
+    } catch (error) {
+      console.error("Error al agregar el producto:", error);
+    }
   };
 
-  if (isLoading) {
+  if (!categories) {
     return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
   }
 
   return (
@@ -95,8 +119,8 @@ const AddProductForm: React.FC = () => {
             Categoría del Producto:
           </label>
           <select
-            value={selectedCategory}
-            onChange={handleCategoryChange}
+            value={selectedCategory || " "}
+            onChange={handleCategoryChange} // Update the event handler
             className="bg-white text-black p-2 rounded w-full"
           >
             <option value="">Seleccionar Categoría</option>
@@ -106,6 +130,25 @@ const AddProductForm: React.FC = () => {
               </option>
             ))}
           </select>
+        </div>
+        <div>
+          <label className="block text-white mb-2">
+            Descripción del Producto:
+          </label>
+          <textarea
+            value={productDescription}
+            onChange={(e) => setProductDescription(e.target.value)}
+            className="bg-white text-black p-2 rounded w-full"
+          />
+        </div>
+        <div>
+          <label className="block text-white mb-2">Cantidad en Stock:</label>
+          <input
+            type="text"
+            value={productStock}
+            onChange={(e) => setProductStock(e.target.value)}
+            className="bg-white text-black p-2 rounded w-full"
+          />
         </div>
         <button
           type="submit"

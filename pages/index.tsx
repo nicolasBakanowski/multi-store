@@ -34,11 +34,12 @@ const HomePage: React.FC = () => {
           >
             <div className="relative">
               <Image
-                src={"http://localhost:30001/uploads/productorpueba.jpg"}
+                src={category.imageUrl}
                 alt={category.name}
                 width={144}
                 height={160}
                 className="w-full h-40 object-cover"
+                priority
               />
             </div>
             <div className="p-4 bg-gray-100">
