@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store"; // Adjust the RootState import accordingly
-import { clearError } from "../redux/slices/userSlice"; // Import the clearError action
+import { RootState } from "../redux/store";
+import { clearError } from "../redux/slices/userSlice";
 
 const Notification = () => {
   const dispatch = useDispatch();

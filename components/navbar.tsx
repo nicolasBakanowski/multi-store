@@ -5,12 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import NavbarIcon from "../public/hamburger.svg";
-import CartIcon from "../public/cart.svg";
 import HomeIcon from "../public/home.svg";
 import BackIcon from "../public/back.svg";
 import LoginIcon from "../public/login.svg";
 import AdminIcon from "../public/login.svg"; // Reemplaza por el ícono correcto si lo tienes
-
+import CartLink from "./CartLink";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.length);
@@ -54,18 +53,6 @@ const Navbar = () => {
           <li>
             <Link href="/" className="block md:inline">
               <Image src={HomeIcon} alt="Home Icon" className="h-7 w-7" />
-            </Link>
-          </li>
-          <li>
-            <Link href="/cart" className="block md:inline">
-              <div className="relative">
-                <Image src={CartIcon} alt="Cart Icon" className="h-8 w-8" />
-                {cartItems > 0 && (
-                  <span className="absolute top-2 right-2 bg-red-500 text-white rounded-full px-2 text-xs">
-                    {cartItems}
-                  </span>
-                )}
-              </div>
             </Link>
           </li>
         </ul>
@@ -114,4 +101,23 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const NavbarWithCartButton = () => {
+  const cartItems = useSelector((state: RootState) => state.cart.length);
+  const router = useRouter();
+  const isCartPage = router.pathname === "/cart";
+  const distination = isCartPage ? "/checkout" : "/cart";
+  return (
+    <div>
+      <Navbar />
+      {cartItems > 0 && (
+        <CartLink
+          itemCount={cartItems}
+          isCartPage={isCartPage}
+          destination={distination}
+        />
+      )}
+    </div>
+  );
+};
+
+export default NavbarWithCartButton;
