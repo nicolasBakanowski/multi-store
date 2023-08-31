@@ -1,10 +1,6 @@
 // En tu cartSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Product } from "../../interfaces/Products";
-
-export interface CartItem extends Product {
-  quantity: number; // Añadimos el campo para la cantidad
-}
+import { CartItem } from "../../interfaces/Cart";
 
 const cartSlice = createSlice({
   name: "cart",
@@ -30,8 +26,12 @@ const cartSlice = createSlice({
         existingItem.quantity -= 1;
       }
     },
+    clearCart: (state) => {
+      return [];
+    },
   },
 });
 
-export const { addItem, removeItem, discountProduct } = cartSlice.actions;
+export const { addItem, removeItem, discountProduct, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

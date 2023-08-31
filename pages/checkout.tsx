@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import PaymentMethodBadge from "../components/PaymentDeliveryForm";
+import { generateWhatsAppMessage } from "@/utils/whatsapp";
+import { clearCart } from "../redux/slices/cartSlice"; // Asegúrate de ajustar la ruta correcta
 const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [deliveryMethod, setDeliveryMethod] = useState("pickup");
-
+  const dispatch = useDispatch();
   const handlePaymentMethodChange = () => {
     setPaymentMethod("asd");
   };
@@ -19,6 +21,10 @@ const CheckoutPage = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
+  const handleAddContact = () => {
+    generateWhatsAppMessage(cartItems, totalAmount);
+    dispatch(clearCart());
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -54,7 +60,10 @@ const CheckoutPage = () => {
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-gray-100 py-4 px-4">
-        <button className="bg-green-500 text-white px-4 py-2 rounded-md w-full">
+        <button
+          onClick={handleAddContact}
+          className="bg-green-500 text-white px-4 py-2 rounded-md w-full"
+        >
           Realizar Pedido
         </button>
       </div>

@@ -1,24 +1,14 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { generateWhatsAppMessage } from "@/utils/whatsapp";
 import Image from "next/image";
-import {
-  CartItem,
-  removeItem,
-  discountProduct,
-} from "@/redux/slices/cartSlice";
-
+import { removeItem, discountProduct } from "@/redux/slices/cartSlice";
+import { CartItem } from "../interfaces/Cart";
 const CartPage: React.FC = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart);
 
   const [productToRemove, setProductToRemove] = useState<CartItem | null>(null);
-
-  const handleAddContact = () => {
-    const message = generateWhatsAppMessage(cart);
-    console.log(message);
-  };
 
   const handleRemoveFromCart = (product: CartItem) => {
     if (product.quantity > 1) {
@@ -36,15 +26,9 @@ const CartPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="container mx-auto mt-10 p-4">
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container p-3">
         <h1 className="text-2xl font-semibold mb-4">Carrito de Compras</h1>
-        <button
-          onClick={handleAddContact}
-          className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600"
-        >
-          Enviar a WhatsApp
-        </button>
         {cart.length === 0 ? (
           <p>Tu carrito está vacío.</p>
         ) : (

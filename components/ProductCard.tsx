@@ -6,8 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import addToCartIcon from "../public/addcart.svg";
 import details from "../public/details.svg";
-import { addItem, CartItem } from "@/redux/slices/cartSlice";
-
+import { addItem } from "@/redux/slices/cartSlice";
+import { CartItem } from "@/interfaces/Cart";
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
