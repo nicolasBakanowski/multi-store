@@ -1,27 +1,41 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import PaymentMethodBadge from "../components/PaymentDeliveryForm";
-import { generateWhatsAppMessage } from "@/utils/whatsapp";
+import { createOrderAction } from "@/redux/actions/productAction";
+import DeliveryForm from "../components/DeliveryForm";
 import { clearCart } from "../redux/slices/cartSlice"; // Asegúrate de ajustar la ruta correcta
+import { generateWhatsAppMessage } from "@/utils/whatsapp";
+
 const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [deliveryMethod, setDeliveryMethod] = useState("pickup");
+  const [formData, setFormData] = useState({
+    name: "",
+    phoneNumber: "",
+    address: "",
+  });
   const dispatch = useDispatch();
-  const handlePaymentMethodChange = () => {
-    setPaymentMethod("asd");
-  };
 
-  const handleDeliveryMethodChange = () => {
-    setDeliveryMethod("asd");
+  const handleDeliveryMethodChange = (method: string) => {
+    setDeliveryMethod(method);
   };
 
   const cartItems = useSelector((state: RootState) => state.cart);
   const totalAmount = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total: number, item) => total + item.price * item.quantity,
     0
   );
-  const handleAddContact = () => {
+
+  const handleAddContact = async () => {
+    await dispatch(
+      createOrderAction(
+        cartItems,
+        formData.name,
+        formData.phoneNumber,
+        formData.address,
+        deliveryMethod
+      ) as any
+    );
     generateWhatsAppMessage(cartItems, totalAmount);
     dispatch(clearCart());
   };
@@ -59,6 +73,11 @@ const CheckoutPage = () => {
           </p>
         </div>
       </div>
+      <DeliveryForm
+        onDeliveryMethodChange={handleDeliveryMethodChange}
+        formData={formData}
+        setFormData={setFormData}
+      />
       <div className="fixed bottom-0 left-0 right-0 bg-gray-100 py-4 px-4">
         <button
           onClick={handleAddContact}
