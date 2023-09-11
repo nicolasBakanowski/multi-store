@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setNewOrder } from "../redux/slices/orderSlice";
 // Datos ficticios de pedidos con estados
 const ordersData: any[] = [
   {
@@ -40,7 +41,19 @@ const ordersData: any[] = [
   },
 ];
 
-function OrdersPage() {
+function OrdersPage({ socket }: any) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket.on("newOrder", (newOrderData: any) => {
+      console.log("Esto es un nuevo pedido:", newOrderData);
+      dispatch(setNewOrder(newOrderData));
+    });
+
+    return () => {
+      socket.off("newOrder");
+    };
+  }, [socket]);
   const [orders, setOrders] = useState<any[]>(ordersData);
   const [selectedStatus, setSelectedStatus] = useState<string>("");
 
@@ -48,7 +61,6 @@ function OrdersPage() {
     setSelectedStatus(event.target.value);
   };
 
-  // Filtrar los pedidos en función del estado seleccionado
   const filteredOrders = selectedStatus
     ? orders.filter((order) => order.status === selectedStatus)
     : orders;
