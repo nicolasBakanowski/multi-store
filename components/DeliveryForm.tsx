@@ -3,12 +3,12 @@ import React, { useState } from "react";
 interface DeliveryFormProps {
   formData: {
     name: string;
-    phoneNumber: string;
+    phone: string;
     address: string;
   };
   setFormData: (formData: {
     name: string;
-    phoneNumber: string;
+    phone: string;
     address: string;
   }) => void;
   onDeliveryMethodChange: (method: string) => void;
@@ -31,7 +31,7 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
     // Reset formData when the delivery method changes
     setFormData({
       name: "",
-      phoneNumber: "",
+      phone: "",
       address: "",
     });
   };
@@ -114,9 +114,9 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
               type="tel"
               id="phoneNumber"
               name="phoneNumber"
-              value={formData.phoneNumber}
+              value={formData.phone}
               onChange={(e) =>
-                setFormData({ ...formData, phoneNumber: e.target.value })
+                setFormData({ ...formData, phone: e.target.value })
               }
               className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               required

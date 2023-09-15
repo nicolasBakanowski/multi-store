@@ -11,7 +11,7 @@ const CheckoutPage = () => {
   const [deliveryMethod, setDeliveryMethod] = useState("pickup");
   const [formData, setFormData] = useState({
     name: "",
-    phoneNumber: "",
+    phone: "",
     address: "",
   });
   const dispatch = useDispatch();
@@ -31,13 +31,13 @@ const CheckoutPage = () => {
       createOrderAction(
         cartItems,
         formData.name,
-        formData.phoneNumber,
+        formData.phone,
         formData.address,
         deliveryMethod
       ) as any
     );
-    generateWhatsAppMessage(cartItems, totalAmount);
-    dispatch(clearCart());
+    //generateWhatsAppMessage(cartItems, totalAmount);
+    //dispatch(clearCart());
   };
 
   return (

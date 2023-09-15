@@ -32,7 +32,7 @@ export const createOrderAction =
   (
     cartItems: CartItem[],
     name: string,
-    phoneNumber: string,
+    phone: string,
     address: string,
     deliveryMethod: string
   ) =>
@@ -43,7 +43,7 @@ export const createOrderAction =
     }));
     const response = await axios.post("/order/new", {
       simplifiedCartItems,
-      userInfo: { name, phoneNumber, address },
+      userInfo: { name, phone, address },
       deliveryMethod,
     });
     return true;
