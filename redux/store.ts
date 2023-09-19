@@ -8,6 +8,7 @@ import categoryReducer from "./slices/categorySlice";
 import productReducer from "./slices/productSlice";
 import userReducer from "./slices/userSlice"; // Asegúrate de corregir el nombre del slice si es "userSlice"
 import orderReducer from "./slices/orderSlice";
+import statusReducer from "./slices/statusSlice";
 
 // Configura la persistencia para los reducers que deseas persistir
 const persistConfig = {
@@ -25,7 +26,7 @@ const persistedReducer = persistReducer(
     category: categoryReducer,
     product: productReducer,
     order: orderReducer, // Agrega el reducer de categorías aquí
-
+    status: statusReducer, // Agrega el reducer de categorías aquí
     // Agrega otros reducers aquí
   })
 );
