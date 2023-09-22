@@ -14,6 +14,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.length);
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
+  const userName = useSelector((state: RootState) => state.user.user?.name);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -41,14 +42,21 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-900 text-white py-4 px-6 flex justify-between items-center">
-      <Link href="/" className="text-2xl font-bold">
-        Market
-      </Link>
+      {!isIndexPage && (
+        <button onClick={handleGoBack}>
+          <div className="flex items-center space-x-1">
+            <Image src={BackIcon} alt="Back Icon" className="h-6 w-6" />
+            <span>Volver</span>
+          </div>
+        </button>
+      )}
+      <div className="text-2xl font-bold flex w-1/3 justify-center">
+        <Link href="/">Market</Link>
+      </div>
       <div className="flex items-center space-x-4">
         <ul
-          className={`${
-            menuOpen ? "block" : "hidden"
-          } md:flex md:space-x-4 md:justify-center mt-4 md:mt-0`}
+          className={`${menuOpen ? "block" : "hidden"
+            } md:flex md:space-x-4 md:justify-center mt-4 md:mt-0`}
         >
           <li>
             <Link href="/" className="block md:inline">
@@ -66,14 +74,7 @@ const Navbar = () => {
             className="h-7 w-7"
           />
         </button>
-        {!isIndexPage && (
-          <button onClick={handleGoBack}>
-            <div className="flex items-center space-x-1">
-              <Image src={BackIcon} alt="Back Icon" className="h-6 w-6" />
-              <span>Volver</span>
-            </div>
-          </button>
-        )}
+        
         {userRole === 1 && (
           <Link href="/admin" className="block md:inline">
             <button className="text-white focus:outline-none">
@@ -88,14 +89,26 @@ const Navbar = () => {
             </button>
           </Link>
         )}
-        <Link href="/login" className="block md:inline">
-          <button className="text-white focus:outline-none">
-            <div className="flex items-center space-x-1">
-              <Image src={LoginIcon} alt="Login Icon" className="h-6 w-6" />
-              <span>Login</span>
-            </div>
-          </button>
-        </Link>
+        {userName ? (
+          <Link href="/login" className="block md:inline">
+            <button className="text-white focus:outline-none">
+              <div className="flex items-center space-x-1">
+                <span>{userName}</span>
+              </div>
+            </button>
+          </Link>
+        ) : (
+          <Link href="/login" className="block md:inline">
+            <button className="text-white focus:outline-none">
+              <div className="flex items-center space-x-1">
+                <Image src={LoginIcon} alt="Login Icon" className="h-6 w-6" />
+                <span>Login</span>
+              </div>
+            </button>
+          </Link>
+        )
+        }
+
       </div>
     </nav>
   );
