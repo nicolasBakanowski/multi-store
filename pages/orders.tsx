@@ -5,6 +5,7 @@ import { RootState } from "@/redux/store";
 import { fetchOrders } from "../redux/actions/orderAction";
 import { fetchStatus } from "@/redux/actions/statusAction";
 import { formatOrderData } from "@/utils/orderDataFormater";
+
 function OrdersPage({ socket }: any) {
   const dispatch = useDispatch();
   const [selectedStatus, setSelectedStatus] = useState(1);
@@ -49,23 +50,41 @@ function OrdersPage({ socket }: any) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredOrders.map((order, index) => (
-          <div key={order.order_id} className="border p-4">
-            <h2 className="text-xl font-semibold">Orden #{order.order_id}</h2>
-            <p>Nombre: {order.orderName}</p>
-            <p>Dirección: {order.orderAddress}</p>
-            <p>Teléfono: {order.orderPhone}</p>
-            <h3 className="text-lg font-semibold">Productos:</h3>
-            <ul>
+          <div
+            key={order.order_id}
+            className="border p-2 bg-gray-900 shadow-md rounded-lg duration-500 hover:scale-105 hover:shadow-xl flex flex-col"
+          >
+            {/* Sección superior */}
+            <div className="text-white rounded-t-lg flex">
+              <h2 className="text-lg pl-4font-semibold">#{order.order_id}</h2>
+              <p className="pl-5">
+                {order.orderName} - {order.orderAddress}
+              </p>
+            </div>
+            <div className="border-b border-gray-400 my-2"></div>
+            <ul className="text-sm text-white flex-grow">
               {order.products.map((product: any, index: number) => (
                 <li key={index}>
-                  {product.productName} - Cantidad: {product.quantity} - Precio:
-                  ${product.productPrice}
+                  {product.productName} - {product.quantity} - $
+                  {product.productPrice}
                 </li>
               ))}
             </ul>
-            <p className="mt-2">
-              Importe Total: ${calculateTotal(order.products)}
-            </p>
+            <div className="text-right">
+              <div>
+                <p className="text-sm text-white">
+                  Importe Total: ${calculateTotal(order.products)}
+                </p>
+              </div>
+              <div>
+                <button className="bg-red-500 text-white py-1 px-2 rounded mt-2 hover:bg-green-600 focus:outline-none">
+                  Rechazar
+                </button>
+              </div>
+              <button className="bg-green-500 text-white py-1 px-2 rounded mt-2 hover:bg-green-600 focus:outline-none">
+                Confirmar Pedido
+              </button>
+            </div>
           </div>
         ))}
       </div>
