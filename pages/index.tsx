@@ -19,6 +19,7 @@ const HomePage: React.FC = () => {
   }, [dispatch]);
 
   const handleCategoryClick = (category: Category) => {
+    console.log("CATEGORY", category);
     dispatch(setCurrentCategory(category));
   };
 
