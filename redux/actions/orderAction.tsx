@@ -11,3 +11,15 @@ export const fetchOrders = () => async (dispatch: Dispatch) => {
     console.error("Error fetching products by category:", error);
   }
 };
+
+export const changeStatusOrder = async (orderId: number, statusId: number) => {
+  try {
+    const response = await axios.put(`/order/${orderId}`, {
+      statusId: statusId,
+    });
+    return response.data; // Devuelve la respuesta en lugar de la promesa
+  } catch (error) {
+    console.error("Error al confirmar el pedido:", error);
+    throw error; // Lanza el error para que pueda ser manejado en el lugar donde se llama a la acción.
+  }
+};
