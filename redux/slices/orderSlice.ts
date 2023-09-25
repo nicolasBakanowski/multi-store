@@ -15,10 +15,10 @@ const orderSlice = createSlice({
       state.push(action.payload[0]);
     },
     confirmOrder: (state, action) => {
-      const { orderId, newStatusId } = action.payload;
+      const { id, statusId } = action.payload;
       state.forEach((order) => {
-        if (order.order_id === orderId) {
-          order.orderStatusId = newStatusId;
+        if (order.order_id === id) {
+          order.orderStatusId = statusId;
         }
       });
     },
