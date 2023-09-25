@@ -7,6 +7,7 @@ import { fetchStatus } from "@/redux/actions/statusAction";
 import { formatOrderData } from "@/utils/orderDataFormater";
 import {
   ORDER_STATUS_CONFIRMED,
+  ORDER_STATUS_INPROCCESS,
   ORDER_STATUS_REJECTED,
 } from "@/constants/orderConstants";
 import { changeStatusOrder } from "../redux/actions/orderAction";
@@ -28,8 +29,8 @@ function OrdersPage({ socket }: any) {
 
   const orders = useSelector((state: RootState) => state.order);
   const status = useSelector((state: RootState) => state.status);
-  const handleConfirmOrder = async (orderId: number) => {
-    const order = changeStatusOrder(orderId, ORDER_STATUS_CONFIRMED);
+  const handleConfirmOrder = async (orderId: number, OrderStatus: number) => {
+    const order = await changeStatusOrder(orderId, OrderStatus);
     dispatch(confirmOrder(order) as any);
   };
 
@@ -104,9 +105,19 @@ function OrdersPage({ socket }: any) {
                 </div>
                 <button
                   className="bg-green-500 text-white py-1 px-2 rounded mt-2 hover:bg-green-600 focus:outline-none"
-                  onClick={() => handleConfirmOrder(order.order_id)}
+                  onClick={() => {
+                    selectedStatus == 1
+                      ? handleConfirmOrder(
+                          order.order_id,
+                          ORDER_STATUS_CONFIRMED
+                        )
+                      : handleConfirmOrder(
+                          order.order_id,
+                          ORDER_STATUS_INPROCCESS
+                        );
+                  }}
                 >
-                  Confirmar Pedido
+                  {selectedStatus == 1 ? "Confirmar Pedido" : "Preparar Pedido"}
                 </button>
               </div>
             </div>
