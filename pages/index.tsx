@@ -19,7 +19,6 @@ const HomePage: React.FC = () => {
   }, [dispatch]);
 
   const handleCategoryClick = (category: Category) => {
-    console.log("CATEGORY", category);
     dispatch(setCurrentCategory(category));
   };
 
@@ -31,7 +30,7 @@ const HomePage: React.FC = () => {
             key={category.id}
             onClick={() => handleCategoryClick(category)}
             href={`/category/${category.id}`}
-            className="rounded-lg overflow-hidden hover:shadow-lg transition duration-300 transform hover:-translate-y-1 cursor-pointer"
+            className="rounded-lg overflow-hidden hover:shadow-lg transition duration-300 transform hover:-translate-y-1 cursor-pointer relative group"
           >
             <div className="relative">
               <Image
@@ -39,13 +38,14 @@ const HomePage: React.FC = () => {
                 alt={category.name}
                 width={144}
                 height={160}
-                className="w-full h-40 object-cover"
+                className="w-full h-40 object-cover transition-transform group-hover:scale-105"
                 priority
               />
             </div>
-            <div className="p-4 bg-gray-100">
-              <h2 className="text-lg font-semibold mb-2">{category.name}</h2>
-              {/* <p className="text-gray-600">{category.description}</p> */}
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-center">
+              <h1 className=" font-bold text-2xl group-hover:text-3xl">
+                {category.name}
+              </h1>
             </div>
           </Link>
         ))}
