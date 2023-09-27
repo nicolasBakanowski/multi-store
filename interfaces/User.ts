@@ -7,6 +7,7 @@ export interface UserState {
   email: string | null;
   role: string | null;
   token: string | null;
+  phone: string | null;
 }
 
 export const initialState: UserState = {
@@ -14,6 +15,7 @@ export const initialState: UserState = {
   email: null,
   role: null,
   token: null,
+  phone: null,
 };
 export interface UserRegisterData {
   name: string;

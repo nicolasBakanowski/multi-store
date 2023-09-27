@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 interface DeliveryFormProps {
   formData: {
     name: string;
@@ -40,32 +39,48 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
     <div className="bg-white p-6 rounded-md shadow-md mt-4">
       <h2 className="text-lg font-semibold mb-4">Método de Entrega</h2>
       <div className="flex items-center mb-4">
-        <input
-          type="radio"
-          id="pickup"
-          name="deliveryMethod"
-          value="pickup"
-          checked={deliveryMethod === "pickup"}
-          onChange={handleDeliveryMethodChange}
-          className="mr-2"
-        />
-        <label htmlFor="pickup" className="text-sm font-medium text-gray-700">
-          Retirar en el Local
-        </label>
-      </div>
-      <div className="flex items-center">
-        <input
-          type="radio"
-          id="delivery"
-          name="deliveryMethod"
-          value="delivery"
-          checked={deliveryMethod === "delivery"}
-          onChange={handleDeliveryMethodChange}
-          className="mr-2"
-        />
-        <label htmlFor="delivery" className="text-sm font-medium text-gray-700">
-          Envío a Domicilio
-        </label>
+        <div className="mr-4">
+          <input
+            type="radio"
+            id="pickup"
+            name="deliveryMethod"
+            value="pickup"
+            checked={deliveryMethod === "pickup"}
+            onChange={handleDeliveryMethodChange}
+            className="hidden"
+          />
+          <label
+            htmlFor="pickup"
+            className={`cursor-pointer text-sm font-medium ${
+              deliveryMethod === "pickup"
+                ? "bg-green-500 text-white rounded-full px-4 py-2"
+                : "bg-gray-300 text-gray-700 rounded-full px-4 py-2"
+            }`}
+          >
+            Retirar en el Local
+          </label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="delivery"
+            name="deliveryMethod"
+            value="delivery"
+            checked={deliveryMethod === "delivery"}
+            onChange={handleDeliveryMethodChange}
+            className="hidden"
+          />
+          <label
+            htmlFor="delivery"
+            className={`cursor-pointer text-sm font-medium ${
+              deliveryMethod === "delivery"
+                ? "bg-green-500 text-white rounded-full px-4 py-2"
+                : "bg-gray-300 text-gray-700 rounded-full px-4 py-2"
+            }`}
+          >
+            Envío a Domicilio
+          </label>
+        </div>
       </div>
 
       {/* Mostrar campos adicionales según el método de entrega */}

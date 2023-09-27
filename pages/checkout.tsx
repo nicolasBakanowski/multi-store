@@ -44,6 +44,11 @@ const CheckoutPage = () => {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-2xl font-semibold mb-4">Confirmar Pedido</h1>
+        <DeliveryForm
+          onDeliveryMethodChange={handleDeliveryMethodChange}
+          formData={formData}
+          setFormData={setFormData}
+        />
         <div className="bg-white p-6 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-4">Detalles del Pedido</h2>
           <table className="w-full">
@@ -73,15 +78,32 @@ const CheckoutPage = () => {
           </p>
         </div>
       </div>
-      <DeliveryForm
-        onDeliveryMethodChange={handleDeliveryMethodChange}
-        formData={formData}
-        setFormData={setFormData}
-      />
       <div className="fixed bottom-0 left-0 right-0 bg-gray-100 py-4 px-4">
+        {deliveryMethod === "delivery" && (
+          <p className="text-sm text-red-600 mt-2">
+            * Por favor, ingrese su número de teléfono y dirección para el envío
+            a domicilio.
+          </p>
+        )}
+        {deliveryMethod === "pickup" && (
+          <p className="text-sm text-red-600 mt-2">
+            * Por favor, ingrese su nombre para el retiro en el local.
+          </p>
+        )}
         <button
           onClick={handleAddContact}
-          className="bg-green-500 text-white px-4 py-2 rounded-md w-full"
+          className={`${
+            (deliveryMethod === "delivery" &&
+              (!formData.phone || !formData.address)) ||
+            (deliveryMethod === "pickup" && !formData.name)
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-green-500 hover:bg-green-600"
+          } text-white px-4 py-2 rounded-md mt-4 w-full`}
+          disabled={
+            (deliveryMethod === "delivery" &&
+              (!formData.phone || !formData.address)) ||
+            (deliveryMethod === "pickup" && !formData.name)
+          }
         >
           Realizar Pedido
         </button>
