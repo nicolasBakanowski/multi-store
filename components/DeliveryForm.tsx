@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 interface DeliveryFormProps {
   formData: {
     name: string;
@@ -103,57 +104,45 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
       {deliveryMethod === "delivery" && (
         <div>
           <div className="mb-4">
-            <label htmlFor="name" className="text-sm font-medium text-gray-700">
-              Nombre:
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="phoneNumber"
-              className="text-sm font-medium text-gray-700"
-            >
-              Celular:
-            </label>
-            <input
-              type="tel"
-              id="phoneNumber"
-              name="phoneNumber"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="address"
-              className="text-sm font-medium text-gray-700"
-            >
-              Dirección:
-            </label>
-            <textarea
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={(e) =>
-                setFormData({ ...formData, address: e.target.value })
-              }
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="mb-4">
+                <label
+                  htmlFor="phoneNumber"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Teléfono:
+                </label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="address"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Dirección:
+                </label>
+                <input
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={(e) =>
+                    setFormData({ ...formData, address: e.target.value })
+                  }
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                  required
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

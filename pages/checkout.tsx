@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { createOrderAction } from "@/redux/actions/productAction";
 import DeliveryForm from "../components/DeliveryForm";
-import { clearCart } from "../redux/slices/cartSlice"; // Asegúrate de ajustar la ruta correcta
+import { clearCart } from "../redux/slices/cartSlice";
 import { generateWhatsAppMessage } from "@/utils/whatsapp";
 
 const CheckoutPage = () => {
