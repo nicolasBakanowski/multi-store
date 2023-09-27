@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
+import { useRouter } from "next/router";
 import { fetchCategories } from "@/redux/actions/categoryAction";
 import { addProduct } from "@/redux/actions/productAction";
 
@@ -18,13 +19,16 @@ const AddProductForm: React.FC = () => {
   const categories = useSelector(
     (state: RootState) => state.category.categories
   );
+  const router = useRouter();
   const userToken = useSelector((state: RootState) => state.user.token);
 
-  useEffect(() => {
+  useEffect(() => {    
     if (!categories) {
       dispatch(fetchCategories());
     }
   }, [dispatch, categories]);
+
+
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -39,7 +43,7 @@ const AddProductForm: React.FC = () => {
     e.preventDefault();
 
     if (!userToken) {
-      console.error("No se pudo agregar el producto: token no disponible");
+      console.error("No se pudo agregar el producto debe volver a autenticarse");
       return;
     }
     if (selectedCategory === 0) {
