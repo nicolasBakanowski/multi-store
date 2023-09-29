@@ -12,7 +12,13 @@ const orderSlice = createSlice({
       state.push(...newOrders);
     },
     addOrder: (state, action: PayloadAction<any>) => {
-      state.push(action.payload[0]);
+      const newOrder = action.payload[0];
+      const existingOrder = state.find(
+        (order) => order.order_id === newOrder.order_id
+      );
+      if (!existingOrder) {
+        state.push(newOrder);
+      }
     },
     confirmOrder: (state, action) => {
       const { id, statusId } = action.payload;
