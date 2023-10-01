@@ -54,19 +54,22 @@ function OrdersPage({ socket }: any) {
 
   return (
     <div className="container mx-auto mt-4">
-      <div className="mb-4 space-x-4 justify-center md:space-x-20 md:flex md:justify-center">
-        {status.map((item: any) => (
-          <button
-            key={item.id}
-            className={`rounded-full px-4 py-2 text-white ${
-              selectedStatus === item.id ? "bg-green-500" : "bg-gray-500"
-            }`}
-            onClick={() => setSelectedStatus(item.id)}
-          >
-            {item.name}
-          </button>
-        ))}
+      <div className="container">
+        <div className="mb-4 space-x-4 justify-center md:space-x-20 md:flex md:justify-center">
+          {status.map((item: any) => (
+            <button
+              key={item.id}
+              className={`rounded-full px-3 py-1 text-white ${
+                selectedStatus === item.id ? "bg-green-500" : "bg-gray-500"
+              }`}
+              onClick={() => setSelectedStatus(item.id)}
+            >
+              {item.name}
+            </button>
+          ))}
+        </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredOrders.map((order, index) => (
           <div
