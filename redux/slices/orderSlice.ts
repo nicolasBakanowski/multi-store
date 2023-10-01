@@ -20,7 +20,7 @@ const orderSlice = createSlice({
         state.push(newOrder);
       }
     },
-    confirmOrder: (state, action) => {
+    nextOrderStatus: (state, action) => {
       const { id, statusId } = action.payload;
       state.forEach((order) => {
         if (order.order_id === id) {
@@ -31,5 +31,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const { setNewOrder, addOrder, confirmOrder } = orderSlice.actions;
+export const { setNewOrder, addOrder, nextOrderStatus } = orderSlice.actions;
 export default orderSlice.reducer;

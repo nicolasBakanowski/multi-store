@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addOrder, confirmOrder } from "../redux/slices/orderSlice";
+import { addOrder, nextOrderStatus } from "../redux/slices/orderSlice";
 import { RootState } from "@/redux/store";
 import { fetchOrders } from "../redux/actions/orderAction";
 import { fetchStatus } from "@/redux/actions/statusAction";
@@ -22,8 +22,12 @@ function OrdersPage({ socket }: any) {
       const newOrder = formatOrderData(newOrderData.productsInOrder);
       dispatch(addOrder(newOrder));
     });
+    socket.on("orderStatusChanged", (orderupdated: any) => {
+      dispatch(nextOrderStatus(orderupdated) as any);
+    });
     return () => {
       socket.off("newOrder");
+      socket.off("orderStatusChanged");
     };
   }, [socket]);
 
@@ -31,12 +35,12 @@ function OrdersPage({ socket }: any) {
   const status = useSelector((state: RootState) => state.status);
   const handleConfirmOrder = async (orderId: number, OrderStatus: number) => {
     const order = await changeStatusOrder(orderId, OrderStatus);
-    dispatch(confirmOrder(order) as any);
+    dispatch(nextOrderStatus(order) as any);
   };
 
   const handleRejectOrder = async (orderId: number) => {
     const order = await changeStatusOrder(orderId, ORDER_STATUS_REJECTED);
-    dispatch(confirmOrder(order) as any);
+    dispatch(nextOrderStatus(order) as any);
   };
 
   const calculateTotal = (products: any[]) => {
