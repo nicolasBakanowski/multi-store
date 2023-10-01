@@ -29,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     setTimeout(() => {
       setShowAnimation(false);
-    }, 2000);
+    }, 1500);
   };
 
   const handleIncrementQuantity = () => {
@@ -84,16 +84,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               +
             </button>
           </div>
+          {showAnimation && (
+            <div className="animate-bounce bg-green-500 text-white py-2 px-3 rounded absolute top-0 right-0">
+              tenes {totalQuantity} {product.name} en el carrito
+            </div>
+          )}
           <button
             onClick={handleAddToCart}
             className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 focus:outline-none"
           >
             <Image src={addToCartIcon} alt="Add to Cart" className="h-5 w-5" />
-            {showAnimation && (
-              <div className="animate-bounce bg-green-500 text-white py-2 px-3 rounded absolute top-0 right-0">
-                tenes {totalQuantity} {product.name} en el carrito
-              </div>
-            )}
           </button>
         </div>
         <Link href={`/product/${product.id}`}>
