@@ -18,12 +18,15 @@ const cartSlice = createSlice({
     removeItem: (state, action: PayloadAction<number>) => {
       return state.filter((item) => item.id !== action.payload);
     },
-    discountProduct: (state, action: PayloadAction<number>) => {
-      const productId = action.payload;
-      const existingItem = state.find((item) => item.id === productId);
+    discountProduct: (
+      state,
+      action: PayloadAction<{ id: number; quantity: number }>
+    ) => {
+      const { id, quantity } = action.payload;
+      const existingItem = state.find((item) => item.id === id);
 
-      if (existingItem && existingItem.quantity > 0) {
-        existingItem.quantity -= 1;
+      if (existingItem && existingItem.quantity >= quantity) {
+        existingItem.quantity -= quantity;
       }
     },
     clearCart: (state) => {
