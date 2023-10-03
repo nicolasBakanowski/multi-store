@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import BackIcon from "../public/back.svg";
-import AdminIcon from "../public/login.svg";
 import CartLink from "./CartLink";
+import { MdClose } from "react-icons/md"; // Importa el icono de cierre
 
 const Navbar = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
@@ -47,26 +47,11 @@ const Navbar = () => {
         <Link href="/">Market</Link>
       </div>
       <div className="flex items-center space-x-4">
-        {userRole === 1 && (
-          <Link href="/admin" className="block md:inline">
-            <button className="text-white focus:outline-none">
-              <div className="flex items-center space-x-1">
-                <Image
-                  src={AdminIcon}
-                  alt="Admin Panel Icon"
-                  className="h-6 w-6"
-                />
-                <span>Admin Panel</span>
-              </div>
-            </button>
-          </Link>
-        )}
         {userName ? (
           <div className="relative inline-block text-left z-50">
             <button
               className="text-white focus:outline-none"
               onClick={toggleMenu}
-              onBlur={() => setMenuOpen(false)}
             >
               <div className="flex items-center space-x-1" onClick={openMenu}>
                 <span>{userName}</span>
@@ -78,18 +63,23 @@ const Navbar = () => {
                 menuOpen ? "translate-x-0" : "translate-x-full"
               } fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-4 transform transition-transform ease-in-out duration-300 z-50`}
             >
-              <a
-                href="#"
-                className="block py-2 text-gray-700 hover:bg-gray-100"
+              {/* Botón de cierre */}
+              <button
+                className="absolute top-2 right-2 text-gray-700"
+                onClick={toggleMenu}
               >
-                Configuraciones
-              </a>
-              <a
-                href="#"
-                className="block py-2 text-gray-700 hover:bg-gray-100"
-              >
-                Cerrar sesión
-              </a>
+                <MdClose size={24} />
+              </button>
+              {userRole === 1 && (
+                <button
+                  className="block py-2 text-gray-700 hover:bg-gray-100"
+                  onClick={() => {
+                    router.push("/admin");
+                  }}
+                >
+                  Admin Panel
+                </button>
+              )}
             </div>
           </div>
         ) : (
@@ -105,11 +95,12 @@ const Navbar = () => {
     </nav>
   );
 };
+
 const NavbarWithCartButton = () => {
   const cartItems = useSelector((state: RootState) => state.cart.length);
   const router = useRouter();
   const isCartPage = router.pathname === "/cart";
-  const distination = isCartPage ? "/checkout" : "/cart";
+  const destination = isCartPage ? "/checkout" : "/cart";
   return (
     <div>
       <Navbar />
@@ -117,7 +108,7 @@ const NavbarWithCartButton = () => {
         <CartLink
           itemCount={cartItems}
           isCartPage={isCartPage}
-          destination={distination}
+          destination={destination}
         />
       )}
     </div>
