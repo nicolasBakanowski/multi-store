@@ -11,7 +11,6 @@ import CartLink from "./CartLink";
 const Navbar = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
   const userName = useSelector((state: RootState) => state.user.user?.name);
-  const cartItems = useSelector((state: RootState) => state.cart.length);
 
   const [menuOpen, setMenuOpen] = useState(false); // Estado para controlar el menú lateral
   const router = useRouter();
