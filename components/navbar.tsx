@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import BackIcon from "../public/back.svg";
 import CartLink from "./CartLink";
-import { MdClose } from "react-icons/md"; // Importa el icono de cierre
+import { MdClose, MdWork, MdList, MdExitToApp, MdIron } from "react-icons/md"; // Importa los iconos de react-icons
 
 const Navbar = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
@@ -70,16 +70,81 @@ const Navbar = () => {
               >
                 <MdClose size={24} />
               </button>
-              {userRole === 1 && (
-                <button
-                  className="block py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => {
-                    router.push("/admin");
-                  }}
-                >
-                  Admin Panel
-                </button>
-              )}
+              {/* Opciones del menú */}
+              <ul>
+                {/* Configuración */}
+                <li className="mb-2">
+                  <button
+                    className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
+                    onClick={() => {
+                      // Agrega la lógica para la página de configuración
+                      router.push("/configuracion");
+                      toggleMenu();
+                    }}
+                  >
+                    {/* Agrega el ícono correspondiente */}
+                    <MdIron size={20} />{" "}
+                    {/* Reemplaza MdIcon con el ícono que desees */}
+                    <span>Configuración</span>
+                  </button>
+                </li>
+                {/* Dónde nos encontramos */}
+                <li className="mb-2">
+                  <button
+                    className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
+                    onClick={() => {
+                      router.push("/donde-nos-encontramos");
+                      toggleMenu();
+                    }}
+                  >
+                    <MdIron size={20} /> <span>Dónde nos encontramos</span>
+                  </button>
+                </li>
+
+                {userRole === 1 && (
+                  <li className="mb-2  py-2 border-t border-gray-300 my-5">
+                    <button
+                      className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
+                      onClick={() => {
+                        router.push("/admin");
+                        toggleMenu();
+                      }}
+                    >
+                      <MdWork size={20} />
+                      <span>Admin Panel</span>
+                    </button>
+                  </li>
+                )}
+                {userRole === 1 && (
+                  <li className="mb-2">
+                    <button
+                      className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2  rounded-lg"
+                      onClick={() => {
+                        router.push("/orders");
+                        toggleMenu();
+                      }}
+                    >
+                      <MdList size={20} />
+                      <span>Orders</span>
+                    </button>
+                  </li>
+                )}
+                {/* Separador */}
+                <div className="border-t border-gray-300 my-4"></div>
+
+                {/* Cerrar Sesión */}
+                <li>
+                  <button
+                    className="flex items-center space-x-2 text-red-600 hover:bg-gray-100 py-2 px-3 rounded-lg"
+                    onClick={() => {
+                      // Lógica para cerrar sesión
+                    }}
+                  >
+                    <MdExitToApp size={20} />
+                    <span>Cerrar Sesión</span>
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
         ) : (
