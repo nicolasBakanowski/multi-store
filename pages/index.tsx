@@ -24,7 +24,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <main className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => (
           <Link
             key={category.id}
@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
               />
             </div>
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-center">
-              <h1 className=" font-bold text-2xl group-hover:text-3xl">
+              <h1 className="font-bold text-2xl group-hover:text-3xl">
                 {category.name}
               </h1>
             </div>
