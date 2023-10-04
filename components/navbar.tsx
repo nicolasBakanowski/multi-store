@@ -6,13 +6,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import BackIcon from "../public/back.svg";
 import CartLink from "./CartLink";
-import { MdClose, MdWork, MdList, MdExitToApp, MdIron } from "react-icons/md"; // Importa los iconos de react-icons
+import { MdClose, MdWork, MdList, MdExitToApp, MdIron } from "react-icons/md";
 
 const Navbar = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
   const userName = useSelector((state: RootState) => state.user.user?.name);
 
-  const [menuOpen, setMenuOpen] = useState(false); // Estado para controlar el menú lateral
+  const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
   const isIndexPage = router.pathname === "/";
 
