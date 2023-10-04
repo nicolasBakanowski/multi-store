@@ -6,7 +6,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import BackIcon from "../public/back.svg";
 import CartLink from "./CartLink";
-import { MdClose, MdWork, MdList, MdExitToApp, MdIron } from "react-icons/md";
+import {
+  MdClose,
+  MdWork,
+  MdList,
+  MdExitToApp,
+  MdIron,
+  MdMenu,
+  MdShoppingCart,
+} from "react-icons/md";
 
 const Navbar = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
@@ -15,6 +23,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
   const isIndexPage = router.pathname === "/";
+  const cartItems = useSelector((state: RootState) => state.cart.length);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -46,7 +55,13 @@ const Navbar = () => {
       <div className="text-2xl font-bold flex w-1/3 justify-center">
         <Link href="/">Market</Link>
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-5">
+        <Link href="/cart">
+          <div className="text-2xl font-bold flex items-center space-x-1">
+            <MdShoppingCart size={25} />
+            <span className="text-xl">{cartItems}</span>
+          </div>
+        </Link>
         {userName ? (
           <div className="relative inline-block text-left z-50">
             <button
@@ -54,7 +69,7 @@ const Navbar = () => {
               onClick={toggleMenu}
             >
               <div className="flex items-center space-x-1" onClick={openMenu}>
-                <span>{userName}</span>
+                <MdMenu size={40} className="pt-2" />
               </div>
             </button>
             {/* Menú lateral */}
@@ -64,12 +79,13 @@ const Navbar = () => {
               } fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-4 transform transition-transform ease-in-out duration-300 z-50`}
             >
               {/* Botón de cierre */}
-              <button
-                className="absolute top-2 right-2 text-gray-700"
-                onClick={toggleMenu}
-              >
-                <MdClose size={24} />
-              </button>
+              <div className="flex items-center pb-6">
+                <span className="text-gray-950">{userName}</span>
+                <button className="text-gray-700 pl-10" onClick={toggleMenu}>
+                  <MdClose size={24} />
+                </button>
+              </div>
+
               {/* Opciones del menú */}
               <ul>
                 {/* Configuración */}
