@@ -8,7 +8,7 @@ import addToCartIcon from "../public/addcart.svg";
 import details from "../public/details.svg";
 import { addItem } from "@/redux/slices/cartSlice";
 import { CartItem } from "@/interfaces/Cart";
-import { MdEdit } from "react-icons/md"; // Importa el ícono de edición
+import { MdEdit } from "react-icons/md";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
   const dispatch = useDispatch();
