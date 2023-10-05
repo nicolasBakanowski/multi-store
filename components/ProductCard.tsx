@@ -8,7 +8,9 @@ import addToCartIcon from "../public/addcart.svg";
 import details from "../public/details.svg";
 import { addItem } from "@/redux/slices/cartSlice";
 import { CartItem } from "@/interfaces/Cart";
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+import { MdEdit } from "react-icons/md"; // Importa el ícono de edición
+
+const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [totalQuantity, setTotalQuantity] = useState(0);
@@ -20,13 +22,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const handleAddToCart = () => {
     const cartItem: CartItem = { ...product, quantity };
-
     dispatch(addItem(cartItem));
-
     setTotalQuantity(totalQuantity + quantity);
-
     setShowAnimation(true);
-
     setTimeout(() => {
       setShowAnimation(false);
     }, 1500);
@@ -94,6 +92,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 focus:outline-none"
           >
             <Image src={addToCartIcon} alt="Add to Cart" className="h-5 w-5" />
+          </button>
+
+          {/* Nuevo botón de edición */}
+          <button
+            onClick={() => onEditClick()}
+            className="bg-yellow-500 text-white py-2 px-3 rounded hover:bg-yellow-600 focus:outline-none ml-2"
+          >
+            <MdEdit className="text-lg" />
           </button>
         </div>
         <Link href={`/product/${product.id}`}>

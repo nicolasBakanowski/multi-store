@@ -19,4 +19,5 @@ export const initialState: ProductState = {
 
 export interface ProductCardProps {
   product: Product;
+  onEditClick: any; // Agrega esta prop para el modal
 }
