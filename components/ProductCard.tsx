@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { ProductCardProps, Product } from "../interfaces/Products";
 import { setCurrentProduct } from "@/redux/slices/productSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
-import addToCartIcon from "../public/addcart.svg";
-import details from "../public/details.svg";
 import { addItem } from "@/redux/slices/cartSlice";
 import { CartItem } from "@/interfaces/Cart";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdAddShoppingCart } from "react-icons/md";
+import { RootState } from "@/redux/store";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [showAnimation, setShowAnimation] = useState(false);
+
+  // Obtener el rolId del usuario desde el estado
+  const userRole = useSelector((state: RootState) => state.user.user?.roleId);
 
   const handleProductClick = (product: Product) => {
     dispatch(setCurrentProduct(product));
@@ -84,32 +86,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
           </div>
           {showAnimation && (
             <div className="animate-bounce bg-green-500 text-white py-2 px-3 rounded absolute top-0 right-0">
-              tenes {totalQuantity} {product.name} en el carrito
+              tienes {totalQuantity} {product.name} en el carrito
             </div>
           )}
           <button
             onClick={handleAddToCart}
-            className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 focus:outline-none"
+            className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 focus:outline-none  "
           >
-            <Image src={addToCartIcon} alt="Add to Cart" className="h-5 w-5" />
+            <MdAddShoppingCart className="text-lg" />
           </button>
 
-          {/* Nuevo botón de edición */}
-          <button
-            onClick={() => onEditClick()}
-            className="bg-yellow-500 text-white py-2 px-3 rounded hover:bg-yellow-600 focus:outline-none ml-2"
-          >
-            <MdEdit className="text-lg" />
-          </button>
+          {/* Mostrar el botón de edición si el usuario tiene el rolId deseado */}
+          {userRole === 1 && (
+            <button
+              onClick={() => onEditClick()}
+              className="bg-yellow-500 text-white py-2 px-3 rounded hover:bg-yellow-600 "
+            >
+              <MdEdit className="text-lg" />
+            </button>
+          )}
         </div>
         <Link href={`/product/${product.id}`}>
-          <div className="text-blue-500 mt-2 hover:underline focus:outline-none">
+          <div className="text-blue-500 mt-4 hover:underline focus:outline-none">
             Ver detalles
-            <Image
-              src={details}
-              alt="Details"
-              className="h-4 w-4 ml-1 inline-block"
-            />
           </div>
         </Link>
       </div>
