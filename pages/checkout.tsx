@@ -36,8 +36,8 @@ const CheckoutPage = () => {
         deliveryMethod
       ) as any
     );
-    //generateWhatsAppMessage(cartItems, totalAmount);
-    //dispatch(clearCart());
+    generateWhatsAppMessage(cartItems, totalAmount);
+    dispatch(clearCart());
   };
 
   return (

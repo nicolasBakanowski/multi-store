@@ -39,7 +39,9 @@ const LoginPage: React.FC = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Iniciar Sesión</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-center">
+          Iniciar Sesión
+        </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             className="p-2 mt-2 rounded-xl border focus:outline-none"
@@ -57,7 +59,6 @@ const LoginPage: React.FC = () => {
               name="password"
               value={password}
               onChange={handlePasswordChange}
-              maxLength={8}
               placeholder="Contraseña"
               required
             />
@@ -76,7 +77,9 @@ const LoginPage: React.FC = () => {
         <div className="mt-4 text-sm text-gray-600 text-center">
           ¿No tienes cuenta?{" "}
           <Link href="/register" passHref>
-            <div className="text-blue-500 hover:underline text-center">Regístrate aquí</div>
+            <div className="text-blue-500 hover:underline text-center">
+              Regístrate aquí
+            </div>
           </Link>
         </div>
       </div>
