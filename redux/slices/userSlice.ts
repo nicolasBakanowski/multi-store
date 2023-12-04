@@ -39,8 +39,14 @@ const userSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.error = null;
+    },
   },
 });
 
-export const { setUserInfoAndToken, setError, clearError } = userSlice.actions;
+export const { setUserInfoAndToken, setError, clearError, logout } =
+  userSlice.actions;
 export default userSlice.reducer;

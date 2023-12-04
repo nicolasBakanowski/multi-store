@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import BackIcon from "../public/back.svg";
 import CartLink from "./CartLink";
+import { logout } from "../redux/slices/userSlice"; // Asegúrate de ajustar la ruta correcta
+
 import {
   MdClose,
   MdWork,
@@ -17,6 +19,7 @@ import {
 } from "react-icons/md";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
   const userName = useSelector((state: RootState) => state.user.user?.name);
 
@@ -153,7 +156,7 @@ const Navbar = () => {
                   <button
                     className="flex items-center space-x-2 text-red-600 hover:bg-gray-100 py-2 px-3 rounded-lg"
                     onClick={() => {
-                      // Lógica para cerrar sesión
+                      dispatch(logout());
                     }}
                   >
                     <MdExitToApp size={20} />
