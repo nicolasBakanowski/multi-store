@@ -1,0 +1,8 @@
+{
+  "routes": [
+    {
+      "src": "/category/new",
+      "dest": "https://multistore.3utilities.com/category/new"
+    }
+  ]
+}
