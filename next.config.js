@@ -8,6 +8,8 @@ const nextConfig = {
       "18.218.116.205",
       "3.139.104.102",
       "https://multistore.3utilities.com",
+      "http://multistore.3utilities.com",
+      "multistore.3utilities.com",
       "localhost:30001",
     ], // Agrega el dominio "localhost" aquí
   },
