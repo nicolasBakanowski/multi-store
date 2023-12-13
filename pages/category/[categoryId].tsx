@@ -17,10 +17,18 @@ const CategoryPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Agrega el estado para el modal
 
   useEffect(() => {
-    if (currentCategory) {
-      dispatch(fetchProductsByCategory(currentCategory.id) as any);
+    const getCategoryId = (path: string) =>
+      parseInt(path.split("/").pop() || "", 10);
+    const { categoryId } = router.query;
+
+    const finalCategoryId = !isNaN(categoryId as any)
+      ? parseInt(categoryId as string, 10)
+      : getCategoryId(router.asPath);
+
+    if (!isNaN(finalCategoryId)) {
+      dispatch(fetchProductsByCategory(finalCategoryId) as any);
     }
-  }, [currentCategory, dispatch]);
+  }, [router.query.id, router.asPath, dispatch]);
   const handleEditClick = (product: Product) => {
     setIsEditModalOpen(true);
   };
