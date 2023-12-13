@@ -1,33 +1,51 @@
-import React, { useState } from "react";
+// AddCategoryForm.tsx
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory } from "@/redux/actions/categoryAction";
 import { RootState } from "@/redux/store";
+import { setNotification } from "../redux/slices/notificationSlice";
+import Notification from "../components/Notification";
 
-const AddCategoryForm = () => {
+const AddCategoryForm: React.FC = () => {
   const dispatch = useDispatch();
   const userToken = useSelector((state: RootState) => state.user.token);
   const [categoryName, setCategoryName] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Evita la recarga de la página
+  // Función para mostrar notificaciones
+  const showNotification = (message: string, type: "success" | "error") => {
+    dispatch(setNotification({ message, type }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!userToken) {
+      console.error("No se pudo agregar la categoría: token no disponible");
+      showNotification("Error: Token no disponible", "error");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", categoryName);
     if (selectedImage) {
       formData.append("categoryImage", selectedImage);
     }
+
     try {
-      if (userToken) {
-        dispatch(addCategory(formData, userToken) as any);
-      } else {
-        console.error("No se pudo agregar la categoría: token no disponible");
-      }
+      const newCategory = await dispatch(
+        addCategory(formData, userToken) as any
+      );
+      newCategory
+        ? showNotification("Categoría agregada con éxito", "success")
+        : showNotification("No se pudo crear la Categoria", "error");
     } catch (error) {
       console.error("Error al agregar la categoría:", error);
+      showNotification("Error al agregar la categoría", "error");
     }
   };
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);
     }
@@ -70,6 +88,7 @@ const AddCategoryForm = () => {
           Guardar Categoría
         </button>
       </form>
+      <Notification />
     </section>
   );
 };
