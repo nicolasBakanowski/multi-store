@@ -84,50 +84,75 @@ const AddProductForm: React.FC = () => {
   }
 
   return (
-    <section className="bg-gray-900 p-6 rounded-xl shadow-lg">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-white mb-2">Nombre del Producto:</label>
+    <section className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="sm:max-w-lg w-full p-10 bg-white rounded-xl">
+      <form onSubmit={handleSubmit} className="space-y-3">
+        {/* Product Name */}
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-500 tracking-wide">
+            Nombre del Producto:
+          </label>
           <input
             type="text"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            className="bg-white text-black p-2 rounded w-full"
+            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            placeholder="Nombre del Producto"
           />
         </div>
-        <div>
-          <label className="block text-white mb-2">Precio del Producto:</label>
+
+        {/* Product Description */}
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-500 tracking-wide">
+            Descripción del Producto:
+          </label>
+          <textarea
+            value={productDescription}
+            onChange={(e) => setProductDescription(e.target.value)}
+            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            placeholder="Descripción del Producto"
+          />
+        </div>
+
+        {/* Product Stock */}
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-500 tracking-wide">
+            Stock del Producto:
+          </label>
+          <input
+            type="text"
+            value={productStock}
+            onChange={(e) => setProductStock(e.target.value)}
+            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            placeholder="Stock del Producto"
+          />
+        </div>
+
+        {/* Product Price */}
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-500 tracking-wide">
+            Precio del Producto:
+          </label>
           <input
             type="text"
             value={productPrice}
             onChange={(e) => setProductPrice(e.target.value)}
-            className="bg-white text-black p-2 rounded w-full"
+            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            placeholder="Precio del Producto"
           />
         </div>
-        <div className="relative">
-          <label className="block text-white mb-2">Imagen del Producto:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="bg-white text-black p-2 rounded w-full"
-          />
-          {selectedImage && (
-            <p className="text-white text-sm relative top-full mt-2">
-              Archivo seleccionado: {selectedImage.name}
-            </p>
-          )}
-        </div>
-        <div>
-          <label className="block text-white mt-3 mb-2">
+
+        {/* Category Selection */}
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-500 tracking-wide">
             Categoría del Producto:
           </label>
           <select
-            value={selectedCategory || " "}
-            onChange={handleCategoryChange} // Update the event handler
-            className="bg-white text-black p-2 rounded w-full"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
           >
-            <option value="">Seleccionar Categoría</option>
+            <option value={0}>Seleccione una categoría</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
@@ -135,34 +160,39 @@ const AddProductForm: React.FC = () => {
             ))}
           </select>
         </div>
-        <div>
-          <label className="block text-white mb-2">
-            Descripción del Producto:
+
+        {/* Image Selection */}
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-500 tracking-wide">
+            Imagen del Producto:
           </label>
-          <textarea
-            value={productDescription}
-            onChange={(e) => setProductDescription(e.target.value)}
-            className="bg-white text-black p-2 rounded w-full"
-          />
-        </div>
-        <div>
-          <label className="block text-white mb-2">Cantidad en Stock:</label>
           <input
-            type="text"
-            value={productStock}
-            onChange={(e) => setProductStock(e.target.value)}
-            className="bg-white text-black p-2 rounded w-full"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
           />
+          {selectedImage && (
+            <p className="text-sm mt-2">
+              Archivo seleccionado: {selectedImage.name}
+            </p>
+          )}
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none"
+          className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
+                      font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
         >
           Guardar Producto
         </button>
       </form>
-    </section>
-  );
+    </div>
+  </section>
+);
 };
+
+
 
 export default AddProductForm;

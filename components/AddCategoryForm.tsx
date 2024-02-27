@@ -10,13 +10,14 @@ const AddCategoryForm = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Evita la recarga de la página
+    e.preventDefault();
 
     const formData = new FormData();
     formData.append("name", categoryName);
     if (selectedImage) {
       formData.append("categoryImage", selectedImage);
     }
+
     try {
       if (userToken) {
         dispatch(addCategory(formData, userToken) as any);
@@ -27,6 +28,7 @@ const AddCategoryForm = () => {
       console.error("Error al agregar la categoría:", error);
     }
   };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);
@@ -34,43 +36,47 @@ const AddCategoryForm = () => {
   };
 
   return (
-    <section className="bg-gray-900 p-6 rounded-xl shadow-lg">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-white mb-2">
-            Nombre de la Categoría:
-          </label>
-          <input
-            type="text"
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
-            className="bg-white text-black p-2 rounded w-full"
-          />
-        </div>
-        <div className="relative">
-          <label className="block text-white mb-2">
-            Imagen de la Categoría:
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="bg-white text-black p-2 rounded w-full"
-          />
-          {selectedImage && (
-            <p className="text-white text-sm relative top-full mt-2">
-              Archivo seleccionado: {selectedImage.name}
-            </p>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none"
-        >
-          Guardar Categoría
-        </button>
-      </form>
-    </section>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="sm:max-w-lg w-full p-10 bg-white rounded-xl">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Nombre de la Categoría:
+            </label>
+            <input
+              type="text"
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+              placeholder="Nombre de la Categoría"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Imagen de la Categoría:
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            />
+            {selectedImage && (
+              <p className="text-sm mt-2">
+                Archivo seleccionado: {selectedImage.name}
+              </p>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
+                        font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
+          >
+            Guardar Categoría
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
