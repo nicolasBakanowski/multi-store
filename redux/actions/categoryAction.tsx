@@ -20,7 +20,6 @@ export const addCategory =
           "Content-Type": "multipart/form-data",
         },
       };
-      console.log("categorydata, aaaaaa ", categoryData, config);
       const response = await axios.post("/category/new", categoryData, config);
       return true;
     } catch (error) {

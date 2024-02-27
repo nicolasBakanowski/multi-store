@@ -109,7 +109,7 @@ const RegisterPage: React.FC = () => {
           </button>
         </form>
       </div>
-      <Notification /> {/* Agrega el componente de notificación */}
+      <Notification />
     </section>
   );
 };
