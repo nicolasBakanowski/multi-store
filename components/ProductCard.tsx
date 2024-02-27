@@ -51,7 +51,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
             alt={product.name}
             width={190}
             height={140}
-            className="h-45 w-45 object-cover rounded-l-xl"
+            className="h-45 w-45 h-[165px] object-cover rounded-l-xl "
           />
         </button>
       </Link>
