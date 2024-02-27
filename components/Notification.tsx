@@ -5,26 +5,30 @@ import { clearNotification } from "../redux/slices/notificationSlice";
 
 const Notification = () => {
   const dispatch = useDispatch();
-  const error = useSelector((state: RootState) => state.notification.message
-);
+  const { message, type } = useSelector((state: RootState) => state.notification);
 
   useEffect(() => {
-    if (error) {
+    if (message) {
       const timer = setTimeout(() => {
         dispatch(clearNotification());
       }, 2500);
 
       return () => clearTimeout(timer);
     }
-  }, [dispatch, error]);
+  }, [dispatch, message]);
+
+  const notificationStyle = {
+    backgroundColor: type === "success" ? "green" : "red",
+  };
 
   return (
     <div
       className={`${
-        error ? "bg-red-500" : "hidden"
+        message ? "block" : "hidden"
       } fixed bottom-0 left-0 right-0 p-4 text-white text-center z-50`}
+      style={notificationStyle}
     >
-      {error}
+      {message}
     </div>
   );
 };

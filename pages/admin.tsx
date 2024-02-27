@@ -3,8 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import AddProductForm from "../components/AddProductForm";
 import AddCategoryForm from "@/components/AddCategoryForm";
-import createAxiosInstance from "../redux/axios.config";
-
+import Notification from "../components/Notification"
 const AdminPage = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
 
@@ -46,6 +45,7 @@ const AdminPage = () => {
       {selectedOption === "category" ? <AddCategoryForm /> : <AddProductForm />}
 
       </div>
+      <Notification/>
     </section>
   );
 };
