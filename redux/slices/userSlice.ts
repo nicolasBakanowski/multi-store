@@ -33,9 +33,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       state.error = null; // Reset error when successful
     },
-    setError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload;
-    },
+   
     clearError: (state) => {
       state.error = null;
     },
@@ -47,6 +45,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUserInfoAndToken, setError, clearError, logout } =
+export const { setUserInfoAndToken,  clearError, logout } =
   userSlice.actions;
 export default userSlice.reducer;

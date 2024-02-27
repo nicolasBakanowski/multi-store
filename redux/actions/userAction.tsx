@@ -1,18 +1,18 @@
 import { Dispatch } from "redux";
 import axios from "../axios.config";
 import { LoginData, UserRegisterData } from "../../interfaces/User";
-import { setUserInfoAndToken, setError, clearError } from "../slices/userSlice";
-
+import { setUserInfoAndToken} from "../slices/userSlice";
+import { setNotification, clearNotification}from"../slices/notificationSlice"
 export const loginAction =
   (loginData: LoginData) => async (dispatch: Dispatch) => {
     try {
       const response = await axios.post("/user/login", loginData);
       const { user, token } = response.data.token;
       dispatch(setUserInfoAndToken({ user, token }));
-      dispatch(clearError()); // Clear error on successful login
+      dispatch(clearNotification()); // Clear error on successful login
       return true;
     } catch (error) {
-      dispatch(setError("Login failed. Please check your credentials."));
+      dispatch(setNotification({ message: "Error en las credenciales", type: "error" }));
       return false;
     }
   };
@@ -23,7 +23,7 @@ export const registerAction =
       const response = await axios.post("/user/register", userData);
       return true;
     } catch (error) {
-      dispatch(setError("fallo en el registro"));
+      dispatch(setNotification({message: "Error en el registro", type: "error" }));
       return false;
     }
   };

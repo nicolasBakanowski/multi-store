@@ -6,6 +6,7 @@ import productReducer from "./slices/cartSlice";
 import useReducer from "./slices/userSlice";
 import orderReducer from "./slices/orderSlice";
 import statusReducer from "./slices/statusSlice";
+import notificationReducer from "./slices/notificationSlice";
 // Importa el slice de categorías
 // Importa y agrega otros reducers según sea necesario
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   product: productReducer,
   order: orderReducer,
   status: statusReducer, // Agrega el reducer de categorías aquí
+  notification:notificationReducer,
   // Agrega otros reducers aquí
 });
 

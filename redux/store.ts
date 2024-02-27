@@ -17,6 +17,7 @@ import productReducer from "./slices/productSlice";
 import userReducer from "./slices/userSlice";
 import orderReducer from "./slices/orderSlice";
 import statusReducer from "./slices/statusSlice";
+import notificationReducer from "./slices/notificationSlice";
 
 // Configura la persistencia para los reducers que deseas persistir
 const persistConfig = {
@@ -34,6 +35,7 @@ const persistedReducer = persistReducer(
     product: productReducer,
     order: orderReducer,
     status: statusReducer,
+    notification: notificationReducer,
     // Agrega otros reducers aquí
   })
 );

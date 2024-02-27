@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { clearError } from "../redux/slices/userSlice";
+import { clearNotification } from "../redux/slices/notificationSlice";
 
 const Notification = () => {
   const dispatch = useDispatch();
-  const error = useSelector((state: RootState) => state.user.error);
+  const error = useSelector((state: RootState) => state.notification.message
+);
 
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
-        dispatch(clearError());
-      }, 5000); // Hide the notification after 5 seconds
+        dispatch(clearNotification());
+      }, 2500);
 
       return () => clearTimeout(timer);
     }
