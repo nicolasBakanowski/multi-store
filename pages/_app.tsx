@@ -13,7 +13,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <PersistGate loading={null} persistor={persistor}>
         <GlobalStyles />
         <Navbar />
-        <div className="container mx-auto mt-10 p-4">
+        <div className="container mx-auto mt-4 p-4 ">
           <Component {...pageProps} socket={socket} />
         </div>
       </PersistGate>

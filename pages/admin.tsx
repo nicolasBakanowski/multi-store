@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import AddProductForm from "../components/AddProductForm";
 import AddCategoryForm from "@/components/AddCategoryForm";
+import createAxiosInstance from "../redux/axios.config";
 
 const AdminPage = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
@@ -18,14 +19,14 @@ const AdminPage = () => {
   }
 
   return (
-    <section className="flex flex-col items-center justify-center h-screen">
-      <div className="mb-4">
-        <button
+    <section className="flex flex-col items-center h-screen">
+      <div className="mb-2">
+      <button
           className={`${
             selectedOption === "category"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-gray-700"
-          } px-4 py-2 rounded-l focus:outline-none`}
+              ? "bg-green-500 text-white"
+              : "bg-white text-gray-700"
+          } px-4 py-2 rounded-l-full focus:outline-none`}
           onClick={() => handleOptionChange("category")}
         >
           Quiero cargar una categoría
@@ -33,15 +34,18 @@ const AdminPage = () => {
         <button
           className={`${
             selectedOption === "product"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-gray-700"
-          } px-4 py-2 rounded-r focus:outline-none`}
+              ? "bg-green-500 text-white"
+              : "bg-white text-gray-700"
+          } px-4 py-2 rounded-r-full focus:outline-none`}
           onClick={() => handleOptionChange("product")}
         >
           Quiero cargar un producto
         </button>
       </div>
+      <div>
       {selectedOption === "category" ? <AddCategoryForm /> : <AddProductForm />}
+
+      </div>
     </section>
   );
 };
