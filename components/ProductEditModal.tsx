@@ -57,12 +57,12 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center z-50 ${
-        isOpen ? "" : "hidden"
+      className={`fixed inset-0 flex items-center justify-center ${
+        isActive ? "z-50" : "hidden"
       }`}
     >
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="modal-container bg-white p-4 rounded shadow-lg z-50">
+      <div className={`modal-container bg-white p-4 rounded shadow-lg ${isActive ? "z-50 active-modal" : "z-0 inactive-modal"}`}>
         <div className="modal-header flex justify-between items-center">
           <h2 className="text-xl font-semibold">Editar Producto</h2>
           <button
@@ -134,30 +134,6 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
           >
             Guardar
           </button>
-          <div className="flex items-center ml-4">
-            <input
-              type="checkbox"
-              id="isActive"
-              className="hidden"
-              checked={isActive}
-              onChange={toggleActive}
-            />
-            <label
-              htmlFor="isActive"
-              className={`relative w-12 h-6 rounded-full ${
-                isActive ? "bg-green-600" : "bg-red-600"
-              } cursor-pointer transition duration-300`}
-            >
-              <span
-                className={`absolute w-6 h-6 rounded-full bg-white border-2 border-gray-300 transform transition-transform ${
-                  isActive ? "translate-x-6" : ""
-                }`}
-              ></span>
-            </label>
-            <label htmlFor="isActive" className="ml-2 max-w-max">
-              {isActive ? "Activado" : "Desactivado"}
-            </label>
-          </div>
         </div>
       </div>
     </div>

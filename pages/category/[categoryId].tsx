@@ -14,37 +14,42 @@ const CategoryPage = () => {
     (state: RootState) => state.category.currentCategory
   );
   const products = useSelector((state: RootState) => state.product.products);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Agrega el estado para el modal
+  const [editModalStates, setEditModalStates] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     if (currentCategory) {
       dispatch(fetchProductsByCategory(currentCategory.id) as any);
     }
   }, [currentCategory, dispatch]);
+
   const handleEditClick = (product: Product) => {
-    setIsEditModalOpen(true);
+    setEditModalStates((prevStates) => ({
+      ...prevStates,
+      [product.id]: true,
+    }));
   };
+
   const handlerOnSave = (formData: FormData) => {
     console.log("Guardar producto:", formData);
   };
+
   return (
     <div>
       <main className="container mx-auto mr-5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {products.map((product: Product) => (
-            <div className="items-center">
+            <div className="items-center" key={product.id}>
               <ProductCard
-                key={product.id}
                 product={product}
-                onEditClick={handleEditClick}
+                onEditClick={() => handleEditClick(product)}
               />
-              {isEditModalOpen && (
+              {editModalStates[product.id] && (
                 <ProductEditModal
-                  isOpen={isEditModalOpen}
-                  onClose={() => setIsEditModalOpen(false)}
+                  isOpen={editModalStates[product.id]}
+                  onClose={() => setEditModalStates((prevStates) => ({ ...prevStates, [product.id]: false }))}
                   product={product}
                   onSave={handlerOnSave}
-                  onHide={() => setIsEditModalOpen(false)}
+                  onHide={() => setEditModalStates((prevStates) => ({ ...prevStates, [product.id]: false }))}
                 />
               )}
             </div>
