@@ -106,8 +106,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
             </button>
           )}
         </div>
-        <Link href={`/product/${product.id}`}>
-          <div className="text-blue-500 mt-4 hover:underline focus:outline-none">
+        <Link href={`/product/${product.id}`}
+              onClick={() => handleProductClick(product)}
+>
+         <div className="text-blue-500 mt-4 hover:underline focus:outline-none">
             Ver detalles
           </div>
         </Link>
