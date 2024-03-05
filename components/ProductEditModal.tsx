@@ -1,18 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import { MdClose } from "react-icons/md";
-
-interface ProductEditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  product: {
-    name: string;
-    description: string;
-    stock: number;
-    price: number;
-  };
-  onSave: (formData: FormData) => void;
-  onHide: () => void;
-}
+import { ProductEditModalProps, ProductEdit } from "@/interfaces/Products";
 
 const ProductEditModal: React.FC<ProductEditModalProps> = ({
   isOpen,
@@ -21,7 +9,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
   onSave,
   onHide,
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProductEdit>({
     name: product.name,
     description: product.description,
     stock: product.stock,
@@ -50,7 +38,6 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
     formDataToSend.append("description", formData.description);
     formDataToSend.append("stock", formData.stock.toString());
     formDataToSend.append("price", formData.price.toString());
-
     onSave(formDataToSend);
     onClose();
   };
@@ -62,7 +49,11 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
       }`}
     >
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className={`modal-container bg-white p-4 rounded shadow-lg ${isActive ? "z-50 active-modal" : "z-0 inactive-modal"}`}>
+      <div
+        className={`modal-container bg-white p-4 rounded shadow-lg ${
+          isActive ? "z-50 active-modal" : "z-0 inactive-modal"
+        }`}
+      >
         <div className="modal-header flex justify-between items-center">
           <h2 className="text-xl font-semibold">Editar Producto</h2>
           <button

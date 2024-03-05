@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import ProductCard from "../../components/ProductCard";
-import { fetchProductsByCategory } from "@/redux/actions/productAction";
+import { fetchProductsByCategory, editProduct } from "@/redux/actions/productAction";
 import { Product } from "@/interfaces/Products";
 import ProductEditModal from "@/components/ProductEditModal";
-
+import Notification from "@/components/Notification";
 const CategoryPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -14,6 +14,8 @@ const CategoryPage = () => {
     (state: RootState) => state.category.currentCategory
   );
   const products = useSelector((state: RootState) => state.product.products);
+  const userToken = useSelector((state: RootState) => state.user.token);
+
   const [editModalStates, setEditModalStates] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
@@ -29,8 +31,8 @@ const CategoryPage = () => {
     }));
   };
 
-  const handlerOnSave = (formData: FormData) => {
-    console.log("Guardar producto:", formData);
+  const handlerOnSave = async(formData: FormData, idProduct:number) => {
+    userToken && dispatch(editProduct(idProduct,formData,userToken) as any)
   };
 
   return (
@@ -48,7 +50,7 @@ const CategoryPage = () => {
                   isOpen={editModalStates[product.id]}
                   onClose={() => setEditModalStates((prevStates) => ({ ...prevStates, [product.id]: false }))}
                   product={product}
-                  onSave={handlerOnSave}
+                  onSave={(formData) => handlerOnSave(formData, product.id)}
                   onHide={() => setEditModalStates((prevStates) => ({ ...prevStates, [product.id]: false }))}
                 />
               )}
@@ -56,6 +58,7 @@ const CategoryPage = () => {
           ))}
         </div>
       </main>
+      <Notification/>
     </div>
   );
 };

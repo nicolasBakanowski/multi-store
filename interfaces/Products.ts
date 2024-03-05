@@ -11,6 +11,25 @@ interface ProductState {
   products: Product[];
   currentProduct: Product | null;
 }
+export interface ProductEdit{
+  name: string;
+  description: string;
+  stock: number;
+  price: number;
+}
+
+export interface ProductEditModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  product: {
+    name: string;
+    description: string;
+    stock: number;
+    price: number;
+  };
+  onSave: (formData: FormData) => void;
+  onHide: () => void;
+}
 
 export const initialState: ProductState = {
   products: [],

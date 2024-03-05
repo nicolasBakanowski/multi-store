@@ -24,12 +24,29 @@ export const addProduct =
         },
       };
       const response = await axios.post("/product/new", productData, config);
-      dispatch(setNotification({message:"se EL PRODUCTO con exito", type:"success"}))
+      dispatch(setNotification({message:"El producto se agrego con exito", type:"success"}))
       return true;
     } catch (error) {
       dispatch(setNotification({message:"ERROR AL AGREGAR PRUDOCTO", type:"error"}))
     }
   };
+export const editProduct =
+  (idProduct:number,productData: FormData, token: string) => async (dispatch: Dispatch) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const response = await axios.put(`/product/edit/${idProduct}`, productData, config);
+      dispatch(setNotification({ message: "Producto editado con éxito", type: "success" }));
+      return true;
+    } catch (error) {
+      dispatch(setNotification({ message: "Error al editar el producto", type: "error" }));
+    }
+  };
+
 export const createOrderAction =
   (
     cartItems: CartItem[],
