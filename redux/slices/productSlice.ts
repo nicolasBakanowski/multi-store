@@ -13,14 +13,8 @@ const productSlice = createSlice({
     },
       editProductSuccess(state, action: PayloadAction<Product>) {
         const index = state.products.findIndex((product) => product.id === action.payload.id);
-        
-        if (index !== -1) {
-          state.products[index] = action.payload;
-        }
-  
-        if (state.currentProduct && state.currentProduct.id === action.payload.id) {
-          state.currentProduct = action.payload;
-        }
+        index !== -1 ? state.products[index] = action.payload : null;
+
       },
   },
 });
