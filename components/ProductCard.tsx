@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { addItem } from "@/redux/slices/cartSlice";
 import { CartItem } from "@/interfaces/Cart";
-import { MdEdit, MdAddShoppingCart } from "react-icons/md";
+import { MdEdit, MdAddShoppingCart,MdOutlineExpandMore} from "react-icons/md";
 import { RootState } from "@/redux/store";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
@@ -51,15 +51,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
             alt={product.name}
             width={190}
             height={140}
-            className="h-45 w-45 h-[165px] object-cover rounded-l-xl "
+            className="h-45 w-45 h-[195px] object-cover rounded-l-xl "
           />
         </button>
       </Link>
-      <div className="px-4 py-3 w-2/3">
+      <div className="px-3 py-2 w-2/3 relative">
         <h3 className="text-white text-lg font-semibold mb-1">
           {product.name}
         </h3>
-        <p className="text-gray-300 text-sm mb-2">
+        <p className="text-gray-300 text-sm mb-4">
           ${product.price.toFixed(2)}
         </p>
         <div className="flex items-center justify-between">
@@ -106,13 +106,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
             </button>
           )}
         </div>
+        <div className="py-3 absolute">
         <Link href={`/product/${product.id}`}
               onClick={() => handleProductClick(product)}
->
-         <div className="text-blue-500 mt-4 hover:underline focus:outline-none">
-            Ver detalles
-          </div>
+>         
+      <button
+        onClick={() => handleProductClick(product)}
+        className="flex items-center text-white rounded bg-gray-600 px-3 hover:bg-white hover:text-black focus:outline-none"
+        >
+          <span className="mr-2">Ver detalles</span>
+          <MdOutlineExpandMore />
+      </button> 
         </Link>
+        </div>
       </div>
     </div>
   );
