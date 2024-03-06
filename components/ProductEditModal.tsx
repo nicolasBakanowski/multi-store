@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { ProductEditModalProps, ProductEdit } from "@/interfaces/Products";
 
@@ -17,10 +17,14 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
   });
 
   const [isActive, setIsActive] = useState(true);
-
+  const [charCount, setCharCount] = useState(0);
+  
   const toggleActive = () => {
     setIsActive(!isActive);
   };
+  useEffect(() => {
+    setCharCount(formData.name.length);
+  }, [formData.name]);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -30,7 +34,11 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
       ...formData,
       [name]: value,
     });
+    if (name === 'name') {
+      setCharCount(value.length);
+    }
   };
+  
 
   const handleSaveClick = () => {
     const formDataToSend = new FormData();
@@ -74,7 +82,9 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
               name="name"
               value={formData.name}
               onChange={handleInputChange}
+              maxLength={40}
             />
+          <p className="text-sm text-gray-500">{`${charCount}/40 caracteres`}</p>
           </div>
 
           <div className="mb-4">

@@ -6,6 +6,7 @@ import { fetchCategories } from "@/redux/actions/categoryAction";
 import { addProduct } from "@/redux/actions/productAction";
 
 const AddProductForm: React.FC = () => {
+  const [charCount, setCharCount] = useState(0);
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productStock, setProductStock] = useState("");
@@ -37,7 +38,7 @@ const AddProductForm: React.FC = () => {
   };
 
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(parseInt(e.target.value, 10)); // Parse the selected value to an integer (ID)
+    setSelectedCategory(parseInt(e.target.value, 10));
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,7 +68,6 @@ const AddProductForm: React.FC = () => {
 
     try {
       await dispatch(addProduct(formData, userToken));
-      // Clear the form fields after successful submission
       setProductName("");
       setProductDescription("");
       setProductStock("");
@@ -95,11 +95,17 @@ const AddProductForm: React.FC = () => {
           <input
             type="text"
             value={productName}
-            onChange={(e) => setProductName(e.target.value)}
+            onChange={(e) => {
+              setProductName(e.target.value);
+              setCharCount(e.target.value.length);
+            }}
             className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
             placeholder="Nombre del Producto"
+            
+            maxLength={40}
           />
-        </div>
+          <p className="text-sm text-gray-500">{`${charCount}/40 caracteres`}</p>
+          </div>
 
         {/* Product Description */}
         <div className="space-y-2">
