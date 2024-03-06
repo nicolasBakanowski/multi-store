@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import axios from "../axios.config";
-import { setProducts } from "../slices/productSlice";
+import { editProductSuccess, setProducts } from "../slices/productSlice";
 import { CartItem } from "../../interfaces/Cart";
 import { setNotification } from "../slices/notificationSlice";
 
@@ -40,6 +40,7 @@ export const editProduct =
         },
       };
       const response = await axios.put(`/product/edit/${idProduct}`, productData, config);
+      dispatch(editProductSuccess(response.data))
       dispatch(setNotification({ message: "Producto editado con éxito", type: "success" }));
       return true;
     } catch (error) {
