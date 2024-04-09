@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { addItem } from "@/redux/slices/cartSlice";
 import { CartItem } from "@/interfaces/Cart";
-import { MdEdit, MdAddShoppingCart,MdOutlineExpandMore} from "react-icons/md";
+import { MdEdit, MdAddShoppingCart, MdOutlineExpandMore } from "react-icons/md";
 import { RootState } from "@/redux/store";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
@@ -50,20 +50,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
             src={product.imageUrl}
             alt={product.name}
             width={190}
-            height={140}
+            height={130}
             className="h-45 w-45 h-[195px] object-cover rounded-l-xl "
           />
         </button>
       </Link>
-      <div className="px-3 py-2 w-2/3 relative">
-        <h3 className="text-white text-lg font-semibold mb-1">
+      <div className="px-3 py-2 w-4/3 relative bottom-0">
+        <h3 className="text-white text-lg font-semibold mb-1 ">
           {product.name}
         </h3>
         <p className="text-gray-300 text-sm mb-4">
           ${product.price.toFixed(2)}
         </p>
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-0.5">
             <button
               onClick={handleDecrementQuantity}
               className="bg-gray-300 text-black py-1 px-2 rounded"
@@ -74,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
               type="number"
               min={1}
               value={quantity}
-              onChange={() => {}}
+              onChange={() => { }}
               className="w-12 text-black p-2 text-center"
             />
             <button
@@ -96,7 +96,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
             <MdAddShoppingCart className="text-lg" />
           </button>
 
-          {/* Mostrar el botón de edición si el usuario tiene el rolId deseado */}
           {userRole === 1 && (
             <button
               onClick={() => onEditClick()}
@@ -106,18 +105,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
             </button>
           )}
         </div>
-        <div className="py-3 absolute">
-        <Link href={`/product/${product.id}`}
+        <div className="py-3 absolute bottom-0">
+          <Link href={`/product/${product.id}`}
+            onClick={() => handleProductClick(product)}
+          >
+            <button
               onClick={() => handleProductClick(product)}
->         
-      <button
-        onClick={() => handleProductClick(product)}
-        className="flex items-center text-white rounded bg-gray-600 px-3 hover:bg-white hover:text-black focus:outline-none"
-        >
-          <span className="mr-2">Ver detalles</span>
-          <MdOutlineExpandMore />
-      </button> 
-        </Link>
+              className="flex items-center text-white rounded bg-gray-600 px-3 hover:bg-white hover:text-black focus:outline-none"
+            >
+              <span className="mr-2">Ver detalles</span>
+              <MdOutlineExpandMore />
+            </button>
+          </Link>
         </div>
       </div>
     </div>
