@@ -77,6 +77,5 @@ export const createOrderAction =
         userInfo: { name, phone, address },
         deliveryMethod,
       });
-      console.log("que onda con esto", response.data);
       return true;
     };
