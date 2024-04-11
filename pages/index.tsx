@@ -7,12 +7,14 @@ import Link from "next/link";
 import { setCurrentCategory } from "@/redux/slices/categorySlice";
 import { Category } from "@/interfaces/Category";
 import Image from "next/image";
+import Spinner from "@/components/Spinner";
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
   const categories = useSelector(
     (state: RootState) => state.category.categories
   );
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading)
 
   useEffect(() => {
     dispatch(fetchCategories() as any);
@@ -21,6 +23,9 @@ const HomePage: React.FC = () => {
   const handleCategoryClick = (category: Category) => {
     dispatch(setCurrentCategory(category));
   };
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div>
