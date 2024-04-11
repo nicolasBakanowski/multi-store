@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import axios from "../axios.config";
 import { setCategories } from "../slices/categorySlice";
 import { setNotification } from "../slices/notificationSlice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchCategories = () => async (dispatch: Dispatch) => {
   try {
@@ -12,19 +13,23 @@ export const fetchCategories = () => async (dispatch: Dispatch) => {
   }
 };
 
-export const addCategory =
-  (categoryData: FormData, token: string) => async (dispatch: Dispatch) => {
+export const addCategory = createAsyncThunk(
+  'category/addCategory',
+  async (params: { categoryData: FormData; userToken: string }, { rejectWithValue, dispatch }) => {
     try {
+      const { categoryData, userToken } = params;
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${userToken}`,
           "Content-Type": "multipart/form-data",
         },
       };
       const response = await axios.post("/category/new", categoryData, config);
-      dispatch(setNotification({message:"se agrego con exito", type:"success"}))
-      return true;
+      dispatch(setNotification({ message: "Se agregó con éxito", type: "success" }));
+      return response.data;
     } catch (error) {
-      dispatch(setNotification({message:"Error al agregar", type:"error"}))
+      dispatch(setNotification({ message: "Error al agregar", type: "error" }));
+      return
     }
-  };
+  }
+);

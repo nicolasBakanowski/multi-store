@@ -18,7 +18,8 @@ import userReducer from "./slices/userSlice";
 import orderReducer from "./slices/orderSlice";
 import statusReducer from "./slices/statusSlice";
 import notificationReducer from "./slices/notificationSlice";
-
+import loadingReducer from "./slices/loadingSlice"
+import asyncActionTracker from "./middlewares/asyncActionTrackerMiddleware";
 // Configura la persistencia para los reducers que deseas persistir
 const persistConfig = {
   key: "root", // Puedes personalizar la clave si lo deseas
@@ -36,8 +37,10 @@ const persistedReducer = persistReducer(
     order: orderReducer,
     status: statusReducer,
     notification: notificationReducer,
+    loading:loadingReducer
     // Agrega otros reducers aquí
-  })
+  }
+  )
 );
 
 const store = configureStore({
@@ -47,7 +50,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }), // Usa el reducer con persistencia
+    }).concat(asyncActionTracker), // Usa el reducer con persistencia
   devTools: process.env.NODE_ENV !== "production",
 });
 
