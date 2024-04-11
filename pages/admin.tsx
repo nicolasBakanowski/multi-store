@@ -19,33 +19,31 @@ const AdminPage = () => {
 
   return (
     <section className="flex flex-col items-center h-screen">
-      <div className="mb-2">
-      <button
-          className={`${
-            selectedOption === "category"
-              ? "bg-green-500 text-white"
-              : "bg-white text-gray-700"
-          } px-4 py-2 rounded-l-full focus:outline-none`}
+      <div className="flex flex-row justify-center items-center mb-2">
+        <button
+          className={`${selectedOption === "category"
+            ? "bg-green-500 text-white"
+            : "bg-white text-gray-700"
+            } px-4 py-2 rounded-l-full focus:outline-none`}
           onClick={() => handleOptionChange("category")}
         >
           Quiero cargar una categoría
         </button>
         <button
-          className={`${
-            selectedOption === "product"
-              ? "bg-green-500 text-white"
-              : "bg-white text-gray-700"
-          } px-4 py-2 rounded-r-full focus:outline-none`}
+          className={`${selectedOption === "product"
+            ? "bg-green-500 text-white"
+            : "bg-white text-gray-700"
+            } px-4 py-2 rounded-r-full focus:outline-none`}
           onClick={() => handleOptionChange("product")}
         >
           Quiero cargar un producto
         </button>
       </div>
       <div>
-      {selectedOption === "category" ? <AddCategoryForm /> : <AddProductForm />}
+        {selectedOption === "category" ? <AddCategoryForm /> : <AddProductForm />}
 
       </div>
-      <Notification/>
+      <Notification />
     </section>
   );
 };
