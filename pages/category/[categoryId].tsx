@@ -7,6 +7,7 @@ import { fetchProductsByCategory, editProduct } from "@/redux/actions/productAct
 import { Product } from "@/interfaces/Products";
 import ProductEditModal from "@/components/ProductEditModal";
 import Notification from "@/components/Notification";
+import Spinner from "@/components/Spinner";
 const CategoryPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const CategoryPage = () => {
   );
   const products = useSelector((state: RootState) => state.product.products);
   const userToken = useSelector((state: RootState) => state.user.token);
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading)
 
   const [editModalStates, setEditModalStates] = useState<{ [key: string]: boolean }>({});
 
@@ -31,10 +33,13 @@ const CategoryPage = () => {
     }));
   };
 
-  const handlerOnSave = async(formData: FormData, idProduct:number) => {
-    userToken && dispatch(editProduct(idProduct,formData,userToken) as any)
+  const handlerOnSave = async (formData: FormData, idProduct: number) => {
+    userToken && dispatch(editProduct(idProduct, formData, userToken) as any)
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <div>
       <main className="container mx-auto mr-5">
@@ -58,7 +63,7 @@ const CategoryPage = () => {
           ))}
         </div>
       </main>
-      <Notification/>
+      <Notification />
     </div>
   );
 };

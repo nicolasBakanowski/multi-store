@@ -5,15 +5,21 @@ import { CartItem } from "../../interfaces/Cart";
 import { setNotification } from "../slices/notificationSlice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchProductsByCategory =
-  (categoryId: number) => async (dispatch: Dispatch) => {
+
+export const fetchProductsByCategory = createAsyncThunk(
+  'product/fetchProductsByCategory',
+  async (categoryId: number, { rejectWithValue, dispatch }) => {
     try {
       const response = await axios.get(`product/category/${categoryId}`);
       dispatch(setProducts(response.data));
+
+      return response.data;
     } catch (error) {
       console.error("Error fetching products by category:", error);
+      dispatch(setNotification({ message: "Error al cargar productos por categoría", type: "error" }));
     }
-  };
+  }
+);
 
 export const addProduct = createAsyncThunk(
   'product/addProduct',
