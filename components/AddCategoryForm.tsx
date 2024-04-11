@@ -6,6 +6,7 @@ import { RootState } from "@/redux/store";
 const AddCategoryForm = () => {
   const dispatch = useDispatch();
   const userToken = useSelector((state: RootState) => state.user.token);
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading)
   const [categoryName, setCategoryName] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -20,7 +21,7 @@ const AddCategoryForm = () => {
 
     try {
       if (userToken) {
-        dispatch(addCategory(formData, userToken) as any);
+        dispatch(addCategory({ categoryData: formData, userToken: userToken }) as any);
       } else {
         console.error("No se pudo agregar la categoría: token no disponible");
       }
@@ -69,10 +70,11 @@ const AddCategoryForm = () => {
           </div>
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                         font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
           >
-            Guardar Categoría
+            {isLoading ? "Guardando..." : "Guardar Categoría"}
           </button>
         </form>
       </div>
