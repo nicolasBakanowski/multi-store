@@ -3,6 +3,7 @@ import axios from "../axios.config";
 import { editProductSuccess, setProducts } from "../slices/productSlice";
 import { CartItem } from "../../interfaces/Cart";
 import { setNotification } from "../slices/notificationSlice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchProductsByCategory =
   (categoryId: number) => async (dispatch: Dispatch) => {
@@ -14,8 +15,9 @@ export const fetchProductsByCategory =
     }
   };
 
-export const addProduct =
-  (productData: FormData, token: string) => async (dispatch: Dispatch) => {
+export const addProduct = createAsyncThunk(
+  'product/addProduct',
+  async ({ productData, token }: { productData: FormData; token: string }, { dispatch }) => {
     try {
       const config = {
         headers: {
@@ -23,15 +25,18 @@ export const addProduct =
           "Content-Type": "multipart/form-data",
         },
       };
+
       const response = await axios.post("/product/new", productData, config);
-      dispatch(setNotification({message:"El producto se agrego con exito", type:"success"}))
-      return true;
+      dispatch(setNotification({ message: "El producto se agrego con exito", type: "success" }));
+      return response.data;
     } catch (error) {
-      dispatch(setNotification({message:"ERROR AL AGREGAR PRUDOCTO", type:"error"}))
+      dispatch(setNotification({ message: "ERROR AL AGREGAR PRODUCTO", type: "error" }));
+      return
     }
-  };
+  }
+);
 export const editProduct =
-  (idProduct:number,productData: FormData, token: string) => async (dispatch: Dispatch) => {
+  (idProduct: number, productData: FormData, token: string) => async (dispatch: Dispatch) => {
     try {
       const config = {
         headers: {
@@ -56,16 +61,16 @@ export const createOrderAction =
     address: string,
     deliveryMethod: string
   ) =>
-  async (dispatch: Dispatch) => {
-    const simplifiedCartItems = cartItems.map((item) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-    const response = await axios.post("/order/new", {
-      simplifiedCartItems,
-      userInfo: { name, phone, address },
-      deliveryMethod,
-    });
-    console.log("que onda con esto", response.data);
-    return true;
-  };
+    async (dispatch: Dispatch) => {
+      const simplifiedCartItems = cartItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+      }));
+      const response = await axios.post("/order/new", {
+        simplifiedCartItems,
+        userInfo: { name, phone, address },
+        deliveryMethod,
+      });
+      console.log("que onda con esto", response.data);
+      return true;
+    };

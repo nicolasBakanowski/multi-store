@@ -4,6 +4,7 @@ import { RootState, AppDispatch } from "@/redux/store";
 import { useRouter } from "next/router";
 import { fetchCategories } from "@/redux/actions/categoryAction";
 import { addProduct } from "@/redux/actions/productAction";
+import Spinner from "./Spinner";
 
 const AddProductForm: React.FC = () => {
   const [charCount, setCharCount] = useState(0);
@@ -22,8 +23,10 @@ const AddProductForm: React.FC = () => {
   );
   const router = useRouter();
   const userToken = useSelector((state: RootState) => state.user.token);
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading)
 
-  useEffect(() => {    
+
+  useEffect(() => {
     if (!categories) {
       dispatch(fetchCategories());
     }
@@ -67,8 +70,7 @@ const AddProductForm: React.FC = () => {
     }
 
     try {
-      await dispatch(addProduct(formData, userToken));
-      setProductName("");
+      await dispatch(addProduct({ productData: formData, token: userToken })); setProductName("");
       setProductDescription("");
       setProductStock("");
       setProductPrice("");
@@ -85,118 +87,120 @@ const AddProductForm: React.FC = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div className="sm:max-w-lg w-full p-10 bg-white rounded-xl">
-      <form onSubmit={handleSubmit} className="space-y-3">
-        {/* Product Name */}
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-500 tracking-wide">
-            Nombre del Producto:
-          </label>
-          <input
-            type="text"
-            value={productName}
-            onChange={(e) => {
-              setProductName(e.target.value);
-              setCharCount(e.target.value.length);
-            }}
-            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
-            placeholder="Nombre del Producto"
-            
-            maxLength={40}
-          />
-          <p className="text-sm text-gray-500">{`${charCount}/40 caracteres`}</p>
+      <div className="sm:max-w-lg w-full p-10 bg-white rounded-xl">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          {/* Product Name */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Nombre del Producto:
+            </label>
+            <input
+              type="text"
+              value={productName}
+              onChange={(e) => {
+                setProductName(e.target.value);
+                setCharCount(e.target.value.length);
+              }}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+              placeholder="Nombre del Producto"
+
+              maxLength={40}
+            />
+            <p className="text-sm text-gray-500">{`${charCount}/40 caracteres`}</p>
           </div>
 
-        {/* Product Description */}
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-500 tracking-wide">
-            Descripción del Producto:
-          </label>
-          <textarea
-            value={productDescription}
-            onChange={(e) => setProductDescription(e.target.value)}
-            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
-            placeholder="Descripción del Producto"
-          />
-        </div>
+          {/* Product Description */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Descripción del Producto:
+            </label>
+            <textarea
+              value={productDescription}
+              onChange={(e) => setProductDescription(e.target.value)}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+              placeholder="Descripción del Producto"
+            />
+          </div>
 
-        {/* Product Stock */}
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-500 tracking-wide">
-            Stock del Producto:
-          </label>
-          <input
-            type="text"
-            value={productStock}
-            onChange={(e) => setProductStock(e.target.value)}
-            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
-            placeholder="Stock del Producto"
-          />
-        </div>
+          {/* Product Stock */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Stock del Producto:
+            </label>
+            <input
+              type="text"
+              value={productStock}
+              onChange={(e) => setProductStock(e.target.value)}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+              placeholder="Stock del Producto"
+            />
+          </div>
 
-        {/* Product Price */}
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-500 tracking-wide">
-            Precio del Producto:
-          </label>
-          <input
-            type="text"
-            value={productPrice}
-            onChange={(e) => setProductPrice(e.target.value)}
-            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
-            placeholder="Precio del Producto"
-          />
-        </div>
+          {/* Product Price */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Precio del Producto:
+            </label>
+            <input
+              type="text"
+              value={productPrice}
+              onChange={(e) => setProductPrice(e.target.value)}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+              placeholder="Precio del Producto"
+            />
+          </div>
 
-        {/* Category Selection */}
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-500 tracking-wide">
-            Categoría del Producto:
-          </label>
-          <select
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
-          >
-            <option value={0}>Seleccione una categoría</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
+          {/* Category Selection */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Categoría del Producto:
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            >
+              <option value={0}>Seleccione una categoría</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {/* Image Selection */}
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-500 tracking-wide">
-            Imagen del Producto:
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
-          />
-          {selectedImage && (
-            <p className="text-sm mt-2">
-              Archivo seleccionado: {selectedImage.name}
-            </p>
-          )}
-        </div>
+          {/* Image Selection */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Imagen del Producto:
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            />
+            {selectedImage && (
+              <p className="text-sm mt-2">
+                Archivo seleccionado: {selectedImage.name}
+              </p>
+            )}
+          </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
+          {/* Submit Button */}
+          <button
+            disabled={isLoading}
+            type="submit"
+            className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                       font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
-        >
-          Guardar Producto
-        </button>
-      </form>
-    </div>
-  </section>
-);
+          >
+            {isLoading ? <Spinner /> : "Guardar Producto"}
+
+          </button>
+        </form>
+      </div>
+    </section>
+  );
 };
 
 

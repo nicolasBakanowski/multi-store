@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory } from "@/redux/actions/categoryAction";
 import { RootState } from "@/redux/store";
+import Spinner from './Spinner';
 
 const AddCategoryForm = () => {
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const AddCategoryForm = () => {
             className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                         font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
           >
-            {isLoading ? "Guardando..." : "Guardar Categoría"}
+            {isLoading ? <Spinner /> : "Guardar Categoría"}
           </button>
         </form>
       </div>
