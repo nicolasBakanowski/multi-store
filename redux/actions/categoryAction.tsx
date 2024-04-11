@@ -1,18 +1,23 @@
-import { Dispatch } from "redux";
 import axios from "../axios.config";
 import { setCategories } from "../slices/categorySlice";
 import { setNotification } from "../slices/notificationSlice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchCategories = () => async (dispatch: Dispatch) => {
-  try {
-    const response = await axios.get("/category/all");
-    dispatch(setCategories(response.data));
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
-};
 
+export const fetchCategories = createAsyncThunk(
+  'category/fetchCategories',
+  async (_, { dispatch }) => {
+    try {
+      const response = await axios.get("/category/all");
+      dispatch(setCategories(response.data));
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      dispatch(setNotification({ message: "Error al cargar categorías", type: "error" }));
+    }
+  }
+);
 export const addCategory = createAsyncThunk(
   'category/addCategory',
   async (params: { categoryData: FormData; userToken: string }, { rejectWithValue, dispatch }) => {
