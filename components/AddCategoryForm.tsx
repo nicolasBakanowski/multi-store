@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory } from "@/redux/actions/categoryAction";
 import { RootState } from "@/redux/store";
+import { convertToWebP } from "../utils/ImageConversor"
 import Spinner from './Spinner';
+import { setNotification } from "@/redux/slices/notificationSlice";
 
 const AddCategoryForm = () => {
   const dispatch = useDispatch();
@@ -31,9 +33,10 @@ const AddCategoryForm = () => {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
+      const webPImage = await convertToWebP(e.target.files[0]);
+      webPImage ? setSelectedImage(webPImage) : dispatch(setNotification({ message: "Nose comprimio", type: "error" }));
     }
   };
 

@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { fetchCategories } from "@/redux/actions/categoryAction";
 import { addProduct } from "@/redux/actions/productAction";
 import Spinner from "./Spinner";
+import { convertToWebP } from "@/utils/ImageConversor";
+import { setNotification } from "@/redux/slices/notificationSlice";
 
 const AddProductForm: React.FC = () => {
   const [charCount, setCharCount] = useState(0);
@@ -34,9 +36,10 @@ const AddProductForm: React.FC = () => {
 
 
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
+      const webPImage = await convertToWebP(e.target.files[0]);
+      webPImage ? setSelectedImage(webPImage) : dispatch(setNotification({ message: "Nose comprimio", type: "error" }));
     }
   };
 
