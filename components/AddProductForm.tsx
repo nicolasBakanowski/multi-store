@@ -29,10 +29,8 @@ const AddProductForm: React.FC = () => {
 
 
   useEffect(() => {
-    if (!categories) {
-      dispatch(fetchCategories());
-    }
-  }, [dispatch, categories]);
+    dispatch(fetchCategories());
+  }, []);
 
 
 
