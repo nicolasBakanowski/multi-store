@@ -1,28 +1,20 @@
-// HomePage.tsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../redux/actions/categoryAction";
 import { RootState } from "../redux/store";
 import Link from "next/link";
-import { setCurrentCategory } from "@/redux/slices/categorySlice";
-import { Category } from "@/interfaces/Category";
 import Image from "next/image";
 import Spinner from "@/components/Spinner";
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
-  const categories = useSelector(
-    (state: RootState) => state.category.categories
-  );
-  const isLoading = useSelector((state: RootState) => state.loading.isLoading)
+  const categories = useSelector((state: RootState) => state.category.categories);
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading);
 
   useEffect(() => {
     dispatch(fetchCategories() as any);
   }, [dispatch]);
 
-  const handleCategoryClick = (category: Category) => {
-    dispatch(setCurrentCategory(category));
-  };
   if (isLoading) {
     return <Spinner />;
   }
@@ -33,24 +25,22 @@ const HomePage: React.FC = () => {
         {categories.map((category) => (
           <Link
             key={category.id}
-            onClick={() => handleCategoryClick(category)}
             href={`/category/${category.id}`}
             className="rounded-lg overflow-hidden hover:shadow-lg transition duration-300 transform hover:-translate-y-1 cursor-pointer relative group"
           >
-            <div className="relative">
-              <Image
+            <div>
+              <Image className="w-full h-40 object-cover transition-transform group-hover:scale-105"
                 src={category.imageUrl}
                 alt={category.name}
                 width={144}
                 height={160}
-                className="w-full h-40 object-cover transition-transform group-hover:scale-105"
                 priority
               />
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-center">
-              <h1 className="font-bold text-2xl group-hover:text-3xl">
-                {category.name}
-              </h1>
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-center">
+                <h1 className="font-bold text-2xl group-hover:text-3xl">
+                  {category.name}
+                </h1>
+              </div>
             </div>
           </Link>
         ))}

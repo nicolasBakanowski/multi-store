@@ -8,23 +8,28 @@ import { Product } from "@/interfaces/Products";
 import ProductEditModal from "@/components/ProductEditModal";
 import Notification from "@/components/Notification";
 import Spinner from "@/components/Spinner";
+import { setNotification } from "@/redux/slices/notificationSlice";
 const CategoryPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const currentCategory = useSelector(
-    (state: RootState) => state.category.currentCategory
-  );
+
   const products = useSelector((state: RootState) => state.product.products);
   const userToken = useSelector((state: RootState) => state.user.token);
   const isLoading = useSelector((state: RootState) => state.loading.isLoading)
-
+  const categoryId = router.query.categoryId;
   const [editModalStates, setEditModalStates] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    if (currentCategory) {
-      dispatch(fetchProductsByCategory(currentCategory.id) as any);
+    if (categoryId !== undefined) {
+      const categoryIdNum = Number(categoryId);
+      if (!isNaN(categoryIdNum)) {
+        dispatch(fetchProductsByCategory(categoryIdNum) as any);
+      } else {
+        dispatch(setNotification({ message: "Error al cargar Los productos", type: "error" }));
+      }
     }
-  }, [currentCategory, dispatch]);
+  }, [categoryId]);
+
 
   const handleEditClick = (product: Product) => {
     setEditModalStates((prevStates) => ({
