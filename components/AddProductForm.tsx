@@ -18,6 +18,7 @@ const AddProductForm: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
     0
   );
+  const [isImageProcessing, setIsImageProcessing] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const categories = useSelector(
@@ -36,10 +37,13 @@ const AddProductForm: React.FC = () => {
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      setIsImageProcessing(true);
       const webPImage = await convertToWebP(e.target.files[0]);
-      webPImage ? setSelectedImage(webPImage) : dispatch(setNotification({ message: "Nose comprimio", type: "error" }));
+      webPImage ? setSelectedImage(webPImage) : dispatch(setNotification({ message: "No se pudo comprimir la imagen", type: "error" }));
+      setIsImageProcessing(false);
     }
-  };
+  }
+
 
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(parseInt(e.target.value, 10));
@@ -181,13 +185,12 @@ const AddProductForm: React.FC = () => {
               onChange={handleImageChange}
               className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
             />
-            {selectedImage && (
+            {selectedImage && !isImageProcessing && (
               <p className="text-sm mt-2">
-                Archivo seleccionado: {selectedImage.name}
+                Archivo seleccionado: {selectedImage.name} <span role="img" aria-label="checked">✅</span>
               </p>
             )}
           </div>
-
           {/* Submit Button */}
           <button
             disabled={isLoading}
@@ -195,8 +198,7 @@ const AddProductForm: React.FC = () => {
             className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                       font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
           >
-            {isLoading ? <Spinner /> : "Guardar Producto"}
-
+            {isLoading || isImageProcessing ? <Spinner /> : "Guardar Categoría"}
           </button>
         </form>
       </div>

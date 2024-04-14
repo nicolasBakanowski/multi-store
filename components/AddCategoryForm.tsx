@@ -12,6 +12,8 @@ const AddCategoryForm = () => {
   const isLoading = useSelector((state: RootState) => state.loading.isLoading)
   const [categoryName, setCategoryName] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isImageProcessing, setIsImageProcessing] = useState(false);
+
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,8 +37,11 @@ const AddCategoryForm = () => {
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      setIsImageProcessing(true);
       const webPImage = await convertToWebP(e.target.files[0]);
-      webPImage ? setSelectedImage(webPImage) : dispatch(setNotification({ message: "Nose comprimio", type: "error" }));
+      webPImage ? setSelectedImage(webPImage) : dispatch(setNotification({ message: "No se pudo comprimir la imagen", type: "error" }));
+      setIsImageProcessing(false);
+
     }
   };
 
@@ -66,9 +71,9 @@ const AddCategoryForm = () => {
               onChange={handleImageChange}
               className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
             />
-            {selectedImage && (
+            {selectedImage && !isImageProcessing && (
               <p className="text-sm mt-2">
-                Archivo seleccionado: {selectedImage.name}
+                Archivo seleccionado: {selectedImage.name} <span role="img" aria-label="checked">✅</span>
               </p>
             )}
           </div>
@@ -78,7 +83,7 @@ const AddCategoryForm = () => {
             className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                         font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
           >
-            {isLoading ? <Spinner /> : "Guardar Categoría"}
+            {isLoading || isImageProcessing ? <Spinner /> : "Guardar Categoría"}
           </button>
         </form>
       </div>
