@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../redux/slices/cartSlice";
 import { Product } from "@/interfaces/Products";
 import { RootState } from "@/redux/store";
-import Link from "next/link";
 
 const ProductDetailsPage = () => {
   const dispatch = useDispatch();
@@ -32,7 +31,7 @@ const ProductDetailsPage = () => {
   };
 
   return (
-  <div className="min-w-screen min-h-screen flex items-center p-5 lg:p-10 overflow-hidden">
+    <div className="min-w-screen min-h-screen flex items-center p-5 lg:p-10 overflow-hidden">
       <div className="w-full max-w-6xl rounded bg-white shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left">
         <div className="md:flex items-center -mx-10">
           <div className="w-full md:w-1/2 px-10 mb-10 md:mb-0">
@@ -40,8 +39,8 @@ const ProductDetailsPage = () => {
               <Image
                 src={product.imageUrl}
                 alt={product.name}
-                width={200} // Set a fixed width
-                height={200} // Set a fixed height
+                width={200}
+                height={200}
                 className="w-[600px] h-[400px] object-cover "
                 priority
               />
@@ -75,19 +74,19 @@ const ProductDetailsPage = () => {
               </button>
             </div>
             <div className="flex items-center mt-4 flex-col md:flex-row">
-  <div className="inline-block align-bottom mr-5 mb-2 md:mb-0 md:mr-0">
-    <span className="text-2xl leading-none align-baseline">$</span>
-    <span className="font-bold text-5xl leading-none align-baseline">{product.price.toFixed(2)}</span>
-  </div>
-  <div className="inline-block align-bottom">
-    <button
-      onClick={() => handleAddToCart(product)}
-      className="bg-green-500 opacity-75 hover:opacity-100 text-white hover:text-black rounded-full px-6 py-2 font-semibold md:ml-4"
-    >
-      <i className="mdi mdi-cart -ml-2 mr-2"></i> Agregar al Carrito
-    </button>
-  </div>
-</div>
+              <div className="inline-block align-bottom mr-5 mb-2 md:mb-0 md:mr-0">
+                <span className="text-2xl leading-none align-baseline">$</span>
+                <span className="font-bold text-5xl leading-none align-baseline">{product.price.toFixed(2)}</span>
+              </div>
+              <div className="inline-block align-bottom">
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="bg-green-500 opacity-75 hover:opacity-100 text-white hover:text-black rounded-full px-6 py-2 font-semibold md:ml-4"
+                >
+                  <i className="mdi mdi-cart -ml-2 mr-2"></i> Agregar al Carrito
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
