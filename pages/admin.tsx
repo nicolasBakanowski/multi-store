@@ -4,6 +4,9 @@ import { RootState } from "@/redux/store";
 import AddProductForm from "../components/AddProductForm";
 import AddCategoryForm from "@/components/AddCategoryForm";
 import Notification from "../components/Notification"
+import { motion, AnimatePresence } from "framer-motion";
+import { adminChangeForm } from "@/animations/adminChargeForm";
+
 const AdminPage = () => {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
 
@@ -16,6 +19,7 @@ const AdminPage = () => {
   if (userRole !== 1) {
     return <div>No tienes acceso a esta página.</div>;
   }
+
 
   return (
     <section className="flex flex-col items-center h-screen">
@@ -39,10 +43,19 @@ const AdminPage = () => {
           Quiero cargar un producto
         </button>
       </div>
-      <div>
-        {selectedOption === "category" ? <AddCategoryForm /> : <AddProductForm />}
-
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={selectedOption}
+          variants={adminChangeForm}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <div>
+            {selectedOption === "category" ? <AddCategoryForm /> : <AddProductForm />}
+          </div>
+        </motion.div>
+      </AnimatePresence>
       <Notification />
     </section>
   );
