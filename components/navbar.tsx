@@ -77,9 +77,8 @@ const Navbar = () => {
             </button>
             {/* Menú lateral */}
             <div
-              className={`${
-                menuOpen ? "translate-x-0" : "translate-x-full"
-              } fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-4 transform transition-transform ease-in-out duration-300 z-50`}
+              className={`${menuOpen ? "translate-x-0" : "translate-x-full"
+                } fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-4 transform transition-transform ease-in-out duration-300 z-50`}
             >
               {/* Botón de cierre */}
               <div className="flex items-center pb-6">
@@ -184,19 +183,16 @@ const NavbarWithCartButton = () => {
   const cartItems = useSelector((state: RootState) => state.cart.length);
   const router = useRouter();
   const isCartPage = router.pathname === "/cart";
-  const destination = isCartPage ? "/checkout" : "/cart";
+
   return (
     <div>
       <Navbar />
-      {cartItems > 0 && (
-        <CartLink
-          itemCount={cartItems}
-          isCartPage={isCartPage}
-          destination={destination}
-        />
+      {isCartPage && cartItems > 0 && (
+        <CartLink itemCount={cartItems} />
       )}
     </div>
   );
 };
 
 export default NavbarWithCartButton;
+
