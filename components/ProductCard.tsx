@@ -91,7 +91,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
           )}
           <button
             onClick={handleAddToCart}
-            className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 focus:outline-none  "
+            className="bg-green-500 text-white py-2 px-3 mx-2 rounded hover:bg-green-600 focus:outline-none  "
           >
             <MdAddShoppingCart className="text-lg" />
           </button>
