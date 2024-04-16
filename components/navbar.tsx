@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import BackIcon from "../public/back.svg";
 import CartLink from "./CartLink";
-import { logout } from "../redux/slices/userSlice"; // Asegúrate de ajustar la ruta correcta
+import CartIcon from "./CartIcon";
+import { logout } from "../redux/slices/userSlice";
 
 import {
   MdClose,
@@ -61,8 +62,7 @@ const Navbar = () => {
       <div className="flex items-center space-x-5">
         <Link href="/cart">
           <div className="text-2xl font-bold flex items-center space-x-1">
-            <MdShoppingCart size={25} />
-            <span className="text-xl">{cartItems}</span>
+            <CartIcon />
           </div>
         </Link>
         {userName ? (
