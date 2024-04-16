@@ -95,21 +95,21 @@ const CartItemCard: React.FC<{ cartItem: CartItem }> = ({ cartItem }) => {
             src={cartItem.imageUrl}
             alt={cartItem.name}
             width={190}
-            height={140}
-            className="h-45 w-45 object-cover rounded-l-xl"
+            height={130}
+            className="h-45 w-45 h-[195px] object-cover rounded-l-xl "
           />
         </div>
         <div className="px-4 py-3 w-2/3">
-          <h3 className="text-white text-lg font-semibold mb-1">
+          <h3 className="text-white text-lg font-semibold mb-1 text-left">
             {cartItem.name}
           </h3>
-          <p className="text-gray-300 text-sm mb-2">
+          <p className="text-gray-300 text-sm mb-2 text-left">
             Cantidad en carrito: {cartItem.quantity}
           </p>
-          <p className="text-gray-300 text-sm mb-2">
+          <p className="text-gray-300 text-sm text-left">
             Total: ${(cartItem.price * cartItem.quantity).toFixed(2)}
           </p>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-12 text-left">
             <button
               onClick={handleRemoveFromCart}
               className="bg-red-500 text-white py-2 px-3 rounded hover:bg-red-600 focus:outline-none"

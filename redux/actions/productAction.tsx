@@ -28,10 +28,8 @@ export const addProduct = createAsyncThunk(
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       };
-
       const response = await axios.post("/product/new", productData, config);
       dispatch(setNotification({ message: "El producto se agrego con exito", type: "success" }));
       return response.data;
