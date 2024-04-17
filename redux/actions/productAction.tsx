@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import axios from "../axios.config";
-import { editProductSuccess, setProducts } from "../slices/productSlice";
+import { deactivateProductSuccess, editProductSuccess, setProducts } from "../slices/productSlice";
 import { CartItem } from "../../interfaces/Cart";
 import { setNotification } from "../slices/notificationSlice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -77,3 +77,31 @@ export const createOrderAction =
       });
       return true;
     };
+
+export const disableProduct = createAsyncThunk(
+  'product/disableProduct',
+  async ({ idProduct, token }: { idProduct: number; token: string }, { rejectWithValue, dispatch }) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    const body = {
+      active: false
+    };
+    try {
+      const response = await axios.patch(`/product/status/${idProduct}`, body, config);
+      if (response.data) {
+        dispatch(deactivateProductSuccess(idProduct));
+        dispatch(setNotification({ message: "Se desactivo el  producto", type: "success" }));
+        return response.data;
+      } else {
+        return rejectWithValue("No product data returned from the server.");
+      }
+    } catch (error) {
+      dispatch(setNotification({ message: "Error al desactivar el producto", type: "error" }));
+      return "Error al desactivar el producto"
+    }
+  }
+);

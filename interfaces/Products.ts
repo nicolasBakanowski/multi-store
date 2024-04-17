@@ -6,12 +6,14 @@ export interface Product {
   stock: number;
   imageUrl: string;
   categoryId: number;
+  available: boolean;
 }
 interface ProductState {
   products: Product[];
   currentProduct: Product | null;
 }
 export interface ProductEdit{
+  id: number;
   name: string;
   description: string;
   stock: number;
@@ -22,6 +24,7 @@ export interface ProductEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   product: {
+    id: any;
     name: string;
     description: string;
     stock: number;
@@ -38,5 +41,5 @@ export const initialState: ProductState = {
 
 export interface ProductCardProps {
   product: Product;
-  onEditClick: any; // Agrega esta prop para el modal
+  onEditClick: any; 
 }
