@@ -5,6 +5,7 @@ import { RootState } from "@/redux/store";
 import { fetchOrders } from "../redux/actions/orderAction";
 import { fetchStatus } from "@/redux/actions/statusAction";
 import { formatOrderData } from "@/utils/orderDataFormater";
+
 import {
   ORDER_STATUS_CONFIRMED,
   ORDER_STATUS_INPROCCESS,
@@ -33,6 +34,9 @@ function OrdersPage({ socket }: any) {
 
   const orders = useSelector((state: RootState) => state.order);
   const status = useSelector((state: RootState) => state.status);
+  const userRole = useSelector((state: RootState) => state.user.user?.roleId);
+
+
   const handleConfirmOrder = async (orderId: number, OrderStatus: number) => {
     const order = await changeStatusOrder(orderId, OrderStatus);
     dispatch(nextOrderStatus(order) as any);
@@ -52,6 +56,11 @@ function OrdersPage({ socket }: any) {
     (order) => order.orderStatusId === selectedStatus
   );
 
+  if (userRole !== 1) {
+    return <div>No tienes acceso a esta página.</div>;
+  }
+
+
   return (
     <div className="container mx-auto mt-4">
       <div className="container">
@@ -59,9 +68,8 @@ function OrdersPage({ socket }: any) {
           {status.map((item: any) => (
             <button
               key={item.id}
-              className={`rounded-full px-3 py-1 text-white ${
-                selectedStatus === item.id ? "bg-green-500" : "bg-gray-500"
-              }`}
+              className={`rounded-full px-3 py-1 text-white ${selectedStatus === item.id ? "bg-green-500" : "bg-gray-500"
+                }`}
               onClick={() => setSelectedStatus(item.id)}
             >
               {item.name}
@@ -115,13 +123,13 @@ function OrdersPage({ socket }: any) {
                   onClick={() => {
                     selectedStatus == 1
                       ? handleConfirmOrder(
-                          order.order_id,
-                          ORDER_STATUS_CONFIRMED
-                        )
+                        order.order_id,
+                        ORDER_STATUS_CONFIRMED
+                      )
                       : handleConfirmOrder(
-                          order.order_id,
-                          ORDER_STATUS_INPROCCESS
-                        );
+                        order.order_id,
+                        ORDER_STATUS_INPROCCESS
+                      );
                   }}
                 >
                   {selectedStatus == 1 ? "Confirmar Pedido" : "Preparar Pedido"}
