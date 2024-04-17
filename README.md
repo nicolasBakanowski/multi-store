@@ -1,7 +1,7 @@
-# frontEnd StoryDots!
+# frontEnd Multi-store!
 
-este es la parte front end del desafio, para esto use react con nextjs, redux-toolkits, axios entre otras librerias
-desarrolado con la version 20.11
+en este proyecto use react con nextjs, redux-toolkits, axios entre otras librerias
+desarrolado con la version 20.11 
 
 # como correrlo
 
