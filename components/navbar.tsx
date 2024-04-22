@@ -129,7 +129,7 @@ const Navbar = () => {
                       }}
                     >
                       <MdWork size={20} />
-                      <span>Admin Panel</span>
+                      <span>Panel de Carga</span>
                     </button>
                   </li>
                 )}
@@ -143,7 +143,21 @@ const Navbar = () => {
                       }}
                     >
                       <MdList size={20} />
-                      <span>Orders</span>
+                      <span>Manejo de Ordenes</span>
+                    </button>
+                  </li>
+                )}
+                {userRole === 1 && (
+                  <li className="mb-2">
+                    <button
+                      className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2  rounded-lg"
+                      onClick={() => {
+                        router.push("/orders");
+                        toggleMenu();
+                      }}
+                    >
+                      <MdList size={20} />
+                      <span>Productos deshabilitados</span>
                     </button>
                   </li>
                 )}
