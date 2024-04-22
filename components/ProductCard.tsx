@@ -43,7 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
   };
 
   return (
-    <div className="w-full bg-gray-900 flex-grow shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl flex">
+    <div className="w-full bg-violet-950 flex-grow shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl flex">
       <Link href={`/product/${product.id}`}>
         <button onClick={() => handleProductClick(product)} className="flex">
           <Image
@@ -56,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
         </button>
       </Link>
       <div className="px-3 py-2 w-4/3 relative bottom-0">
-        <h3 className="text-white text-lg font-semibold mb-1 ">
+        <h3 className="text-slate-300 text-lg font-semibold mb-1 ">
           {product.name}
         </h3>
         <p className="text-gray-300 text-sm mb-4">

@@ -38,7 +38,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-900 text-white py-4 px-6 flex justify-between items-center relative">
+    <nav className="bg-violet-950 text-slate-300 px-8 flex justify-between items-center relative">
       {/* Fondo oscuro */}
       {menuOpen && (
         <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
@@ -46,8 +46,8 @@ const Navbar = () => {
 
       {!isIndexPage ? (
         <button onClick={() => router.back()}>
-          <div className="flex items-center">
-            <Image src={BackIcon} alt="Back Icon" className="h-6 w-6" />
+          <div className="flex items-center ">
+            <Image src={BackIcon} alt="Back Icon" className="h-6 w-6 " />
             <span>Volver</span>
           </div>
         </button>
@@ -56,8 +56,10 @@ const Navbar = () => {
           <div className="flex items-center px-9"></div>
         </button>
       )}
-      <div className="text-2xl font-bold flex w-1/3 justify-center">
-        <Link href="/">Market</Link>
+      <div className="flex items-center justify-center">
+        <div className="w-24 h-24">
+          <Image src="/pinta-bien.png" alt="Pinta Bien" width={300} height={300} />
+        </div>
       </div>
       <div className="flex items-center space-x-5">
         <Link href="/cart">
