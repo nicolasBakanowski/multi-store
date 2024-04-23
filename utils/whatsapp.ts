@@ -1,4 +1,3 @@
-// utils/whatsapp.ts
 import { CartItem } from "@/interfaces/Cart";
 
 export const generateWhatsAppMessage = (
@@ -17,8 +16,15 @@ export const generateWhatsAppMessage = (
     )}`
   );
 
-  const storePhoneNumber = "5493584379276"; // Remove the "+" from the phone number
+  const storePhoneNumber = "5493584379276"; 
   const url = `https://wa.me/${storePhoneNumber}?text=${message}`;
-
-  window.open(url, "_blank");
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.textContent = "Haga clic aquí para abrir WhatsApp";
+  document.body.appendChild(link);
+  link.click();
+  setTimeout(() => {
+    document.body.removeChild(link);
+  }, 100);
 };
