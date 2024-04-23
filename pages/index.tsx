@@ -19,7 +19,8 @@ const HomePage: React.FC = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <Spinner />;
+
+    return <div className="mt-52"><Spinner /></div>;
   }
 
   return (
