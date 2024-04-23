@@ -5,10 +5,11 @@ import { createOrderAction } from "@/redux/actions/productAction";
 import DeliveryForm from "../components/DeliveryForm";
 import { clearCart } from "../redux/slices/cartSlice";
 import { generateWhatsAppMessage } from "@/utils/whatsapp";
-
+import Spinner from '../components/Spinner';
 const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [deliveryMethod, setDeliveryMethod] = useState("pickup");
+  const [processing, setProcessing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -27,6 +28,7 @@ const CheckoutPage = () => {
   );
 
   const handleAddContact = async () => {
+    setProcessing(true);
     await dispatch(
       createOrderAction(
         cartItems,
@@ -38,11 +40,12 @@ const CheckoutPage = () => {
     );
     generateWhatsAppMessage(cartItems, totalAmount);
     dispatch(clearCart());
+    setProcessing(false);
   };
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8 px-2">
         <h1 className="text-2xl font-semibold mb-4">Confirmar Pedido</h1>
         <DeliveryForm
           onDeliveryMethodChange={handleDeliveryMethodChange}
@@ -92,20 +95,19 @@ const CheckoutPage = () => {
         )}
         <button
           onClick={handleAddContact}
-          className={`${
-            (deliveryMethod === "delivery" &&
-              (!formData.phone || !formData.address)) ||
+          className={`${(deliveryMethod === "delivery" &&
+            (!formData.phone || !formData.address)) ||
             (deliveryMethod === "pickup" && !formData.name)
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600"
-          } text-white px-4 py-2 rounded-md mt-4 w-full`}
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-green-500 hover:bg-green-600"
+            } text-white px-4 py-2 rounded-md mt-4 w-full`}
           disabled={
             (deliveryMethod === "delivery" &&
               (!formData.phone || !formData.address)) ||
             (deliveryMethod === "pickup" && !formData.name)
           }
         >
-          Realizar Pedido
+          {processing ? <Spinner /> : "Realizar Pedido"} {/* Mostrar el spinner si se está procesando */}
         </button>
       </div>
     </div>
