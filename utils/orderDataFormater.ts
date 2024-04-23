@@ -15,6 +15,7 @@ export function formatOrderData(data: any) {
     const orderId = item.orderId;
     const orderName = item.orderName;
     const orderAddress = item.orderAddress;
+    const orderPhone = item.orderPhone
     const quantity = item.quantity;
     const productName = item.productName;
     const productPrice = item.productPrice;
@@ -25,6 +26,7 @@ export function formatOrderData(data: any) {
         order_id: orderId,
         orderName: orderName,
         orderAddress: orderAddress,
+        orderPhone: orderPhone,
         orderStatusId: orderStatusId,
         products: [],
       };

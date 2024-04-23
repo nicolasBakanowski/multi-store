@@ -88,7 +88,7 @@ function OrdersPage({ socket }: any) {
             <div className="text-white rounded-t-lg flex">
               <h2 className="text-lg pl-2 font-semibold">#{order.order_id}</h2>
               <p className="pl-5">
-                {order.orderName} - {order.orderAddress}
+                {order.orderName} - {order.orderAddress}- {order.orderPhone}
               </p>
             </div>
             <div className="border-b  border-gray-400 my-2"></div>
