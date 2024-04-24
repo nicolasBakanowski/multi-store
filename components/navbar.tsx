@@ -56,10 +56,12 @@ const Navbar = () => {
           <div className="flex items-center px-9"></div>
         </button>
       )}
-      <div className="flex items-center justify-center">
-        <div className="w-24 h-24">
-          <Image src="/pinta-bien.png" alt="Pinta Bien" width={300} height={300} />
-        </div>
+      <div className="flex  items-center box-decoration-slice justify-center">
+        <Link href="/">
+          <div className="w-24 h-24">
+            <Image src="/pinta-bien.png" alt="Pinta Bien" width={300} height={300} />
+          </div>
+        </Link>
       </div>
       <div className="flex items-center space-x-5">
         <Link href="/cart">
@@ -77,12 +79,10 @@ const Navbar = () => {
                 <MdMenu size={40} className="pt-2" />
               </div>
             </button>
-            {/* Menú lateral */}
             <div
               className={`${menuOpen ? "translate-x-0" : "translate-x-full"
                 } fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-4 transform transition-transform ease-in-out duration-300 z-50`}
             >
-              {/* Botón de cierre */}
               <div className="flex items-center pb-6">
                 <span className="text-gray-950">{userName}</span>
                 <button className="text-gray-700 pl-10" onClick={toggleMenu}>
@@ -90,25 +90,19 @@ const Navbar = () => {
                 </button>
               </div>
 
-              {/* Opciones del menú */}
               <ul>
-                {/* Configuración */}
                 <li className="mb-2">
                   <button
                     className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
                     onClick={() => {
-                      // Agrega la lógica para la página de configuración
                       router.push("/configuracion");
                       toggleMenu();
                     }}
                   >
-                    {/* Agrega el ícono correspondiente */}
                     <MdIron size={20} />{" "}
-                    {/* Reemplaza MdIcon con el ícono que desees */}
                     <span>Configuración</span>
                   </button>
                 </li>
-                {/* Dónde nos encontramos */}
                 <li className="mb-2">
                   <button
                     className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
@@ -163,10 +157,8 @@ const Navbar = () => {
                     </button>
                   </li>
                 )}
-                {/* Separador */}
                 <div className="border-t border-gray-300 my-4"></div>
 
-                {/* Cerrar Sesión */}
                 <li>
                   <button
                     className="flex items-center space-x-2 text-red-600 hover:bg-gray-100 py-2 px-3 rounded-lg"
