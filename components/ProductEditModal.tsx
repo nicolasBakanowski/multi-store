@@ -18,6 +18,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
     description: product.description,
     stock: product.stock,
     price: product.price,
+    costPrice: product.costPrice
   });
 
   const [isActive, setIsActive] = useState(true);
@@ -52,6 +53,8 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
     formDataToSend.append("description", formData.description);
     formDataToSend.append("stock", formData.stock.toString());
     formDataToSend.append("price", formData.price.toString());
+    formDataToSend.append("costPrice", formData.costPrice.toString());
+
     onSave(formDataToSend);
     onClose();
   };
@@ -124,7 +127,19 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
               onChange={handleInputChange}
             />
           </div>
-
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Precio de Costo
+            </label>
+            <input
+              className="mt-1 p-2 w-full border rounded-md"
+              type="number"
+              step="0.01"
+              name="costPrice"
+              value={formData.costPrice.toString()}
+              onChange={handleInputChange}
+            />
+          </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Precio

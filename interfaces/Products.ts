@@ -7,17 +7,21 @@ export interface Product {
   imageUrl: string;
   categoryId: number;
   available: boolean;
+  costPrice: number;  // Nuevo campo
 }
+
 interface ProductState {
   products: Product[];
   currentProduct: Product | null;
 }
-export interface ProductEdit{
+
+export interface ProductEdit {
   id: number;
   name: string;
   description: string;
   stock: number;
   price: number;
+  costPrice: number;  // Nuevo campo en la edición del producto
 }
 
 export interface ProductEditModalProps {
@@ -29,6 +33,7 @@ export interface ProductEditModalProps {
     description: string;
     stock: number;
     price: number;
+    costPrice: number;  // Nuevo campo en el modal
   };
   onSave: (formData: FormData) => void;
   onHide: () => void;
@@ -41,5 +46,5 @@ export const initialState: ProductState = {
 
 export interface ProductCardProps {
   product: Product;
-  onEditClick: any; 
+  onEditClick: any;  // Si quieres tiparlo más estrictamente, puedes usar: (product: Product) => void;
 }
