@@ -20,6 +20,8 @@ import statusReducer from "./slices/statusSlice";
 import notificationReducer from "./slices/notificationSlice";
 import loadingReducer from "./slices/loadingSlice"
 import asyncActionTracker from "./middlewares/asyncActionTrackerMiddleware";
+import earningReducer from "./slices/earningSlice"
+
 // Configura la persistencia para los reducers que deseas persistir
 const persistConfig = {
   key: "root", // Puedes personalizar la clave si lo deseas
@@ -37,7 +39,8 @@ const persistedReducer = persistReducer(
     order: orderReducer,
     status: statusReducer,
     notification: notificationReducer,
-    loading:loadingReducer
+    loading:loadingReducer,
+    earnings:earningReducer
     // Agrega otros reducers aquí
   }
   )

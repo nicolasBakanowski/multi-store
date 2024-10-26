@@ -63,6 +63,8 @@ export const createOrderAction =
     name: string,
     phone: string,
     address: string,
+    totalAmount: number,
+    totalCostPrice: number,
     deliveryMethod: string
   ) =>
     async (dispatch: Dispatch) => {
@@ -73,6 +75,8 @@ export const createOrderAction =
       const response = await axios.post("/order/new", {
         simplifiedCartItems,
         userInfo: { name, phone, address },
+        totalAmount,
+        totalCostPrice,
         deliveryMethod,
       });
       return true;

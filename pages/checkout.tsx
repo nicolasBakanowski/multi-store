@@ -26,6 +26,10 @@ const CheckoutPage = () => {
     (total: number, item) => total + item.price * item.quantity,
     0
   );
+  const totalCostPriceAmount = cartItems.reduce(
+    (total: number, item) => total + item.costPrice * item.quantity,
+    0
+  );
 
   const handleAddContact = async () => {
     setProcessing(true);
@@ -35,6 +39,8 @@ const CheckoutPage = () => {
         formData.name,
         formData.phone,
         formData.address,
+        totalAmount,
+        totalCostPriceAmount,
         deliveryMethod
       ) as any
     );

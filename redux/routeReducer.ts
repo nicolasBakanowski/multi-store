@@ -8,6 +8,7 @@ import orderReducer from "./slices/orderSlice";
 import statusReducer from "./slices/statusSlice";
 import notificationReducer from "./slices/notificationSlice";
 import loadingReducer from "./slices/loadingSlice"
+import earningReducer from "./slices/earningSlice"
 
 // Importa el slice de categorías
 // Importa y agrega otros reducers según sea necesario
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   order: orderReducer,
   status: statusReducer, // Agrega el reducer de categorías aquí
   notification:notificationReducer,
-  loading:loadingReducer
+  loading:loadingReducer,
+  earnings:earningReducer
 
   // Agrega otros reducers aquí
 });
