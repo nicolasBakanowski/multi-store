@@ -19,8 +19,11 @@ const productSlice = createSlice({
     deactivateProductSuccess(state, action: PayloadAction<number>) {
       state.products = state.products.filter(product => product.id !== action.payload);
     },
+    setTopSellingProducts(state, action: PayloadAction<Product[]>) { 
+      state.topSellingProducts = action.payload;
+    },
   },
 });
 
-export const { setProducts, setCurrentProduct, editProductSuccess, deactivateProductSuccess} = productSlice.actions;
+export const { setProducts, setCurrentProduct, editProductSuccess, deactivateProductSuccess,setTopSellingProducts} = productSlice.actions;
 export default productSlice.reducer;

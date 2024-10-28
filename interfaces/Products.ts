@@ -7,13 +7,14 @@ export interface Product {
   imageUrl: string;
   categoryId: number;
   available: boolean;
-  costPrice: number;  // Nuevo campo
+  costPrice: number; 
+  totalSold: string;
 }
 
 interface ProductState {
   products: Product[];
   currentProduct: Product | null;
-}
+  topSellingProducts: Product[]}
 
 export interface ProductEdit {
   id: number;
@@ -21,7 +22,7 @@ export interface ProductEdit {
   description: string;
   stock: number;
   price: number;
-  costPrice: number;  // Nuevo campo en la edición del producto
+  costPrice: number;  
 }
 
 export interface ProductEditModalProps {
@@ -33,7 +34,7 @@ export interface ProductEditModalProps {
     description: string;
     stock: number;
     price: number;
-    costPrice: number;  // Nuevo campo en el modal
+    costPrice: number;  
   };
   onSave: (formData: FormData) => void;
   onHide: () => void;
@@ -42,9 +43,10 @@ export interface ProductEditModalProps {
 export const initialState: ProductState = {
   products: [],
   currentProduct: null,
+  topSellingProducts: []
 };
 
 export interface ProductCardProps {
   product: Product;
-  onEditClick: any;  // Si quieres tiparlo más estrictamente, puedes usar: (product: Product) => void;
+  onEditClick: any; 
 }

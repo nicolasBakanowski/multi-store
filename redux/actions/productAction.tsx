@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import axios from "../axios.config";
-import { deactivateProductSuccess, editProductSuccess, setProducts } from "../slices/productSlice";
+import { deactivateProductSuccess, editProductSuccess, setProducts, setTopSellingProducts } from "../slices/productSlice";
 import { CartItem } from "../../interfaces/Cart";
 import { setNotification } from "../slices/notificationSlice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -106,6 +106,21 @@ export const disableProduct = createAsyncThunk(
     } catch (error) {
       dispatch(setNotification({ message: "Error al desactivar el producto", type: "error" }));
       return "Error al desactivar el producto"
+    }
+  }
+);
+export const fetchTopSelling = createAsyncThunk(
+  'product/fetchTopSelling',
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await axios.get("/product/topSelling");
+      dispatch(setTopSellingProducts(response.data));
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching top-selling products:", error);
+      dispatch(setNotification({ message: "Error al cargar los productos más vendidos", type: "error" }));
+      return rejectWithValue("Error al cargar los productos más vendidos");
     }
   }
 );
