@@ -157,6 +157,20 @@ const Navbar = () => {
                     </button>
                   </li>
                 )}
+                {userRole === 1 && (
+                  <li className="mb-2">
+                    <button
+                      className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2  rounded-lg"
+                      onClick={() => {
+                        router.push("/metrics");
+                        toggleMenu();
+                      }}
+                    >
+                      <MdList size={20} />
+                      <span>Metricas</span>
+                    </button>
+                  </li>
+                )}
                 <div className="border-t border-gray-300 my-4"></div>
 
                 <li>
