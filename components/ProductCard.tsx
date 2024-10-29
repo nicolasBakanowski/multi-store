@@ -15,7 +15,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [showAnimation, setShowAnimation] = useState(false);
 
-  // Obtener el rolId del usuario desde el estado
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
 
   const handleProductClick = (product: Product) => {

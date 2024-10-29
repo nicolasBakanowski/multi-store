@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction, authGoogle } from "@/redux/actions/userAction";
 import { RootState } from "@/redux/store";
@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../firebase";
 import { AuthData } from "@/interfaces/User";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, signInWithPopup } from "firebase/auth";
 
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -56,6 +56,7 @@ const LoginPage: React.FC = () => {
       console.error("Error al iniciar sesión con Google:", error);
     }
   };
+
 
   return (
     <div className="flex justify-center items-center min-h-screen">
