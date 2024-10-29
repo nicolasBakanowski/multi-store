@@ -2,6 +2,10 @@ export interface LoginData {
   email: string;
   password: string;
 }
+export interface AuthData{
+  email:string;
+  name:string;
+}
 export interface UserState {
   id: number | null;
   email: string | null;

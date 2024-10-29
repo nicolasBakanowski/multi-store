@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction } from "@/redux/actions/userAction";
+import { loginAction, authGoogle } from "@/redux/actions/userAction";
 import { RootState } from "@/redux/store";
 import Notification from "@/components/Notification";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../firebase";
+import { AuthData } from "@/interfaces/User";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const LoginPage: React.FC = () => {
@@ -43,10 +44,14 @@ const LoginPage: React.FC = () => {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
-      console.log("Usuario autenticado con Google:", user);
-
-      router.push("/");
+      const userData: AuthData = {
+        email: user.email!,
+        name: user.displayName!,
+      };
+      const success = await dispatch(authGoogle(userData) as any);
+      if (success) {
+        router.push("/");
+      }
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error);
     }
