@@ -2,20 +2,21 @@
 
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { convertToWebP } from "../utils/ImageConversor"
-import Spinner from './Spinner';
-import { setNotification } from "@/redux/slices/notificationSlice";
-import { addCategory } from "@/app/actions/category";
 
-const AddCategoryForm = () => {
+import { RootState } from "@/redux/store";
+import { convertToWebP } from "@/utils/ImageConversor";
+import Spinner from "./Spinner";
+import { setNotification } from "@/redux/slices/notificationSlice";
+import { addBrand } from "@/app/actions/brand";
+
+const AddBrandForm = () => {
   const dispatch = useDispatch();
   const userToken = useSelector((state: RootState) => state.user.token);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [categoryName, setCategoryName] = useState("");
+  const [brandName, setBrandName] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isImageProcessing, setIsImageProcessing] = useState(false);
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,10 +30,10 @@ const AddCategoryForm = () => {
       );
       return;
     }
-    if (!categoryName.trim()) {
+    if (!brandName.trim()) {
       dispatch(
         setNotification({
-          message: "El nombre de la categoría es obligatorio.",
+          message: "El nombre de la marca es obligatorio.",
           type: "error",
         })
       );
@@ -41,7 +42,7 @@ const AddCategoryForm = () => {
     if (!selectedImage || isImageProcessing) {
       dispatch(
         setNotification({
-          message: "La imagen de la categoría es obligatoria.",
+          message: "La imagen de la marca es obligatoria.",
           type: "error",
         })
       );
@@ -49,24 +50,21 @@ const AddCategoryForm = () => {
     }
 
     const formData = new FormData();
-    formData.append("name", categoryName.trim());
-    formData.append("categoryImage", selectedImage);
+    formData.append("name", brandName.trim());
+    formData.append("brandImage", selectedImage);
 
     try {
       setIsSubmitting(true);
-      await addCategory({ categoryData: formData, token: userToken });
-      setCategoryName("");
+      await addBrand({ brandData: formData, token: userToken });
+      setBrandName("");
       setSelectedImage(null);
       dispatch(
-        setNotification({
-          message: "Categoría creada con éxito.",
-          type: "success",
-        })
+        setNotification({ message: "Marca creada con éxito.", type: "success" })
       );
     } catch (error: any) {
       dispatch(
         setNotification({
-          message: error?.message || "No se pudo crear la categoría.",
+          message: error?.message || "No se pudo crear la marca.",
           type: "error",
         })
       );
@@ -79,9 +77,15 @@ const AddCategoryForm = () => {
     if (e.target.files && e.target.files.length > 0) {
       setIsImageProcessing(true);
       const webPImage = await convertToWebP(e.target.files[0]);
-      webPImage ? setSelectedImage(webPImage) : dispatch(setNotification({ message: "No se pudo comprimir la imagen", type: "error" }));
+      webPImage
+        ? setSelectedImage(webPImage)
+        : dispatch(
+            setNotification({
+              message: "No se pudo comprimir la imagen",
+              type: "error",
+            })
+          );
       setIsImageProcessing(false);
-
     }
   };
 
@@ -91,19 +95,20 @@ const AddCategoryForm = () => {
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-500 tracking-wide">
-              Nombre de la Categoría:
+              Nombre de la Marca:
             </label>
             <input
               type="text"
-              value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
+              value={brandName}
+              onChange={(e) => setBrandName(e.target.value)}
               className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
-              placeholder="Nombre de la Categoría"
+              placeholder="Nombre de la Marca"
             />
           </div>
+
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-500 tracking-wide">
-              Imagen de la Categoría:
+              Imagen de la Marca:
             </label>
             <input
               type="file"
@@ -112,18 +117,17 @@ const AddCategoryForm = () => {
               className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
             />
             {selectedImage && !isImageProcessing && (
-              <p className="text-sm mt-2">
-                Archivo seleccionado: {selectedImage.name} <span role="img" aria-label="checked">✅</span>
-              </p>
+              <p className="text-sm mt-2">Archivo seleccionado: {selectedImage.name}</p>
             )}
           </div>
+
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isImageProcessing}
             className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                         font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
           >
-            {isSubmitting || isImageProcessing ? <Spinner /> : "Guardar Categoría"}
+            {isSubmitting || isImageProcessing ? <Spinner /> : "Guardar Marca"}
           </button>
         </form>
       </div>
@@ -131,4 +135,5 @@ const AddCategoryForm = () => {
   );
 };
 
-export default AddCategoryForm;
+export default AddBrandForm;
+

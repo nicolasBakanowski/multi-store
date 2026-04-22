@@ -8,6 +8,7 @@ import { convertToWebP } from "@/utils/ImageConversor";
 import { setNotification } from "@/redux/slices/notificationSlice";
 import { fetchAllCategories } from "@/app/actions/category";
 import { addProduct } from "@/app/actions/product";
+import { fetchAllBrands } from "@/app/actions/brand";
 
 const AddProductForm: React.FC = () => {
   const [charCount, setCharCount] = useState(0);
@@ -18,9 +19,11 @@ const AddProductForm: React.FC = () => {
   const [costPrice, setCostPrice] = useState(""); // Nuevo estado para costPrice
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(0);
+  const [selectedBrand, setSelectedBrand] = useState<number | undefined>(0);
   const [isImageProcessing, setIsImageProcessing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
 
   const dispatch = useDispatch();
   const userToken = useSelector((state: RootState) => state.user.token);
@@ -32,6 +35,17 @@ const AddProductForm: React.FC = () => {
         setCategories(Array.isArray(data) ? data : []);
       } catch {
         setCategories([]);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchAllBrands();
+        setBrands(Array.isArray(data) ? data : []);
+      } catch {
+        setBrands([]);
       }
     })();
   }, []);
@@ -49,26 +63,68 @@ const AddProductForm: React.FC = () => {
     setSelectedCategory(parseInt(e.target.value, 10));
   };
 
+  const handleBrandChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedBrand(parseInt(e.target.value, 10));
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userToken) {
-      console.error("No se pudo agregar el producto debe volver a autenticarse");
+      dispatch(
+        setNotification({
+          message: "Tenés que volver a iniciar sesión.",
+          type: "error",
+        })
+      );
       return;
     }
     if (selectedCategory === 0) {
-      console.warn("Por favor, seleccione una categoría válida.");
+      dispatch(
+        setNotification({
+          message: "Por favor, seleccione una categoría válida.",
+          type: "error",
+        })
+      );
+      return;
+    }
+    if (selectedBrand === 0) {
+      dispatch(
+        setNotification({
+          message: "Por favor, seleccione una marca válida.",
+          type: "error",
+        })
+      );
+      return;
+    }
+    if (!productName.trim() || !productDescription.trim()) {
+      dispatch(
+        setNotification({
+          message: "Nombre y descripción son obligatorios.",
+          type: "error",
+        })
+      );
+      return;
+    }
+    if (!selectedImage || isImageProcessing) {
+      dispatch(
+        setNotification({
+          message: "La imagen del producto es obligatoria.",
+          type: "error",
+        })
+      );
       return;
     }
 
     const formData = new FormData();
-    formData.append("name", productName);
-    formData.append("description", productDescription);
+    formData.append("name", productName.trim());
+    formData.append("description", productDescription.trim());
     formData.append("stock", productStock);
     formData.append("price", productPrice);
     formData.append("costPrice", costPrice); // Agregar costPrice al FormData
 
     formData.append("categoryId", selectedCategory !== undefined ? selectedCategory.toString() : "");
+    formData.append("brandId", selectedBrand !== undefined ? selectedBrand.toString() : "");
 
     if (selectedImage) {
       formData.append("productImage", selectedImage);
@@ -85,8 +141,20 @@ const AddProductForm: React.FC = () => {
       setCostPrice(""); // Resetear costPrice
       setSelectedImage(null);
       setSelectedCategory(undefined);
+      setSelectedBrand(undefined);
+      dispatch(
+        setNotification({
+          message: "Producto creado con éxito.",
+          type: "success",
+        })
+      );
     } catch (error) {
-      console.error("Error al agregar el producto:", error);
+      dispatch(
+        setNotification({
+          message: "No se pudo crear el producto.",
+          type: "error",
+        })
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -188,6 +256,25 @@ const AddProductForm: React.FC = () => {
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Brand Selection */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-gray-500 tracking-wide">
+              Marca del Producto:
+            </label>
+            <select
+              value={selectedBrand}
+              onChange={handleBrandChange}
+              className="text-base p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-indigo-500"
+            >
+              <option value={0}>Seleccione una marca</option>
+              {brands.map((brand) => (
+                <option key={brand.id} value={brand.id}>
+                  {brand.name}
                 </option>
               ))}
             </select>

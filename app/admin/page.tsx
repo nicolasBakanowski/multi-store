@@ -7,12 +7,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RootState } from "@/redux/store";
 import AddProductForm from "@/components/AddProductForm";
 import AddCategoryForm from "@/components/AddCategoryForm";
+import AddBrandForm from "@/components/AddBrandForm";
 import Notification from "@/components/Notification";
 import { adminChangeForm } from "@/animations/adminChargeForm";
 
 export default function AdminPage() {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
-  const [selectedOption, setSelectedOption] = useState("category");
+  const [selectedOption, setSelectedOption] = useState<
+    "category" | "product" | "brand"
+  >("category");
 
   if (userRole !== 1 && userRole !== 4)
     return <div>No tienes acceso a esta página.</div>;
@@ -35,10 +38,20 @@ export default function AdminPage() {
             selectedOption === "product"
               ? "bg-green-500 text-white"
               : "bg-white text-gray-700"
-          } px-4 py-2 rounded-r-full focus:outline-none`}
+          } px-4 py-2 focus:outline-none`}
           onClick={() => setSelectedOption("product")}
         >
           Quiero cargar un producto
+        </button>
+        <button
+          className={`${
+            selectedOption === "brand"
+              ? "bg-green-500 text-white"
+              : "bg-white text-gray-700"
+          } px-4 py-2 rounded-r-full focus:outline-none`}
+          onClick={() => setSelectedOption("brand")}
+        >
+          Quiero cargar una marca
         </button>
       </div>
       <AnimatePresence mode="wait">
@@ -50,11 +63,9 @@ export default function AdminPage() {
           exit="exit"
         >
           <div>
-            {selectedOption === "category" ? (
-              <AddCategoryForm />
-            ) : (
-              <AddProductForm />
-            )}
+            {selectedOption === "category" && <AddCategoryForm />}
+            {selectedOption === "product" && <AddProductForm />}
+            {selectedOption === "brand" && <AddBrandForm />}
           </div>
         </motion.div>
       </AnimatePresence>

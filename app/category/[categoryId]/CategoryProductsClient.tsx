@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 
 import { productAnimation } from "@/animations/productAnimation";
 import ProductCard from "@/components/ProductCard";
@@ -11,17 +12,41 @@ import Notification from "@/components/Notification";
 import { RootState } from "@/redux/store";
 import { editProduct } from "@/app/actions/product";
 import type { Product } from "@/interfaces/Products";
+import type { Brand } from "@/app/actions/brand";
 
 export default function CategoryProductsClient({
   initialProducts,
+  brands,
+  initialQuery,
+  initialBrandId,
 }: {
   initialProducts: Product[];
+  brands: Brand[];
+  initialQuery: string;
+  initialBrandId: string;
 }) {
   const userToken = useSelector((s: RootState) => s.user.token);
   const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [query, setQuery] = useState(initialQuery);
+  const [brandId, setBrandId] = useState(initialBrandId);
   const [editModalStates, setEditModalStates] = useState<Record<number, boolean>>(
     {}
   );
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
+
+  useEffect(() => {
+    setBrandId(initialBrandId);
+  }, [initialBrandId]);
 
   const productsById = useMemo(() => {
     const m = new Map<number, Product>();
@@ -41,6 +66,48 @@ export default function CategoryProductsClient({
   return (
     <div>
       <main className="container mx-auto mr-5">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-end mb-5">
+          <div className="flex-1">
+            <label className="block text-sm font-medium mb-1">Buscar</label>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar por nombre o descripción…"
+              className="w-full rounded-lg border px-3 py-2"
+            />
+          </div>
+          <div className="min-w-[220px]">
+            <label className="block text-sm font-medium mb-1">Marca</label>
+            <select
+              value={brandId}
+              onChange={(e) => setBrandId(e.target.value)}
+              className="w-full rounded-lg border px-3 py-2"
+            >
+              <option value="">Todas</option>
+              {brands.map((b) => (
+                <option key={b.id} value={String(b.id)}>
+                  {b.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <button
+              type="button"
+              onClick={() => {
+                const qs = new URLSearchParams();
+                if (query.trim()) qs.set("q", query.trim());
+                if (brandId) qs.set("brandId", brandId);
+                const url = qs.toString() ? `${pathname}?${qs.toString()}` : pathname;
+                router.replace(url);
+              }}
+              className="rounded-lg bg-verde text-white px-4 py-2 font-medium"
+            >
+              Buscar
+            </button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {products.map((product: Product) => (
             <motion.div

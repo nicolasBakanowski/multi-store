@@ -6,6 +6,7 @@ export interface Product {
   stock: number;
   imageUrl: string;
   categoryId: number;
+  brandId?: number;
   available: boolean;
   costPrice: number;  // Nuevo campo
 }
