@@ -12,6 +12,7 @@ import { RootState } from "@/redux/store";
 const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
+  const [imgSrc, setImgSrc] = useState(product.imageUrl);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [showAnimation, setShowAnimation] = useState(false);
 
@@ -47,11 +48,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
       <Link href={`/product/${product.id}`}>
         <button onClick={() => handleProductClick(product)} className="flex">
           <Image
-            src={product.imageUrl}
+            src={imgSrc}
             alt={product.name}
             width={190}
             height={130}
-            className="h-45 w-45 h-[195px] object-cover rounded-l-xl "
+            className="h-45 w-45 h-[195px] object-cover rounded-l-xl"
+            onError={() => setImgSrc("/pinta-bien.png")}
           />
         </button>
       </Link>

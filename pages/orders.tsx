@@ -35,15 +35,21 @@ function OrdersPage({ socket }: any) {
   const orders = useSelector((state: RootState) => state.order);
   const status = useSelector((state: RootState) => state.status);
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
-
+  const token = useSelector((state: RootState) => state.user.token);
 
   const handleConfirmOrder = async (orderId: number, OrderStatus: number) => {
-    const order = await changeStatusOrder(orderId, OrderStatus);
+    if (!token) return;
+    const order = await changeStatusOrder(orderId, OrderStatus, token);
     dispatch(nextOrderStatus(order) as any);
   };
 
   const handleRejectOrder = async (orderId: number) => {
-    const order = await changeStatusOrder(orderId, ORDER_STATUS_REJECTED);
+    if (!token) return;
+    const order = await changeStatusOrder(
+      orderId,
+      ORDER_STATUS_REJECTED,
+      token
+    );
     dispatch(nextOrderStatus(order) as any);
   };
 

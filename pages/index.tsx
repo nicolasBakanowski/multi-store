@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../redux/actions/categoryAction";
 import { RootState } from "../redux/store";
@@ -8,6 +8,21 @@ import Spinner from "@/components/Spinner";
 import { motion } from 'framer-motion';
 import { categoryAnimation } from "@/animations/categoryAnimation";
 
+
+const CategoryImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+  return (
+    <Image
+      className="w-full h-40 object-cover transition-transform group-hover:scale-105"
+      src={imgSrc}
+      alt={alt}
+      width={144}
+      height={160}
+      priority
+      onError={() => setImgSrc("/pinta-bien.png")}
+    />
+  );
+};
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -40,13 +55,7 @@ const HomePage: React.FC = () => {
               className="w-full h-40"
             >
               <div>
-                <Image className="w-full h-40 object-cover transition-transform group-hover:scale-105"
-                  src={category.imageUrl}
-                  alt={category.name}
-                  width={144}
-                  height={160}
-                  priority
-                />
+                <CategoryImage src={category.imageUrl} alt={category.name} />
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-center">
                   <h1 className="font-bold text-2xl group-hover:text-3xl">
                     {category.name}

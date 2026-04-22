@@ -7,7 +7,7 @@ export const loginAction =
   (loginData: LoginData) => async (dispatch: Dispatch) => {
     try {
       const response = await axios.post("/user/login", loginData);
-      const { user, token } = response.data.token;
+      const { user, token } = response.data;
       dispatch(setUserInfoAndToken({ user, token }));
       dispatch(clearNotification()); // Clear error on successful login
       return true;
