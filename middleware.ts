@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 const PROTECTED_ADMIN_PREFIXES = ["/admin", "/orders"];
+const ADMIN_LIKE_ROLE_IDS = new Set([1, 4]);
 
 async function verifyToken(token: string) {
   const secret = process.env.JWT_SECRET || process.env.SECRET_KEY;
@@ -33,7 +34,7 @@ export async function middleware(req: NextRequest) {
   if (!payload) return NextResponse.next();
 
   if (pathname.startsWith("/admin") || pathname.startsWith("/orders")) {
-    if (payload.roleId !== 1) {
+    if (!ADMIN_LIKE_ROLE_IDS.has(Number(payload.roleId))) {
       const url = req.nextUrl.clone();
       url.pathname = "/";
       return NextResponse.redirect(url);

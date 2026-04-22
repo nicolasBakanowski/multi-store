@@ -6,13 +6,18 @@ interface DeliveryFormProps {
     phone: string;
     address: string;
   };
-  setFormData: (formData: {
+  setFormData: (data: {
     name: string;
     phone: string;
     address: string;
   }) => void;
   onDeliveryMethodChange: (method: string) => void;
 }
+
+const METHODS = [
+  { value: "pickup", label: "Retirar en el Local" },
+  { value: "delivery", label: "Envío a Domicilio" },
+];
 
 const DeliveryForm: React.FC<DeliveryFormProps> = ({
   formData,
@@ -21,128 +26,93 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
 }) => {
   const [deliveryMethod, setDeliveryMethod] = useState("pickup");
 
-  const handleDeliveryMethodChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const selectedMethod = event.target.value;
-    setDeliveryMethod(selectedMethod);
-    onDeliveryMethodChange(selectedMethod);
-
-    // Reset formData when the delivery method changes
-    setFormData({
-      name: "",
-      phone: "",
-      address: "",
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.value;
+    setDeliveryMethod(selected);
+    onDeliveryMethodChange(selected);
+    setFormData({ name: "", phone: "", address: "" });
   };
 
+  const inputClass =
+    "mt-1 w-full px-3 py-2.5 bg-crema border border-crema-dark rounded-lg text-carbon text-sm placeholder-carbon/30 focus:outline-none focus:border-verde transition-colors";
+
+  const labelClass =
+    "text-xs font-medium text-carbon/50 uppercase tracking-wide block mb-1";
+
   return (
-    <div className="bg-white p-6 rounded-md shadow-md mt-4">
-      <h2 className="text-lg font-semibold mb-4">Método de Entrega</h2>
-      <div className="flex items-center mb-4">
-        <div className="mr-4">
-          <input
-            type="radio"
-            id="pickup"
-            name="deliveryMethod"
-            value="pickup"
-            checked={deliveryMethod === "pickup"}
-            onChange={handleDeliveryMethodChange}
-            className="hidden"
-          />
+    <div className="bg-white border border-crema-dark rounded-xl p-5 shadow-sm">
+      <h2 className="font-display text-xl text-carbon mb-4">
+        Método de Entrega
+      </h2>
+
+      <div className="flex gap-3 mb-5">
+        {METHODS.map(({ value, label }) => (
           <label
-            htmlFor="pickup"
-            className={`cursor-pointer text-sm font-medium ${
-              deliveryMethod === "pickup"
-                ? "bg-green-500 text-white rounded-full px-4 py-2"
-                : "bg-gray-300 text-gray-700 rounded-full px-4 py-2"
+            key={value}
+            htmlFor={value}
+            className={`flex-1 flex items-center justify-center py-2.5 rounded-lg border cursor-pointer text-sm font-medium transition-all ${
+              deliveryMethod === value
+                ? "bg-verde text-crema border-verde"
+                : "bg-crema text-carbon/60 border-crema-dark hover:border-verde/40"
             }`}
           >
-            Retirar en el Local
+            <input
+              type="radio"
+              id={value}
+              name="deliveryMethod"
+              value={value}
+              checked={deliveryMethod === value}
+              onChange={handleChange}
+              className="sr-only"
+            />
+            {label}
           </label>
-        </div>
-        <div>
-          <input
-            type="radio"
-            id="delivery"
-            name="deliveryMethod"
-            value="delivery"
-            checked={deliveryMethod === "delivery"}
-            onChange={handleDeliveryMethodChange}
-            className="hidden"
-          />
-          <label
-            htmlFor="delivery"
-            className={`cursor-pointer text-sm font-medium ${
-              deliveryMethod === "delivery"
-                ? "bg-green-500 text-white rounded-full px-4 py-2"
-                : "bg-gray-300 text-gray-700 rounded-full px-4 py-2"
-            }`}
-          >
-            Envío a Domicilio
-          </label>
-        </div>
+        ))}
       </div>
 
-      {/* Mostrar campos adicionales según el método de entrega */}
       {deliveryMethod === "pickup" && (
-        <div className="mb-4">
-          <label htmlFor="name" className="text-sm font-medium text-gray-700">
-            Nombre:
-          </label>
+        <div>
+          <label className={labelClass}>Nombre</label>
           <input
             type="text"
-            id="name"
-            name="name"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            onChange={(e) =>
+              setFormData({ ...formData, name: e.target.value })
+            }
+            className={inputClass}
+            placeholder="Tu nombre"
             required
           />
         </div>
       )}
+
       {deliveryMethod === "delivery" && (
-        <div>
-          <div className="mb-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="mb-4">
-                <label
-                  htmlFor="phoneNumber"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Teléfono:
-                </label>
-                <input
-                  type="tel"
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="address"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Dirección:
-                </label>
-                <input
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={(e) =>
-                    setFormData({ ...formData, address: e.target.value })
-                  }
-                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                  required
-                />
-              </div>
-            </div>
+        <div className="space-y-4">
+          <div>
+            <label className={labelClass}>Teléfono</label>
+            <input
+              type="tel"
+              value={formData.phone}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
+              className={inputClass}
+              placeholder="+54 9 ..."
+              required
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Dirección</label>
+            <input
+              type="text"
+              value={formData.address}
+              onChange={(e) =>
+                setFormData({ ...formData, address: e.target.value })
+              }
+              className={inputClass}
+              placeholder="Calle, número, piso..."
+              required
+            />
           </div>
         </div>
       )}

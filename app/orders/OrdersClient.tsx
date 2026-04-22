@@ -55,7 +55,7 @@ export default function OrdersClient({
     [orders, selectedStatus]
   );
 
-  if (userRole !== 1) {
+  if (userRole !== 1 && userRole !== 4) {
     return <div>No tienes acceso a esta página.</div>;
   }
 

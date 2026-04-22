@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaCheck } from "react-icons/fa"; // Único ícono necesario
+import { FaCheck } from "react-icons/fa";
+
+interface CartLinkProps {
+  itemCount: number;
+}
 
 const CartLink = ({ itemCount }: CartLinkProps) => {
-  const [showLink, setShowLink] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setShowLink(true);
-    }, 300);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    const timeout = setTimeout(() => setVisible(true), 300);
+    return () => clearTimeout(timeout);
   }, []);
 
-  const buttonClassName = `bg-green-500 text-white py-2 ${showLink ? "opacity-100 hover:shadow-md" : "opacity-70 hover:opacity-100"
-    } transition-opacity duration-500 ease-in-out cursor-pointer`;
-
   return (
-    <div className={buttonClassName}>
+    <div
+      className={`bg-ambar transition-opacity duration-500 ${
+        visible ? "opacity-100" : "opacity-70"
+      }`}
+    >
       <Link href="/checkout" className="block">
-        <button className="w-full h-12 flex items-center justify-center space-x-2">
-          <FaCheck />
-          <span className="text-lg">Confirmar Compra ({itemCount} Productos)</span>
+        <button className="w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-sm">
+          <FaCheck size={13} />
+          <span>
+            Confirmar Compra · {itemCount}{" "}
+            {itemCount === 1 ? "producto" : "productos"}
+          </span>
         </button>
       </Link>
     </div>
   );
 };
-
-interface CartLinkProps {
-  itemCount: number;
-}
 
 export default CartLink;

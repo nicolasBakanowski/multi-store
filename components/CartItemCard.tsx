@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { removeItem, discountProduct } from "@/redux/slices/cartSlice";
 import { CartItem } from "@/interfaces/Cart";
-import { FiX, FiMinus, FiPlus } from "react-icons/fi";
+import { FiX, FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 
 const CartItemCard: React.FC<{ cartItem: CartItem }> = ({ cartItem }) => {
   const dispatch = useDispatch();
@@ -19,16 +19,12 @@ const CartItemCard: React.FC<{ cartItem: CartItem }> = ({ cartItem }) => {
   };
 
   const handleConfirmRemove = () => {
-    if (quantityToRemove > 0) {
-      if (quantityToRemove < cartItem.quantity) {
-        dispatch(
-          discountProduct({ id: cartItem.id, quantity: quantityToRemove })
-        );
-      } else {
-        dispatch(removeItem(cartItem.id));
-      }
-      setIsModalOpen(false);
+    if (quantityToRemove >= cartItem.quantity) {
+      dispatch(removeItem(cartItem.id));
+    } else {
+      dispatch(discountProduct({ id: cartItem.id, quantity: quantityToRemove }));
     }
+    setIsModalOpen(false);
   };
 
   const handleRemoveAll = () => {
@@ -40,81 +36,93 @@ const CartItemCard: React.FC<{ cartItem: CartItem }> = ({ cartItem }) => {
     <div className="relative">
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          {/* Fondo semi-transparente */}
-          <div className="fixed inset-0 bg-black opacity-50"></div>
-          <div className="bg-white p-4 rounded-lg shadow-md relative text-center">
-            <h2 className="text-lg font-semibold mb-2">Eliminar del Carro</h2>
-            <p className="text-sm mb-4">¿Cuántos productos deseas eliminar?</p>
-            <div className="flex items-center justify-center mb-4">
-              <button
-                onClick={() => {
-                  if (quantityToRemove > 1) {
-                    setQuantityToRemove(quantityToRemove - 1);
-                  }
-                }}
-                className="text-gray-600 hover:text-gray-800 focus:outline-none text-2xl"
-              >
-                <FiMinus />
-              </button>
-              <span className="text-2xl mx-4">{quantityToRemove}</span>
-              <button
-                onClick={() => {
-                  if (quantityToRemove < cartItem.quantity) {
-                    setQuantityToRemove(quantityToRemove + 1);
-                  }
-                }}
-                className="text-gray-600 hover:text-gray-800 focus:outline-none text-2xl"
-              >
-                <FiPlus />
-              </button>
-            </div>
-            <button
-              onClick={handleConfirmRemove}
-              className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 mr-2"
-            >
-              Eliminar {quantityToRemove}
-            </button>
-            <button
-              onClick={handleRemoveAll}
-              className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600"
-            >
-              Eliminar Todos
-            </button>
+          <div
+            className="fixed inset-0 bg-carbon/60"
+            onClick={() => setIsModalOpen(false)}
+          />
+          <div className="bg-white rounded-2xl shadow-xl p-6 relative text-center max-w-xs w-full mx-4 z-10">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-0 right-0 mt-2 mr-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+              className="absolute top-3 right-3 text-carbon/30 hover:text-carbon transition-colors"
             >
-              <FiX />
+              <FiX size={18} />
             </button>
+            <h2 className="font-display text-xl text-carbon mb-1">
+              Quitar del carrito
+            </h2>
+            <p className="text-carbon/40 text-sm mb-5">
+              ¿Cuántos {cartItem.name} querés quitar?
+            </p>
+            <div className="flex items-center justify-center gap-4 mb-5">
+              <button
+                onClick={() =>
+                  setQuantityToRemove(Math.max(1, quantityToRemove - 1))
+                }
+                className="w-9 h-9 rounded-full border border-crema-dark hover:border-verde text-carbon flex items-center justify-center transition-colors"
+              >
+                <FiMinus size={14} />
+              </button>
+              <span className="text-2xl font-semibold tabular-nums text-carbon w-8 text-center">
+                {quantityToRemove}
+              </span>
+              <button
+                onClick={() =>
+                  setQuantityToRemove(
+                    Math.min(cartItem.quantity, quantityToRemove + 1)
+                  )
+                }
+                className="w-9 h-9 rounded-full border border-crema-dark hover:border-verde text-carbon flex items-center justify-center transition-colors"
+              >
+                <FiPlus size={14} />
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleConfirmRemove}
+                className="flex-1 bg-ambar text-white py-2 rounded-xl text-sm font-semibold hover:bg-ambar-dark transition-colors"
+              >
+                Quitar {quantityToRemove}
+              </button>
+              <button
+                onClick={handleRemoveAll}
+                className="flex-1 bg-carbon text-crema py-2 rounded-xl text-sm font-semibold hover:bg-carbon-light transition-colors"
+              >
+                Quitar todos
+              </button>
+            </div>
           </div>
         </div>
       )}
-      <div className="w-full bg-gray-900 flex-grow shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl flex">
-        <div onClick={handleRemoveFromCart} className="flex">
+
+      <div className="bg-white border border-crema-dark rounded-xl overflow-hidden flex shadow-sm hover:shadow-md transition-shadow duration-300">
+        <div className="shrink-0">
           <Image
             src={cartItem.imageUrl}
             alt={cartItem.name}
-            width={190}
-            height={130}
-            className="h-45 w-45 h-[195px] object-cover rounded-l-xl "
+            width={100}
+            height={100}
+            className="w-24 h-24 object-cover"
           />
         </div>
-        <div className="px-4 py-3 w-2/3">
-          <h3 className="text-white text-lg font-semibold mb-1 text-left">
-            {cartItem.name}
-          </h3>
-          <p className="text-gray-300 text-sm mb-2 text-left">
-            Cantidad en carrito: {cartItem.quantity}
-          </p>
-          <p className="text-gray-300 text-sm text-left">
-            Total: ${(cartItem.price * cartItem.quantity).toFixed(2)}
-          </p>
-          <div className="flex justify-end mt-12 text-left">
+        <div className="flex-1 px-4 py-3 flex flex-col justify-between min-w-0">
+          <div>
+            <h3 className="font-display text-carbon text-base leading-snug mb-0.5 truncate">
+              {cartItem.name}
+            </h3>
+            <p className="text-carbon/40 text-xs">
+              Cantidad: {cartItem.quantity}
+            </p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-ambar font-bold tabular-nums">
+              ${(cartItem.price * cartItem.quantity).toFixed(2)}
+            </p>
             <button
               onClick={handleRemoveFromCart}
-              className="bg-red-500 text-white py-2 px-3 rounded hover:bg-red-600 focus:outline-none"
+              className="flex items-center gap-1.5 text-carbon/30 hover:text-red-500 transition-colors text-xs"
             >
-              Quitar del Carro
+              <FiTrash2 size={13} />
+              <span>Quitar</span>
             </button>
           </div>
         </div>

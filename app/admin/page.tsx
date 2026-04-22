@@ -14,7 +14,8 @@ export default function AdminPage() {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
   const [selectedOption, setSelectedOption] = useState("category");
 
-  if (userRole !== 1) return <div>No tienes acceso a esta página.</div>;
+  if (userRole !== 1 && userRole !== 4)
+    return <div>No tienes acceso a esta página.</div>;
 
   return (
     <section className="flex flex-col items-center h-screen">

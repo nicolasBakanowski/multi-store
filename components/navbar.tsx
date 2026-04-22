@@ -16,9 +16,9 @@ import {
   MdWork,
   MdList,
   MdExitToApp,
-  MdIron,
+  MdSettings,
+  MdLocationOn,
   MdMenu,
-  MdShoppingCart,
 } from "react-icons/md";
 
 const Navbar = () => {
@@ -30,159 +30,161 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isIndexPage = pathname === "/";
-  const cartItems = useSelector((state: RootState) => state.cart.length);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const openMenu = () => {
-    setMenuOpen(true);
-  };
+  const toggleMenu = () => setMenuOpen((v) => !v);
 
   return (
-    <nav className="bg-violet-950 text-slate-300 px-8 flex justify-between items-center relative">
-      {/* Fondo oscuro */}
+    <nav className="bg-verde text-crema px-6 flex justify-between items-center relative h-16">
       {menuOpen && (
-        <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+        <div
+          className="fixed inset-0 bg-carbon/60 z-40"
+          onClick={toggleMenu}
+        />
       )}
 
       {!isIndexPage ? (
-        <button onClick={() => router.back()}>
-          <div className="flex items-center ">
-            <Image src={BackIcon} alt="Back Icon" className="h-6 w-6 " />
-            <span>Volver</span>
-          </div>
+        <button
+          onClick={() => router.back()}
+          className="flex items-center gap-1.5 text-crema/70 hover:text-crema transition-colors text-sm"
+        >
+          <Image src={BackIcon} alt="Volver" className="h-4 w-4 invert opacity-70" />
+          <span>Volver</span>
         </button>
       ) : (
-        <button>
-          <div className="flex items-center px-9"></div>
-        </button>
+        <div className="w-16" />
       )}
-      <div className="flex  items-center box-decoration-slice justify-center">
+
+      <div className="absolute left-1/2 -translate-x-1/2">
         <Link href="/">
-          <div className="w-24 h-24">
-            <Image src="/pinta-bien.png" alt="Pinta Bien" width={300} height={300} />
+          <div className="w-11 h-11">
+            <Image
+              src="/pinta-bien.png"
+              alt="Pinta Bien"
+              width={44}
+              height={44}
+              className="object-contain"
+            />
           </div>
         </Link>
       </div>
-      <div className="flex items-center space-x-5">
-        <Link href="/cart">
-          <div className="text-2xl font-bold flex items-center space-x-1">
-            <CartIcon />
-          </div>
-        </Link>
+
+      <div className="flex items-center gap-4">
+        <CartIcon />
+
         {userName ? (
-          <div className="relative inline-block text-left z-50">
+          <div className="relative z-50">
             <button
-              className="text-white focus:outline-none"
+              className="text-crema/70 hover:text-crema transition-colors"
               onClick={toggleMenu}
             >
-              <div className="flex items-center space-x-1" onClick={openMenu}>
-                <MdMenu size={40} className="pt-2" />
-              </div>
+              <MdMenu size={26} />
             </button>
+
             <div
-              className={`${menuOpen ? "translate-x-0" : "translate-x-full"
-                } fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-4 transform transition-transform ease-in-out duration-300 z-50`}
+              className={`${
+                menuOpen ? "translate-x-0" : "translate-x-full"
+              } fixed top-0 right-0 h-full w-72 bg-white shadow-2xl p-6 transform transition-transform ease-in-out duration-300 z-50 flex flex-col`}
             >
-              <div className="flex items-center pb-6">
-                <span className="text-gray-950">{userName}</span>
-                <button className="text-gray-700 pl-10" onClick={toggleMenu}>
-                  <MdClose size={24} />
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <p className="text-xs text-carbon/40 uppercase tracking-widest mb-0.5">
+                    Hola,
+                  </p>
+                  <p className="font-display text-xl text-carbon">{userName}</p>
+                </div>
+                <button
+                  className="text-carbon/30 hover:text-carbon transition-colors p-1"
+                  onClick={toggleMenu}
+                >
+                  <MdClose size={20} />
                 </button>
               </div>
 
-              <ul>
-                <li className="mb-2">
+              <div className="h-px bg-crema-dark mb-4" />
+
+              <ul className="space-y-0.5 flex-1">
+                <li>
                   <button
-                    className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
-                    onClick={() => {
-                      router.push("/configuracion");
-                      toggleMenu();
-                    }}
-                  >
-                    <MdIron size={20} />{" "}
-                    <span>Configuración</span>
-                  </button>
-                </li>
-                <li className="mb-2">
-                  <button
-                    className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
+                    className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
                     onClick={() => {
                       router.push("/donde-nos-encontramos");
                       toggleMenu();
                     }}
                   >
-                    <MdIron size={20} /> <span>Dónde nos encontramos</span>
+                    <MdLocationOn size={17} />
+                    <span>Dónde nos encontramos</span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
+                    onClick={() => {
+                      router.push("/configuracion");
+                      toggleMenu();
+                    }}
+                  >
+                    <MdSettings size={17} />
+                    <span>Configuración</span>
                   </button>
                 </li>
 
-                {userRole === 1 && (
-                  <li className="mb-2  py-2 border-t border-gray-300 my-5">
-                    <button
-                      className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg"
-                      onClick={() => {
-                        router.push("/admin");
-                        toggleMenu();
-                      }}
-                    >
-                      <MdWork size={20} />
-                      <span>Panel de Carga</span>
-                    </button>
-                  </li>
+                {(userRole === 1 || userRole === 4) && (
+                  <>
+                    <div className="h-px bg-crema-dark my-3" />
+                    <li>
+                      <button
+                        className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
+                        onClick={() => {
+                          router.push("/admin");
+                          toggleMenu();
+                        }}
+                      >
+                        <MdWork size={17} />
+                        <span>Panel de Carga</span>
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
+                        onClick={() => {
+                          router.push("/orders");
+                          toggleMenu();
+                        }}
+                      >
+                        <MdList size={17} />
+                        <span>Manejo de Órdenes</span>
+                      </button>
+                    </li>
+                  </>
                 )}
-                {userRole === 1 && (
-                  <li className="mb-2">
-                    <button
-                      className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2  rounded-lg"
-                      onClick={() => {
-                        router.push("/orders");
-                        toggleMenu();
-                      }}
-                    >
-                      <MdList size={20} />
-                      <span>Manejo de Ordenes</span>
-                    </button>
-                  </li>
-                )}
-                {userRole === 1 && (
-                  <li className="mb-2">
-                    <button
-                      className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 py-2  rounded-lg"
-                      onClick={() => {
-                        router.push("/orders");
-                        toggleMenu();
-                      }}
-                    >
-                      <MdList size={20} />
-                      <span>Productos deshabilitados</span>
-                    </button>
-                  </li>
-                )}
-                <div className="border-t border-gray-300 my-4"></div>
+
+                <div className="h-px bg-crema-dark my-3" />
 
                 <li>
                   <button
-                    className="flex items-center space-x-2 text-red-600 hover:bg-gray-100 py-2 px-3 rounded-lg"
+                    className="flex items-center gap-3 text-red-400 hover:text-red-600 hover:bg-red-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
                     onClick={() => {
                       dispatch(logout());
+                      toggleMenu();
                     }}
                   >
-                    <MdExitToApp size={20} />
+                    <MdExitToApp size={17} />
                     <span>Cerrar Sesión</span>
                   </button>
                 </li>
               </ul>
+
+              <div className="mt-auto pt-4 border-t border-crema-dark">
+                <p className="text-xs text-carbon/30 text-center">Pinta Bien · Bebidas</p>
+              </div>
             </div>
           </div>
         ) : (
-          <Link href="/login" className="block md:inline">
-            <button className="text-white focus:outline-none">
-              <div className="flex items-center space-x-1">
-                <span>Login</span>
-              </div>
-            </button>
+          <Link
+            href="/login"
+            className="text-crema/70 hover:text-crema text-sm transition-colors"
+          >
+            Ingresar
           </Link>
         )}
       </div>
@@ -192,19 +194,15 @@ const Navbar = () => {
 
 const NavbarWithCartButton = () => {
   const cartItems = useSelector((state: RootState) => state.cart.length);
-  const router = useRouter();
   const pathname = usePathname();
   const isCartPage = pathname === "/cart";
 
   return (
     <div>
       <Navbar />
-      {isCartPage && cartItems > 0 && (
-        <CartLink itemCount={cartItems} />
-      )}
+      {isCartPage && cartItems > 0 && <CartLink itemCount={cartItems} />}
     </div>
   );
 };
 
 export default NavbarWithCartButton;
-

@@ -23,9 +23,14 @@ export default function CheckoutPage() {
   const cartItems = useSelector((state: RootState) => state.cart);
 
   const totalAmount = cartItems.reduce(
-    (total: number, item) => total + item.price * item.quantity,
+    (total, item) => total + item.price * item.quantity,
     0
   );
+
+  const isDisabled =
+    (deliveryMethod === "delivery" &&
+      (!formData.phone || !formData.address)) ||
+    (deliveryMethod === "pickup" && !formData.name);
 
   const handleAddContact = async () => {
     setProcessing(true);
@@ -47,68 +52,76 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto py-8 px-2">
-        <h1 className="text-2xl font-semibold mb-4">Confirmar Pedido</h1>
+    <div className="min-h-screen pb-36">
+      <div className="max-w-2xl mx-auto py-2 px-2">
+        <h1 className="font-display text-3xl text-verde mb-6">
+          Confirmar Pedido
+        </h1>
+
         <DeliveryForm
-          onDeliveryMethodChange={(method: string) => setDeliveryMethod(method)}
+          onDeliveryMethodChange={(method) => setDeliveryMethod(method)}
           formData={formData}
           setFormData={setFormData}
         />
-        <div className="bg-white p-6 rounded-md shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Detalles del Pedido</h2>
-          <table className="w-full">
-            <thead className="border-b">
-              <tr>
-                <th className="py-2 text-left">Producto</th>
-                <th className="py-2 text-center">Cantidad</th>
-                <th className="py-2 text-center">Precio Unitario</th>
-                <th className="py-2 text-center">Precio Total</th>
+
+        <div className="bg-white border border-crema-dark rounded-xl p-5 mt-4 shadow-sm">
+          <h2 className="font-display text-xl text-carbon mb-4">Resumen</h2>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-crema-dark">
+                <th className="py-2 text-left font-medium text-carbon/40">
+                  Producto
+                </th>
+                <th className="py-2 text-center font-medium text-carbon/40">
+                  Cant.
+                </th>
+                <th className="py-2 text-right font-medium text-carbon/40">
+                  Total
+                </th>
               </tr>
             </thead>
             <tbody>
               {cartItems.map((item) => (
-                <tr key={item.id}>
-                  <td className="py-3">{item.name}</td>
-                  <td className="py-3 text-center">{item.quantity}</td>
-                  <td className="py-3 text-center">${item.price.toFixed(2)}</td>
-                  <td className="py-3 text-center">
+                <tr key={item.id} className="border-b border-crema-dark/50">
+                  <td className="py-3 text-carbon">{item.name}</td>
+                  <td className="py-3 text-center text-carbon/50 tabular-nums">
+                    {item.quantity}
+                  </td>
+                  <td className="py-3 text-right text-carbon tabular-nums font-medium">
                     ${(item.price * item.quantity).toFixed(2)}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <p className="text-xl font-semibold mt-4">
-            Total: ${totalAmount.toFixed(2)}
-          </p>
+          <div className="flex justify-between items-center mt-4 pt-4 border-t border-crema-dark">
+            <span className="text-carbon/50 text-sm">Total</span>
+            <span className="font-display text-2xl text-carbon tabular-nums">
+              ${totalAmount.toFixed(2)}
+            </span>
+          </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-100 py-4 px-4">
+
+      <div className="fixed bottom-0 left-0 right-0 bg-crema/95 backdrop-blur-sm border-t border-crema-dark px-4 py-4">
         {deliveryMethod === "delivery" && (
-          <p className="text-sm text-red-600 mt-2">
-            * Por favor, ingrese su número de teléfono y dirección para el envío
-            a domicilio.
+          <p className="text-xs text-carbon/40 mb-2">
+            * Ingresá tu teléfono y dirección para el envío a domicilio.
           </p>
         )}
         {deliveryMethod === "pickup" && (
-          <p className="text-sm text-red-600 mt-2">
-            * Por favor, ingrese su nombre para el retiro en el local.
+          <p className="text-xs text-carbon/40 mb-2">
+            * Ingresá tu nombre para el retiro en el local.
           </p>
         )}
         <button
           onClick={handleAddContact}
-          className={`${(deliveryMethod === "delivery" &&
-            (!formData.phone || !formData.address)) ||
-            (deliveryMethod === "pickup" && !formData.name)
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-green-500 hover:bg-green-600"
-            } text-white px-4 py-2 rounded-md mt-4 w-full`}
-          disabled={
-            (deliveryMethod === "delivery" &&
-              (!formData.phone || !formData.address)) ||
-            (deliveryMethod === "pickup" && !formData.name)
-          }
+          disabled={isDisabled || processing}
+          className={`w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+            isDisabled
+              ? "bg-crema-dark text-carbon/30 cursor-not-allowed"
+              : "bg-ambar text-white hover:bg-ambar-dark"
+          }`}
         >
           {processing ? <Spinner /> : "Realizar Pedido"}
         </button>
@@ -116,4 +129,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-
