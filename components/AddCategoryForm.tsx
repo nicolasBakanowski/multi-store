@@ -1,21 +1,23 @@
+"use client";
+
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory } from "@/redux/actions/categoryAction";
 import { RootState } from "@/redux/store";
 import { convertToWebP } from "../utils/ImageConversor"
 import Spinner from './Spinner';
 import { setNotification } from "@/redux/slices/notificationSlice";
+import { addCategory } from "@/app/actions/category";
 
 const AddCategoryForm = () => {
   const dispatch = useDispatch();
   const userToken = useSelector((state: RootState) => state.user.token);
-  const isLoading = useSelector((state: RootState) => state.loading.isLoading)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isImageProcessing, setIsImageProcessing] = useState(false);
 
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -26,12 +28,17 @@ const AddCategoryForm = () => {
 
     try {
       if (userToken) {
-        dispatch(addCategory({ categoryData: formData, userToken: userToken }) as any);
+        setIsSubmitting(true);
+        await addCategory({ categoryData: formData, token: userToken });
+        setCategoryName("");
+        setSelectedImage(null);
       } else {
         console.error("No se pudo agregar la categoría: token no disponible");
       }
     } catch (error) {
       console.error("Error al agregar la categoría:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -79,11 +86,11 @@ const AddCategoryForm = () => {
           </div>
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isSubmitting}
             className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                         font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
           >
-            {isLoading || isImageProcessing ? <Spinner /> : "Guardar Categoría"}
+            {isSubmitting || isImageProcessing ? <Spinner /> : "Guardar Categoría"}
           </button>
         </form>
       </div>

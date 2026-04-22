@@ -1,9 +1,11 @@
+"use client";
+
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 import BackIcon from "../public/back.svg";
 import CartLink from "./CartLink";
 import CartIcon from "./CartIcon";
@@ -26,7 +28,8 @@ const Navbar = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
-  const isIndexPage = router.pathname === "/";
+  const pathname = usePathname();
+  const isIndexPage = pathname === "/";
   const cartItems = useSelector((state: RootState) => state.cart.length);
 
   const toggleMenu = () => {
@@ -190,7 +193,8 @@ const Navbar = () => {
 const NavbarWithCartButton = () => {
   const cartItems = useSelector((state: RootState) => state.cart.length);
   const router = useRouter();
-  const isCartPage = router.pathname === "/cart";
+  const pathname = usePathname();
+  const isCartPage = pathname === "/cart";
 
   return (
     <div>

@@ -1,12 +1,13 @@
+"use client";
+
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/redux/store";
-import { useRouter } from "next/router";
-import { fetchCategories } from "@/redux/actions/categoryAction";
-import { addProduct } from "@/redux/actions/productAction";
+import { RootState } from "@/redux/store";
 import Spinner from "./Spinner";
 import { convertToWebP } from "@/utils/ImageConversor";
 import { setNotification } from "@/redux/slices/notificationSlice";
+import { fetchAllCategories } from "@/app/actions/category";
+import { addProduct } from "@/app/actions/product";
 
 const AddProductForm: React.FC = () => {
   const [charCount, setCharCount] = useState(0);
@@ -18,15 +19,21 @@ const AddProductForm: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(0);
   const [isImageProcessing, setIsImageProcessing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]);
 
-  const dispatch = useDispatch<AppDispatch>();
-  const categories = useSelector((state: RootState) => state.category.categories);
-  const router = useRouter();
+  const dispatch = useDispatch();
   const userToken = useSelector((state: RootState) => state.user.token);
-  const isLoading = useSelector((state: RootState) => state.loading.isLoading);
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    (async () => {
+      try {
+        const data = await fetchAllCategories();
+        setCategories(Array.isArray(data) ? data : []);
+      } catch {
+        setCategories([]);
+      }
+    })();
   }, []);
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +75,8 @@ const AddProductForm: React.FC = () => {
     }
 
     try {
-      await dispatch(addProduct({ productData: formData, token: userToken }));
+      setIsSubmitting(true);
+      await addProduct({ productData: formData, token: userToken });
       // Resetear los campos después de agregar el producto
       setProductName("");
       setProductDescription("");
@@ -79,6 +87,8 @@ const AddProductForm: React.FC = () => {
       setSelectedCategory(undefined);
     } catch (error) {
       console.error("Error al agregar el producto:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -202,12 +212,12 @@ const AddProductForm: React.FC = () => {
           </div>
           {/* Submit Button */}
           <button
-            disabled={isLoading}
+            disabled={isSubmitting}
             type="submit"
             className="w-full bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide
                       font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
           >
-            {isLoading || isImageProcessing ? <Spinner /> : "Guardar Producto"}
+            {isSubmitting || isImageProcessing ? <Spinner /> : "Guardar Producto"}
           </button>
         </form>
       </div>

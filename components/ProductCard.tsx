@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { ProductCardProps, Product } from "../interfaces/Products";
 import { setCurrentProduct } from "@/redux/slices/productSlice";

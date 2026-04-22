@@ -1,9 +1,11 @@
+"use client";
+
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { ProductEditModalProps, ProductEdit } from "@/interfaces/Products";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/redux/store";
-import { disableProduct } from "@/redux/actions/productAction";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { disableProduct } from "@/app/actions/product";
 
 const ProductEditModal: React.FC<ProductEditModalProps> = ({
   isOpen,
@@ -23,7 +25,6 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
 
   const [isActive, setIsActive] = useState(true);
   const [charCount, setCharCount] = useState(0);
-  const dispatch = useDispatch<AppDispatch>();
   const userToken = useSelector((state: RootState) => state.user.token);
 
   const toggleActive = () => {
@@ -63,7 +64,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
       console.error("No se pudo desabilitar el producto debe volver a autenticarse");
       return;
     }
-    dispatch(disableProduct({ idProduct: product.id, token: userToken }));
+    disableProduct({ idProduct: product.id, token: userToken });
     onClose();
   };
 
