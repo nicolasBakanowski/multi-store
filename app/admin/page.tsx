@@ -8,13 +8,14 @@ import { RootState } from "@/redux/store";
 import AddProductForm from "@/components/AddProductForm";
 import AddCategoryForm from "@/components/AddCategoryForm";
 import AddBrandForm from "@/components/AddBrandForm";
+import LotteryManager from "@/components/LotteryManager";
 import Notification from "@/components/Notification";
 import { adminChangeForm } from "@/animations/adminChargeForm";
 
 export default function AdminPage() {
   const userRole = useSelector((state: RootState) => state.user.user?.roleId);
   const [selectedOption, setSelectedOption] = useState<
-    "category" | "product" | "brand"
+    "category" | "product" | "brand" | "lottery"
   >("category");
 
   if (userRole !== 1 && userRole !== 4)
@@ -22,7 +23,7 @@ export default function AdminPage() {
 
   return (
     <section className="flex flex-col items-center h-screen">
-      <div className="flex flex-row justify-center items-center mb-2">
+      <div className="flex flex-row justify-center items-center mb-2 flex-wrap gap-y-1">
         <button
           className={`${
             selectedOption === "category"
@@ -48,10 +49,20 @@ export default function AdminPage() {
             selectedOption === "brand"
               ? "bg-green-500 text-white"
               : "bg-white text-gray-700"
-          } px-4 py-2 rounded-r-full focus:outline-none`}
+          } px-4 py-2 focus:outline-none`}
           onClick={() => setSelectedOption("brand")}
         >
           Quiero cargar una marca
+        </button>
+        <button
+          className={`${
+            selectedOption === "lottery"
+              ? "bg-green-500 text-white"
+              : "bg-white text-gray-700"
+          } px-4 py-2 rounded-r-full focus:outline-none`}
+          onClick={() => setSelectedOption("lottery")}
+        >
+          Sorteo
         </button>
       </div>
       <AnimatePresence mode="wait">
@@ -66,6 +77,7 @@ export default function AdminPage() {
             {selectedOption === "category" && <AddCategoryForm />}
             {selectedOption === "product" && <AddProductForm />}
             {selectedOption === "brand" && <AddBrandForm />}
+            {selectedOption === "lottery" && <LotteryManager />}
           </div>
         </motion.div>
       </AnimatePresence>
