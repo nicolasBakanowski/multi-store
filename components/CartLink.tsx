@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaCheck } from "react-icons/fa";
+import { FiArrowRight } from "react-icons/fi";
 
 interface CartLinkProps {
   itemCount: number;
@@ -17,16 +17,16 @@ const CartLink = ({ itemCount }: CartLinkProps) => {
   return (
     <div
       className={`bg-ambar transition-opacity duration-500 ${
-        visible ? "opacity-100" : "opacity-70"
+        visible ? "opacity-100" : "opacity-0"
       }`}
     >
       <Link href="/checkout" className="block">
         <button className="w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-sm">
-          <FaCheck size={13} />
           <span>
-            Confirmar Compra · {itemCount}{" "}
+            Ir al checkout · {itemCount}{" "}
             {itemCount === 1 ? "producto" : "productos"}
           </span>
+          <FiArrowRight size={15} />
         </button>
       </Link>
     </div>

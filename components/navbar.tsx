@@ -69,7 +69,9 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <CartIcon />
+        <Link href="/cart">
+          <CartIcon />
+        </Link>
 
         {userName ? (
           <div className="relative z-50">
