@@ -47,5 +47,6 @@ export const initialState: ProductState = {
 
 export interface ProductCardProps {
   product: Product;
-  onEditClick: any;  // Si quieres tiparlo más estrictamente, puedes usar: (product: Product) => void;
+  onEditClick: any;
+  brandName?: string;
 }

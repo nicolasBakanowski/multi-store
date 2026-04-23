@@ -1,11 +1,12 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import Providers from "./providers";
 import Navbar from "@/components/navbar";
 import ApiAndSocketSync from "@/components/ApiAndSocketSync";
 import GlobalStylesClient from "./GlobalStylesClient";
 import SorteoBar from "@/components/SorteoBar";
+import AnalyticsInit from "@/components/AnalyticsInit";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,15 +14,17 @@ const inter = Inter({
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
+const lora = Lora({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Pinta Bien",
+  title: "Despacho",
+  description: "Bebidas y almacén",
 };
 
 export default function RootLayout({
@@ -30,14 +33,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${instrumentSerif.variable}`}>
+    <html lang="es" className={`${inter.variable} ${lora.variable}`}>
       <body className="bg-crema text-carbon font-sans antialiased">
         <Providers>
+          <AnalyticsInit />
           <ApiAndSocketSync />
           <GlobalStylesClient />
           <Navbar />
           <SorteoBar />
-          <div className="container mx-auto px-4 py-6">{children}</div>
+          <div className="container mx-auto px-3 sm:px-4 py-5">{children}</div>
         </Providers>
       </body>
     </html>

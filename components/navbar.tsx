@@ -3,10 +3,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import BackIcon from "../public/back.svg";
 import CartLink from "./CartLink";
 import CartIcon from "./CartIcon";
 import { logout } from "../redux/slices/userSlice";
@@ -19,7 +17,26 @@ import {
   MdSettings,
   MdLocationOn,
   MdMenu,
+  MdArrowBack,
 } from "react-icons/md";
+
+function DespachoLogo({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect x="8" y="4" width="16" height="24" rx="3" stroke="currentColor" strokeWidth="1.5" />
+      <ellipse cx="16" cy="4" rx="8" ry="2.5" stroke="currentColor" strokeWidth="1.5" />
+      <ellipse cx="16" cy="28" rx="8" ry="2.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 12h16M8 20h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M11 8c1.5 1.5 9.5 1.5 11 0M11 24c1.5-1.5 9.5-1.5 11 0" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+    </svg>
+  );
+}
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -34,10 +51,10 @@ const Navbar = () => {
   const toggleMenu = () => setMenuOpen((v) => !v);
 
   return (
-    <nav className="bg-verde text-crema px-6 flex justify-between items-center relative h-16">
+    <nav className="sticky top-0 z-50 glass-verde text-crema px-5 flex justify-between items-center h-16">
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-carbon/60 z-40"
+          className="fixed inset-x-0 top-24 bottom-0 bg-carbon/60 z-40 backdrop-blur-sm"
           onClick={toggleMenu}
         />
       )}
@@ -45,73 +62,63 @@ const Navbar = () => {
       {!isIndexPage ? (
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-crema/70 hover:text-crema transition-colors text-sm"
+          className="flex items-center gap-1.5 text-crema/60 hover:text-crema transition-colors duration-200 text-sm cursor-pointer"
         >
-          <Image src={BackIcon} alt="Volver" className="h-4 w-4 invert opacity-70" />
-          <span>Volver</span>
+          <MdArrowBack size={18} className="opacity-60" />
+          <span className="hidden sm:inline">Volver</span>
         </button>
       ) : (
         <div className="w-16" />
       )}
 
       <div className="absolute left-1/2 -translate-x-1/2">
-        <Link href="/">
-          <div className="w-11 h-11">
-            <Image
-              src="/pinta-bien.png"
-              alt="Pinta Bien"
-              width={44}
-              height={44}
-              className="object-contain"
-            />
-          </div>
+        <Link href="/" className="flex items-center gap-2 group">
+          <DespachoLogo className="w-7 h-7 text-ambar group-hover:text-ambar-light transition-colors duration-200" />
+          <span className="font-display text-lg font-semibold text-crema tracking-wide leading-none group-hover:text-crema/90 transition-colors duration-200">
+            Despacho
+          </span>
         </Link>
       </div>
 
-      <div className="flex items-center gap-4">
-        <Link href="/cart">
+      <div className="flex items-center gap-3">
+        <Link href="/cart" className="cursor-pointer text-crema/75 hover:text-crema transition-colors duration-200">
           <CartIcon />
         </Link>
 
         {userName ? (
           <div className="relative z-50">
             <button
-              className="text-crema/70 hover:text-crema transition-colors"
+              className="w-9 h-9 rounded-full bg-crema/10 hover:bg-crema/20 border border-crema/15 flex items-center justify-center text-crema/75 hover:text-crema transition-all duration-200 cursor-pointer"
               onClick={toggleMenu}
             >
-              <MdMenu size={26} />
+              <MdMenu size={20} />
             </button>
 
             <div
               className={`${
                 menuOpen ? "translate-x-0" : "translate-x-full"
-              } fixed top-0 right-0 h-full w-72 bg-white shadow-2xl p-6 transform transition-transform ease-in-out duration-300 z-50 flex flex-col`}
+              } fixed top-24 right-0 bottom-0 w-72 glass-white shadow-2xl transform transition-transform ease-in-out duration-300 z-50 flex flex-col`}
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-crema-dark/70">
                 <div>
-                  <p className="text-xs text-carbon/40 uppercase tracking-widest mb-0.5">
+                  <p className="text-xs text-carbon/40 uppercase tracking-widest mb-0.5 font-medium">
                     Hola,
                   </p>
-                  <p className="font-display text-xl text-carbon">{userName}</p>
+                  <p className="font-display text-2xl text-carbon">{userName}</p>
                 </div>
                 <button
-                  className="text-carbon/30 hover:text-carbon transition-colors p-1"
+                  className="w-8 h-8 rounded-full bg-crema hover:bg-crema-dark flex items-center justify-center text-carbon/40 hover:text-carbon transition-all duration-200 cursor-pointer"
                   onClick={toggleMenu}
                 >
-                  <MdClose size={20} />
+                  <MdClose size={16} />
                 </button>
               </div>
 
-              <div className="h-px bg-crema-dark mb-4" />
-
-              <ul className="space-y-0.5 flex-1">
+              <ul className="space-y-0.5 flex-1 p-4">
                 <li>
                   <button
-                    className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
-                    onClick={() => {
-                      router.push("/donde-nos-encontramos");
-                      toggleMenu();
-                    }}
+                    className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-xl transition-all duration-200 text-sm cursor-pointer"
+                    onClick={() => { router.push("/donde-nos-encontramos"); toggleMenu(); }}
                   >
                     <MdLocationOn size={17} />
                     <span>Dónde nos encontramos</span>
@@ -119,11 +126,8 @@ const Navbar = () => {
                 </li>
                 <li>
                   <button
-                    className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
-                    onClick={() => {
-                      router.push("/configuracion");
-                      toggleMenu();
-                    }}
+                    className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-xl transition-all duration-200 text-sm cursor-pointer"
+                    onClick={() => { router.push("/configuracion"); toggleMenu(); }}
                   >
                     <MdSettings size={17} />
                     <span>Configuración</span>
@@ -135,11 +139,8 @@ const Navbar = () => {
                     <div className="h-px bg-crema-dark my-3" />
                     <li>
                       <button
-                        className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
-                        onClick={() => {
-                          router.push("/admin");
-                          toggleMenu();
-                        }}
+                        className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-xl transition-all duration-200 text-sm cursor-pointer"
+                        onClick={() => { router.push("/admin"); toggleMenu(); }}
                       >
                         <MdWork size={17} />
                         <span>Panel de Carga</span>
@@ -147,11 +148,8 @@ const Navbar = () => {
                     </li>
                     <li>
                       <button
-                        className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
-                        onClick={() => {
-                          router.push("/orders");
-                          toggleMenu();
-                        }}
+                        className="flex items-center gap-3 text-carbon/60 hover:text-verde hover:bg-verde-50 w-full py-2.5 px-3 rounded-xl transition-all duration-200 text-sm cursor-pointer"
+                        onClick={() => { router.push("/orders"); toggleMenu(); }}
                       >
                         <MdList size={17} />
                         <span>Manejo de Órdenes</span>
@@ -164,11 +162,8 @@ const Navbar = () => {
 
                 <li>
                   <button
-                    className="flex items-center gap-3 text-red-400 hover:text-red-600 hover:bg-red-50 w-full py-2.5 px-3 rounded-lg transition-colors text-sm"
-                    onClick={() => {
-                      dispatch(logout());
-                      toggleMenu();
-                    }}
+                    className="flex items-center gap-3 text-red-500 hover:text-red-700 hover:bg-red-50 w-full py-2.5 px-3 rounded-xl transition-all duration-200 text-sm cursor-pointer"
+                    onClick={() => { dispatch(logout()); toggleMenu(); }}
                   >
                     <MdExitToApp size={17} />
                     <span>Cerrar Sesión</span>
@@ -176,15 +171,16 @@ const Navbar = () => {
                 </li>
               </ul>
 
-              <div className="mt-auto pt-4 border-t border-crema-dark">
-                <p className="text-xs text-carbon/30 text-center">Pinta Bien · Bebidas</p>
+              <div className="p-4 border-t border-crema-dark flex items-center justify-center gap-2">
+                <DespachoLogo className="w-4 h-4 text-ambar" />
+                <p className="text-xs text-carbon/35 font-display italic">Despacho</p>
               </div>
             </div>
           </div>
         ) : (
           <Link
             href="/login"
-            className="text-crema/70 hover:text-crema text-sm transition-colors"
+            className="text-crema/70 hover:text-crema text-sm transition-colors duration-200 px-3 py-1.5 rounded-lg hover:bg-crema/10 border border-transparent hover:border-crema/20"
           >
             Ingresar
           </Link>

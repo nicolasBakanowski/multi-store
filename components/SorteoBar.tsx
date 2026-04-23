@@ -17,7 +17,7 @@ export default function SorteoBar() {
     `$${Math.round(n).toLocaleString("es-AR")}`;
 
   return (
-    <div className="bg-verde-dark border-b border-verde-light/30 px-4 py-2">
+    <div className="sticky top-16 z-40 bg-verde-dark border-b border-verde-light/30 px-4 py-2">
       <div className="container mx-auto flex items-center gap-3">
         <span className="text-ambar text-xs font-semibold shrink-0 tracking-wide">
           SORTEO
@@ -30,7 +30,7 @@ export default function SorteoBar() {
         </div>
         <span className="text-crema/70 text-xs shrink-0 tabular-nums">
           {total === 0 ? (
-            <span className="text-crema/40">Comprá para sumar participaciones</span>
+            <span className="text-crema/40">Comprá para sumar chances</span>
           ) : falta === 0 || total % SORTEO_THRESHOLD === 0 ? (
             <span className="text-ambar font-semibold">
               {participaciones} participación{participaciones !== 1 ? "es" : ""} ✓

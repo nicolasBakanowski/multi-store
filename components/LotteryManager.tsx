@@ -36,6 +36,7 @@ const LotteryManager = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeLottery, setActiveLottery] = useState<ActiveLottery | null>(null);
+  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     const load = async () => {
@@ -168,14 +169,11 @@ const LotteryManager = () => {
                     )}
                     <div className="relative w-full aspect-square mb-2 rounded-lg overflow-hidden bg-gray-100">
                       <Image
-                        src={product.imageUrl || "/pinta-bien.png"}
+                        src={failedImages.has(product.id) ? "/pinta-bien.png" : (product.imageUrl || "/pinta-bien.png")}
                         alt={product.name}
                         fill
                         className="object-cover"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src =
-                            "/pinta-bien.png";
-                        }}
+                        onError={() => setFailedImages(prev => new Set(prev).add(product.id))}
                       />
                     </div>
                     <p className="text-xs font-semibold text-gray-800 leading-tight line-clamp-2">

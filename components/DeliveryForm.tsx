@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FiPackage, FiTruck } from "react-icons/fi";
 
 interface DeliveryFormProps {
   formData: {
@@ -15,8 +16,8 @@ interface DeliveryFormProps {
 }
 
 const METHODS = [
-  { value: "pickup", label: "Retirar en el Local" },
-  { value: "delivery", label: "Envío a Domicilio" },
+  { value: "pickup", label: "Retirar en el local", icon: FiPackage },
+  { value: "delivery", label: "Envío a domicilio", icon: FiTruck },
 ];
 
 const DeliveryForm: React.FC<DeliveryFormProps> = ({
@@ -34,26 +35,24 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
   };
 
   const inputClass =
-    "mt-1 w-full px-3 py-2.5 bg-crema border border-crema-dark rounded-lg text-carbon text-sm placeholder-carbon/30 focus:outline-none focus:border-verde transition-colors";
+    "mt-1 w-full px-3 py-2.5 bg-crema border border-crema-dark rounded-xl text-carbon text-sm placeholder-carbon/30 focus:outline-none focus:border-verde transition-colors";
 
   const labelClass =
     "text-xs font-medium text-carbon/50 uppercase tracking-wide block mb-1";
 
   return (
-    <div className="bg-white border border-crema-dark rounded-xl p-5 shadow-sm">
-      <h2 className="font-display text-xl text-carbon mb-4">
-        Método de Entrega
-      </h2>
+    <div className="bg-white border border-crema-dark rounded-2xl p-5 shadow-card space-y-5">
+      <h2 className="font-display text-xl text-carbon">Método de entrega</h2>
 
-      <div className="flex gap-3 mb-5">
-        {METHODS.map(({ value, label }) => (
+      <div className="flex gap-3">
+        {METHODS.map(({ value, label, icon: Icon }) => (
           <label
             key={value}
             htmlFor={value}
-            className={`flex-1 flex items-center justify-center py-2.5 rounded-lg border cursor-pointer text-sm font-medium transition-all ${
+            className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-xl border cursor-pointer text-sm font-medium transition-all ${
               deliveryMethod === value
-                ? "bg-verde text-crema border-verde"
-                : "bg-crema text-carbon/60 border-crema-dark hover:border-verde/40"
+                ? "bg-verde text-crema border-verde shadow-glow-verde"
+                : "bg-crema text-carbon/55 border-crema-dark hover:border-verde/40"
             }`}
           >
             <input
@@ -65,37 +64,46 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
               onChange={handleChange}
               className="sr-only"
             />
-            {label}
+            <Icon size={18} />
+            <span>{label}</span>
           </label>
         ))}
       </div>
 
       {deliveryMethod === "pickup" && (
         <div>
-          <label className={labelClass}>Nombre</label>
+          <label className={labelClass}>Tu nombre</label>
           <input
             type="text"
             value={formData.name}
-            onChange={(e) =>
-              setFormData({ ...formData, name: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className={inputClass}
-            placeholder="Tu nombre"
+            placeholder="¿A nombre de quién es el pedido?"
             required
           />
         </div>
       )}
 
+      {/* G — delivery ahora pide nombre también */}
       {deliveryMethod === "delivery" && (
         <div className="space-y-4">
+          <div>
+            <label className={labelClass}>Tu nombre</label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className={inputClass}
+              placeholder="Nombre completo"
+              required
+            />
+          </div>
           <div>
             <label className={labelClass}>Teléfono</label>
             <input
               type="tel"
               value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               className={inputClass}
               placeholder="+54 9 ..."
               required
@@ -106,11 +114,9 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
             <input
               type="text"
               value={formData.address}
-              onChange={(e) =>
-                setFormData({ ...formData, address: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               className={inputClass}
-              placeholder="Calle, número, piso..."
+              placeholder="Calle, número, piso, depto..."
               required
             />
           </div>

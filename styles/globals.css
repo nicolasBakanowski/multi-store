@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    --verde: #1B3D2A;
-    --verde-light: #2E5B40;
-    --crema: #F5F0E8;
-    --crema-dark: #EBE3D5;
-    --ambar: #C8913A;
-    --carbon: #1C1C1C;
+    --verde: #7A3B1E;
+    --verde-light: #9B5030;
+    --crema: #F0E6D3;
+    --crema-dark: #E3D4BC;
+    --ambar: #C8892A;
+    --carbon: #2C1A0E;
   }
 
   html {
@@ -17,13 +17,13 @@
   }
 
   body {
-    background-color: #F5F0E8;
-    color: #1C1C1C;
+    background-color: #F0E6D3;
+    color: #2C1A0E;
   }
 
   ::selection {
-    background-color: #C8913A;
-    color: #F5F0E8;
+    background-color: #C8892A;
+    color: #F0E6D3;
   }
 
   input[type="number"]::-webkit-inner-spin-button,
@@ -34,5 +34,53 @@
 
   input[type="number"] {
     -moz-appearance: textfield;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F0E6D3;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D0BC9E;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #C8892A;
+  }
+}
+
+@layer utilities {
+  .glass-verde {
+    background: rgba(90, 42, 18, 0.94);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border-bottom: 1px solid rgba(155, 80, 48, 0.3);
+  }
+
+  .glass-white {
+    background: rgba(248, 243, 236, 0.94);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+  }
+
+  .text-gradient-ambar {
+    background: linear-gradient(135deg, #C8892A 0%, #D4A040 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Subtle grain texture overlay */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px;
+    z-index: 9999;
   }
 }

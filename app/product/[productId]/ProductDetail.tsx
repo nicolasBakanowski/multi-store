@@ -1,20 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 
 import type { Product } from "@/interfaces/Products";
 import { addItem } from "@/redux/slices/cartSlice";
 import { MdAddShoppingCart } from "react-icons/md";
+import { trackEvent } from "@/utils/analytics";
 
 export default function ProductDetail({ product }: { product: Product }) {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
+  useEffect(() => {
+    trackEvent({
+      name: "ProductViewed",
+      properties: {
+        product_id: product.id,
+        product_name: product.name,
+        price: product.price,
+        currency: "ARS",
+        in_stock: typeof (product as any).stock === "number" ? (product as any).stock > 0 : null,
+      },
+    });
+  }, [product]);
+
   const handleAddToCart = () => {
     dispatch(addItem({ ...product, quantity }) as any);
+    trackEvent({
+      name: "AddToCart",
+      properties: {
+        cart_id: "redux_cart",
+        product_id: product.id,
+        product_name: product.name,
+        quantity,
+        unit_price: product.price,
+        currency: "ARS",
+        in_stock: typeof (product as any).stock === "number" ? (product as any).stock > 0 : null,
+      },
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };

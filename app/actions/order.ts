@@ -20,6 +20,8 @@ export async function createOrder(params: {
   simplifiedCartItems: { productId: number; quantity: number }[];
   userInfo: { name: string; phone: string; address: string };
   deliveryMethod: string;
+  totalAmount: number;
+  totalCostPrice: number;
 }) {
   const res = await fetch(`${apiBaseUrl()}/order/new`, {
     method: "POST",

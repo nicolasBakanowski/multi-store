@@ -8,25 +8,32 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Terracota/Siena — color primario Despacho
         verde: {
-          DEFAULT: '#1B3D2A',
-          light: '#2E5B40',
-          dark: '#12291C',
-          50: '#EDF5F0',
+          DEFAULT: '#7A3B1E',
+          light: '#9B5030',
+          dark: '#5A2A12',
+          50: '#F5EDE7',
+          100: '#E8D5C8',
         },
+        // Kraft — fondo cálido
         crema: {
-          DEFAULT: '#F5F0E8',
-          dark: '#EBE3D5',
-          darker: '#D9CEBF',
+          DEFAULT: '#F0E6D3',
+          dark: '#E3D4BC',
+          darker: '#D0BC9E',
+          50: '#F8F3EC',
         },
+        // Ocre/Dorado — acento
         ambar: {
-          DEFAULT: '#C8913A',
-          light: '#D4A843',
-          dark: '#A07228',
+          DEFAULT: '#C8892A',
+          light: '#D4A040',
+          dark: '#9E6A18',
+          50: '#FDF4E7',
         },
+        // Marrón profundo — texto
         carbon: {
-          DEFAULT: '#1C1C1C',
-          light: '#3A3A3A',
+          DEFAULT: '#2C1A0E',
+          light: '#4A3020',
         },
       },
       fontFamily: {
@@ -36,6 +43,13 @@ module.exports = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      boxShadow: {
+        'card': '0 1px 4px rgba(44,26,14,0.07), 0 0 0 1px rgba(44,26,14,0.05)',
+        'card-hover': '0 8px 32px rgba(44,26,14,0.13), 0 0 0 1px rgba(200,137,42,0.2)',
+        'nav': '0 4px 24px rgba(90,42,18,0.3)',
+        'glow-ambar': '0 4px 20px rgba(200,137,42,0.32)',
+        'glow-verde': '0 4px 20px rgba(122,59,30,0.28)',
       },
     },
   },
