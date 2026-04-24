@@ -54,7 +54,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 glass-verde text-crema px-5 flex justify-between items-center h-16">
       {menuOpen && (
         <div
-          className="fixed inset-x-0 top-24 bottom-0 bg-carbon/60 z-40 backdrop-blur-sm"
+          className="fixed inset-x-0 top-28 bottom-0 bg-carbon/60 z-30 backdrop-blur-sm"
           onClick={toggleMenu}
         />
       )}

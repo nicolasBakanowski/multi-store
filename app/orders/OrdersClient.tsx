@@ -32,8 +32,14 @@ export default function OrdersClient({
 
   useEffect(() => {
     socket.on("newOrder", (newOrderData: any) => {
-      const newOrder = formatOrderData(newOrderData.productsInOrder);
-      setOrders((prev) => [...newOrder, ...prev]);
+      const rows = newOrderData?.productsInOrder;
+      if (!Array.isArray(rows) || rows.length === 0) return;
+      try {
+        const formatted = formatOrderData(rows);
+        setOrders((prev) => [...formatted, ...prev]);
+      } catch (e) {
+        console.error("newOrder socket payload inválido", e);
+      }
     });
     socket.on("orderStatusChanged", (orderupdated: any) => {
       setOrders((prev) =>

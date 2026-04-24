@@ -1,48 +1,106 @@
 "use client";
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useCallback, useEffect, useState } from "react";
 
-const SORTEO_THRESHOLD = 15000;
+import { fetchCurrentLottery } from "@/app/actions/lottery";
+import socket from "@/socket/socketConfig";
+
+type LotteryBarState = {
+  id: number;
+  targetAmount: number;
+  collectedAmount: number;
+} | null;
+
+type LotteryProgressEvent = {
+  lotteryId: number;
+  targetAmount: number;
+  collectedAmount: number;
+};
 
 export default function SorteoBar() {
-  const cart = useSelector((state: RootState) => state.cart);
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const [lottery, setLottery] = useState<LotteryBarState | undefined>(undefined);
 
-  const participaciones = Math.floor(total / SORTEO_THRESHOLD);
-  const progreso = total === 0 ? 0 : (total % SORTEO_THRESHOLD) / SORTEO_THRESHOLD;
-  const falta = SORTEO_THRESHOLD - (total % SORTEO_THRESHOLD);
+  const load = useCallback(async () => {
+    const data = await fetchCurrentLottery();
+    if (data) {
+      setLottery({
+        id: data.id,
+        targetAmount: Number(data.targetAmount),
+        collectedAmount: Number(data.collectedAmount ?? 0),
+      });
+    } else {
+      setLottery(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  useEffect(() => {
+    const onProgress = (p: LotteryProgressEvent) => {
+      setLottery({
+        id: p.lotteryId,
+        targetAmount: Number(p.targetAmount),
+        collectedAmount: Number(p.collectedAmount),
+      });
+    };
+    socket.on("lotteryProgressUpdated", onProgress);
+    return () => {
+      socket.off("lotteryProgressUpdated", onProgress);
+    };
+  }, []);
 
   const formatPrice = (n: number) =>
-    `$${Math.round(n).toLocaleString("es-AR")}`;
+    `$${Math.round(n).toLocaleString("es-AR", { maximumFractionDigits: 0 })}`;
+
+  if (lottery === undefined) {
+    return (
+      <div
+        className="fixed top-16 left-0 right-0 z-40 h-12 flex items-center bg-verde-dark border-b border-verde-light/30 px-4"
+        aria-hidden
+      />
+    );
+  }
+
+  if (lottery === null) {
+    return (
+      <div className="fixed top-16 left-0 right-0 z-40 h-12 flex items-center bg-verde-dark border-b border-verde-light/30 px-4">
+        <div className="container mx-auto flex items-center gap-3">
+          <span className="text-ambar text-xs font-semibold shrink-0 tracking-wide">
+            SORTEO
+          </span>
+          <span className="text-crema/50 text-xs">No hay un sorteo activo</span>
+        </div>
+      </div>
+    );
+  }
+
+  const target = Math.max(0.0001, Number(lottery.targetAmount));
+  const collected = Math.max(0, Number(lottery.collectedAmount));
+  const pct = Math.min(100, (collected / target) * 100);
+  const falta = Math.max(0, target - collected);
+  const completado = collected >= target;
 
   return (
-    <div className="sticky top-16 z-40 bg-verde-dark border-b border-verde-light/30 px-4 py-2">
-      <div className="container mx-auto flex items-center gap-3">
+    <div className="fixed top-16 left-0 right-0 z-40 h-12 flex items-center bg-verde-dark border-b border-verde-light/30 px-4">
+      <div className="container mx-auto flex items-center gap-3 min-w-0">
         <span className="text-ambar text-xs font-semibold shrink-0 tracking-wide">
           SORTEO
         </span>
-        <div className="flex-1 h-1 bg-verde-light/30 rounded-full overflow-hidden">
+        <div className="flex-1 h-1 min-w-0 bg-verde-light/30 rounded-full overflow-hidden">
           <div
             className="h-full bg-ambar rounded-full transition-all duration-700 ease-out"
-            style={{ width: `${Math.min(progreso * 100, 100)}%` }}
+            style={{ width: `${pct}%` }}
           />
         </div>
-        <span className="text-crema/70 text-xs shrink-0 tabular-nums">
-          {total === 0 ? (
-            <span className="text-crema/40">Comprá para sumar chances</span>
-          ) : falta === 0 || total % SORTEO_THRESHOLD === 0 ? (
-            <span className="text-ambar font-semibold">
-              {participaciones} participación{participaciones !== 1 ? "es" : ""} ✓
-            </span>
+        <span className="text-crema/70 text-xs shrink-0 tabular-nums text-right max-w-[min(12rem,45vw)]">
+          {completado ? (
+            <span className="text-ambar font-semibold">Meta alcanzada</span>
           ) : (
             <span>
-              {participaciones > 0 && (
-                <span className="text-ambar font-semibold mr-1">
-                  {participaciones} part. ·{" "}
-                </span>
-              )}
-              gastá {formatPrice(falta)} más y sumás {participaciones > 0 ? "otra" : "una"}
+              {formatPrice(collected)} / {formatPrice(target)} · faltan{" "}
+              {formatPrice(falta)}
             </span>
           )}
         </span>

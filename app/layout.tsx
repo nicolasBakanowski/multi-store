@@ -41,7 +41,9 @@ export default function RootLayout({
           <GlobalStylesClient />
           <Navbar />
           <SorteoBar />
-          <div className="container mx-auto px-3 sm:px-4 py-5">{children}</div>
+          <div className="container mx-auto px-3 sm:px-4 pt-[4.25rem] pb-5">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
