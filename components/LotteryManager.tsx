@@ -9,6 +9,7 @@ import {
   fetchCurrentLottery,
   startLottery,
 } from "@/app/actions/lottery";
+import { drawCurrentLotteryWinner } from "@/app/actions/lottery";
 import Spinner from "./Spinner";
 import Image from "next/image";
 
@@ -24,6 +25,8 @@ interface Product {
 interface ActiveLottery {
   id: number;
   targetAmount: number;
+  collectedAmount?: number;
+  winnerId?: number | null;
   status: string;
 }
 
@@ -105,6 +108,28 @@ const LotteryManager = () => {
     }
   };
 
+  const handleDraw = async () => {
+    if (!userToken) return;
+    try {
+      setIsSubmitting(true);
+      await drawCurrentLotteryWinner({ token: userToken });
+      const updated = await fetchCurrentLottery();
+      setActiveLottery(updated);
+      dispatch(
+        setNotification({ message: "Ganador sorteado con éxito.", type: "success" })
+      );
+    } catch (error: any) {
+      dispatch(
+        setNotification({
+          message: error?.message || "Error al sortear ganador.",
+          type: "error",
+        })
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
@@ -132,6 +157,24 @@ const LotteryManager = () => {
               Los participantes se van acumulando a medida que se confirman
               órdenes de usuarios registrados.
             </p>
+            {Number(activeLottery.collectedAmount ?? 0) >= Number(activeLottery.targetAmount) && (
+              <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="text-sm text-green-800 font-semibold">
+                  Meta alcanzada
+                  {activeLottery.winnerId ? " · ganador ya sorteado" : " · listo para sortear"}
+                </div>
+                {!activeLottery.winnerId && (
+                  <button
+                    type="button"
+                    onClick={handleDraw}
+                    disabled={isSubmitting}
+                    className="sm:ml-auto bg-green-600 text-white py-2 px-4 rounded-full font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? <Spinner /> : "Sortear ganador"}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         )}
 

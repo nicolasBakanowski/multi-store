@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+
+  <!-- Círculo fondo -->
+  <circle cx="50" cy="50" r="50" fill="#1C0A00"/>
+
+  <!-- Anillo interior -->
+  <circle cx="50" cy="50" r="44" fill="none" stroke="#E8952A" stroke-width="1"/>
+
+  <!-- Arco + gota -->
+  <path d="M28 48 Q50 32 72 48" fill="none" stroke="#F5C96A" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="50" cy="30" r="4.5" fill="#F5C96A"/>
+
+  <!-- vb monograma -->
+  <text x="50" y="68" text-anchor="middle"
+    font-family="Georgia, serif"
+    font-size="22" font-weight="700"
+    fill="#F5C96A">vb</text>
+
+  <!-- texto circular inferior -->
+  <text x="50" y="84" text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7" fill="#E8952A" letter-spacing="2">VUELTA BUENA</text>
+
+</svg>

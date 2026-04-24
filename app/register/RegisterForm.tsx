@@ -30,24 +30,24 @@ export default function RegisterForm() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 bg-crema border border-crema-dark rounded-xl text-carbon text-sm placeholder-carbon/30 focus:outline-none focus:border-verde transition-colors";
+    "w-full px-4 py-3 bg-white/70 border border-black/10 rounded-xl text-vb-negro text-sm placeholder-vb-negro/40 focus:outline-none focus:border-vb-ambar transition-colors";
 
   const labelClass =
-    "text-xs font-medium text-carbon/50 uppercase tracking-wide block mb-1";
+    "text-xs font-medium text-vb-negro/55 uppercase tracking-wide block mb-1";
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="font-display text-3xl text-verde mb-1">
+          <h1 className="font-display text-3xl text-vb-negro mb-1">
             Crear Cuenta
           </h1>
-          <p className="text-carbon/40 text-sm">
+          <p className="text-vb-negro/55 text-sm">
             Registrate para comenzar a comprar
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-crema-dark shadow-sm p-7">
+        <div className="bg-vb-crema rounded-2xl border border-black/10 shadow-card p-7">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className={labelClass}>Nombre</label>
@@ -96,7 +96,7 @@ export default function RegisterForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-carbon/30 hover:text-carbon transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-vb-negro/35 hover:text-vb-negro transition-colors"
                 >
                   {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                 </button>
@@ -105,17 +105,17 @@ export default function RegisterForm() {
 
             <button
               type="submit"
-              className="w-full bg-verde text-crema py-3 rounded-xl text-sm font-semibold hover:bg-verde-light transition-colors mt-2"
+              className="w-full bg-vb-ambar text-vb-negro py-3 rounded-xl text-sm font-semibold hover:bg-vb-dorado transition-colors mt-2"
             >
               Crear Cuenta
             </button>
           </form>
 
-          <div className="mt-5 text-center text-sm text-carbon/40">
+          <div className="mt-5 text-center text-sm text-vb-negro/55">
             ¿Ya tenés cuenta?{" "}
             <Link
               href="/login"
-              className="text-ambar hover:text-ambar-dark transition-colors font-medium"
+              className="text-vb-ambar hover:text-vb-dorado transition-colors font-medium"
             >
               Iniciá sesión
             </Link>

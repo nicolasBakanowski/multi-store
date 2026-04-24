@@ -21,7 +21,7 @@ const Notification = () => {
   return (
     <div
       className={`fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm px-4 py-3 rounded-xl shadow-lg text-white text-sm text-center z-50 ${
-        type === "success" ? "bg-verde" : "bg-red-500"
+        type === "success" ? "bg-vb-negro text-vb-dorado" : "bg-vb-rojo text-vb-crema"
       }`}
     >
       {message}

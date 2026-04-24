@@ -16,12 +16,12 @@ const CartLink = ({ itemCount }: CartLinkProps) => {
 
   return (
     <div
-      className={`bg-ambar transition-opacity duration-500 ${
+      className={`bg-vb-ambar transition-opacity duration-500 ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
       <Link href="/checkout" className="block">
-        <button className="w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-sm">
+        <button className="w-full h-12 flex items-center justify-center gap-2 text-vb-negro font-semibold text-sm">
           <span>
             Ir al checkout · {itemCount}{" "}
             {itemCount === 1 ? "producto" : "productos"}

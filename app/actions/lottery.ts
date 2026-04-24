@@ -29,6 +29,14 @@ export async function fetchCurrentLottery() {
   return await jsonOrThrow<any>(res);
 }
 
+export async function fetchCurrentLotteryPublic() {
+  const res = await fetch(`${apiBaseUrl()}/lottery/current/public`, {
+    cache: "no-store",
+  });
+  if (res.status === 404) return null;
+  return await jsonOrThrow<any>(res);
+}
+
 export async function startLottery(params: {
   productIds: number[];
   token: string;
@@ -43,4 +51,16 @@ export async function startLottery(params: {
     cache: "no-store",
   });
   return await jsonOrThrow<{ message: string; lottery: number }>(res);
+}
+
+export async function drawCurrentLotteryWinner(params: { token: string }) {
+  const res = await fetch(`${apiBaseUrl()}/lottery/current/draw`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${params.token}`,
+    },
+    cache: "no-store",
+  });
+  return await jsonOrThrow<any>(res);
 }

@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Inter, Lora } from "next/font/google";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import Providers from "./providers";
 import Navbar from "@/components/navbar";
 import ApiAndSocketSync from "@/components/ApiAndSocketSync";
@@ -8,23 +8,23 @@ import GlobalStylesClient from "./GlobalStylesClient";
 import SorteoBar from "@/components/SorteoBar";
 import AnalyticsInit from "@/components/AnalyticsInit";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500"],
+  variable: "--font-body",
   display: "swap",
 });
 
-const lora = Lora({
+const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["400"],
   variable: "--font-display",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Despacho",
-  description: "Bebidas y almacén",
+  title: "La Vuelta Buena",
+  description: "Bebé bien · Pedí fácil",
 };
 
 export default function RootLayout({
@@ -33,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${lora.variable}`}>
-      <body className="bg-crema text-carbon font-sans antialiased">
+    <html lang="es" className={`${dmSans.variable} ${dmSerif.variable}`}>
+      <body className="bg-vb-crema text-vb-negro font-sans antialiased">
         <Providers>
           <AnalyticsInit />
           <ApiAndSocketSync />

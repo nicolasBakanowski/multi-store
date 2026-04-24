@@ -35,14 +35,14 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
   };
 
   const inputClass =
-    "mt-1 w-full px-3 py-2.5 bg-crema border border-crema-dark rounded-xl text-carbon text-sm placeholder-carbon/30 focus:outline-none focus:border-verde transition-colors";
+    "mt-1 w-full px-3 py-2.5 bg-white/70 border border-black/10 rounded-xl text-vb-negro text-sm placeholder-vb-negro/40 focus:outline-none focus:border-vb-ambar transition-colors";
 
   const labelClass =
-    "text-xs font-medium text-carbon/50 uppercase tracking-wide block mb-1";
+    "text-xs font-medium text-vb-negro/55 uppercase tracking-wide block mb-1";
 
   return (
-    <div className="bg-white border border-crema-dark rounded-2xl p-5 shadow-card space-y-5">
-      <h2 className="font-display text-xl text-carbon">Método de entrega</h2>
+    <div className="bg-vb-crema border border-black/10 rounded-2xl p-5 shadow-card space-y-5">
+      <h2 className="font-display text-xl text-vb-negro">Método de entrega</h2>
 
       <div className="flex gap-3">
         {METHODS.map(({ value, label, icon: Icon }) => (
@@ -51,8 +51,8 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
             htmlFor={value}
             className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-xl border cursor-pointer text-sm font-medium transition-all ${
               deliveryMethod === value
-                ? "bg-verde text-crema border-verde shadow-glow-verde"
-                : "bg-crema text-carbon/55 border-crema-dark hover:border-verde/40"
+                ? "bg-vb-negro text-vb-dorado border-vb-dorado/40 shadow-nav"
+                : "bg-white/60 text-vb-negro/70 border-black/10 hover:border-vb-ambar/40"
             }`}
           >
             <input

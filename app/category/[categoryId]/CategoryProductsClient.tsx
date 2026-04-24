@@ -74,18 +74,18 @@ export default function CategoryProductsClient({
           <div className="flex-1 relative">
             <FiSearch
               size={15}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-carbon/35 pointer-events-none"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-vb-negro/45 pointer-events-none"
             />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar producto…"
-              className="w-full rounded-xl border border-crema-dark bg-white pl-10 pr-9 py-3 text-sm text-carbon placeholder-carbon/30 focus:outline-none focus:border-verde transition-colors"
+              className="w-full rounded-xl border border-black/10 bg-white/70 pl-10 pr-9 py-3 text-sm text-vb-negro placeholder-vb-negro/40 focus:outline-none focus:border-vb-ambar transition-colors"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-carbon/30 hover:text-carbon transition-colors cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-vb-negro/35 hover:text-vb-negro transition-colors cursor-pointer"
               >
                 <FiX size={14} />
               </button>
@@ -97,7 +97,7 @@ export default function CategoryProductsClient({
               <select
                 value={brandId}
                 onChange={(e) => setBrandId(e.target.value)}
-                className="w-full rounded-xl border border-crema-dark bg-white px-3 py-3 text-sm text-carbon focus:outline-none focus:border-verde transition-colors cursor-pointer"
+                className="w-full rounded-xl border border-black/10 bg-white/70 px-3 py-3 text-sm text-vb-negro focus:outline-none focus:border-vb-ambar transition-colors cursor-pointer"
               >
                 <option value="">Todas las marcas</option>
                 {brands.map((b) => (
@@ -110,26 +110,26 @@ export default function CategoryProductsClient({
 
         {/* Contador de resultados */}
         {(query || brandId) && (
-          <p className="text-xs text-carbon/40 mb-4 tabular-nums">
+          <p className="text-xs text-vb-negro/55 mb-4 tabular-nums">
             {filteredProducts.length}{" "}
             {filteredProducts.length === 1 ? "resultado" : "resultados"}
-            {query && <span> para "<span className="text-carbon/60">{query}</span>"</span>}
+            {query && <span> para &quot;<span className="text-vb-negro/75">{query}</span>&quot;</span>}
           </p>
         )}
 
         {/* Grid */}
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="font-display text-xl text-carbon/30 mb-2">Sin resultados</p>
-            <p className="text-sm text-carbon/40 mb-5">
+            <p className="font-display text-xl text-vb-negro/55 mb-2">Sin resultados</p>
+            <p className="text-sm text-vb-negro/60 mb-5">
               {query
-                ? `No encontramos "${query}" en esta categoría.`
+                ? `No encontramos “${query}” en esta categoría.`
                 : "Esta categoría no tiene productos disponibles."}
             </p>
             {(query || brandId) && (
               <button
                 onClick={() => { setQuery(""); setBrandId(""); }}
-                className="text-sm text-ambar hover:text-ambar-dark font-medium transition-colors cursor-pointer"
+                className="text-sm text-vb-ambar hover:text-vb-dorado font-medium transition-colors cursor-pointer"
               >
                 Limpiar filtros
               </button>

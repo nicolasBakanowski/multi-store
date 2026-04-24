@@ -27,12 +27,12 @@ const CartIcon = () => {
       <motion.div animate={controls}>
         <MdShoppingCart
           size={24}
-          color={active ? "#C8913A" : "rgba(245,240,232,0.7)"}
+          color={active ? "#E8952A" : "rgba(247,241,232,0.8)"}
           className="transition-colors duration-300"
         />
       </motion.div>
       {cartItems > 0 && (
-        <span className="text-sm font-semibold tabular-nums text-ambar">
+        <span className="text-sm font-semibold tabular-nums text-vb-ambar">
           {cartItems}
         </span>
       )}
